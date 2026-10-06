@@ -1,5 +1,6 @@
 import type { State } from "@/types";
 import { stocks } from "@/lib/market";
+import { lessons } from "@/lib/education";
 const record = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
 const text = (v: unknown): v is string => typeof v === "string";
@@ -13,7 +14,8 @@ const shares = (v: unknown): v is number => integer(v) && v > 0 && v <= 1000000;
 const ticker = (v: unknown) => stocks.some((s) => s.ticker === v);
 const date = (v: unknown) => text(v) && Number.isFinite(Date.parse(v));
 const side = (v: unknown) => v === "buy" || v === "sell";
-const lesson = (v: unknown) => integer(v) && v >= 1 && v <= 25;
+const lesson = (v: unknown) =>
+  integer(v) && lessons.some((item) => item.id === v);
 const every = (
   v: unknown,
   validate: (item: unknown) => boolean,

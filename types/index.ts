@@ -98,3 +98,11 @@ export interface State extends VirtualAccount {
   tick: number;
   snapshots: { date: string; value: number }[];
 }
+
+export interface PriceCandle {
+  period: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}

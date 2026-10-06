@@ -2187,3 +2187,14 @@ td small {
 .auth-actions { display:flex; gap:10px; flex-wrap:wrap; }
 .landing-auth { max-width:1200px; margin:24px auto 0; padding:0 24px; }
 .sync-overlay { position:fixed; inset:0; z-index:9999; background:#f7f9f7cc; display:grid; place-items:center; color:var(--deep); font-weight:bold; }
+
+.chart-type-buttons { display:flex; gap:8px; margin:16px 0; flex-wrap:wrap; }
+.chart-type-buttons button { padding:8px 14px; border:1px solid var(--line); background:white; border-radius:8px; color:var(--muted); }
+.chart-type-buttons button.active { background:var(--pale); color:var(--green); border-color:var(--green); }
+.candlestick-chart svg { display:block; width:100%; height:auto; }
+.candle-legend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; margin-bottom:8px; }
+.candle-legend span:first-child { color:#14856f; }
+.candle-legend span:last-child { color:#bc4545; }
+.candle-values { display:flex; flex-wrap:wrap; gap:8px 16px; font-size:12px; padding:12px 0; }
+.candle-slider { display:flex; align-items:center; gap:12px; font-size:12px; color:var(--muted); }
+.candle-slider input { flex:1; min-width:0; accent-color:var(--green); }

@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import CandleLessonExample from "./CandleLessonExample";
 import { BookOpen, Check, ArrowRight, Lightbulb } from "lucide-react";
 import { lessons, levels, answerLesson } from "@/lib/education";
 import type { State, Lesson } from "@/types";
@@ -13,7 +15,10 @@ export default function Learning({
   update: (s: State) => void;
   firstTrade: () => void;
 }) {
-  const [active, setActive] = useState<Lesson | null>(null),
+  const requestedLesson = Number(useSearchParams().get("lesson"));
+  const [active, setActive] = useState<Lesson | null>(
+      () => lessons.find((lesson) => lesson.id === requestedLesson) || null,
+    ),
     [answer, setAnswer] = useState<number | null>(null),
     [feedback, setFeedback] = useState("");
   function open(l: Lesson) {
@@ -47,7 +52,7 @@ export default function Learning({
         </div>
         <div className="badge">
           <BookOpen size={16} />
-          {state.learning.completed.length} / 25 lessons
+          {state.learning.completed.length} / {lessons.length} lessons
         </div>
       </div>
       <div className="journey-summary card">
@@ -89,7 +94,7 @@ export default function Learning({
                     state.learning.completed.includes(l.id),
                 ).length
               }
-              /5 complete
+              /{lessons.filter((l) => l.level === i + 1).length} complete
             </span>
           </div>
           <div className="lesson-list">
@@ -131,6 +136,7 @@ export default function Learning({
           <div className="example">
             <span className="eyebrow">LET’S MAKE IT REAL</span>
             <p>{active.example}</p>
+            <CandleLessonExample lessonId={active.id} />
           </div>
           <div className="tip">
             <Lightbulb size={19} />

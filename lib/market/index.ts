@@ -1,4 +1,4 @@
-import type { Stock, StockPriceHistory } from "@/types";
+import type { Stock, StockPriceHistory, PriceCandle } from "@/types";
 export const stocks: Stock[] = [
   [
     "AAPL",
@@ -155,8 +155,40 @@ export function history(
     ),
   }));
 }
+/** Illustrative OHLC bars with closes matching the existing simulated history. */
+export function candles(ticker: string, range = "1M", tick = 0): PriceCandle[] {
+  const points = history(ticker, range, tick);
+  const seed = stocks.findIndex((stock) => stock.ticker === ticker) + 1;
+  const volatility =
+    (
+      {
+        "1D": 0.001,
+        "1W": 0.002,
+        "1M": 0.004,
+        "3M": 0.008,
+        "1Y": 0.015,
+      } as Record<string, number>
+    )[range] ?? 0.004;
+  return points.map((point, index) => {
+    const open = index
+      ? points[index - 1].price
+      : round(point.price * (1 + volatility * Math.sin(seed)));
+    const wick =
+      point.price *
+      volatility *
+      (0.35 + Math.abs(Math.sin(index * 1.7 + seed + tick * 0.3)));
+    return {
+      period: point.date,
+      open,
+      close: point.price,
+      high: round(Math.max(open, point.price) + wick),
+      low: round(Math.max(0.01, Math.min(open, point.price) - wick * 0.8)),
+    };
+  });
+}
 export interface MarketDataProvider {
   quote: typeof quote;
   history: typeof history;
+  candles: typeof candles;
 }
-export const simulatedMarket: MarketDataProvider = { quote, history };
+export const simulatedMarket: MarketDataProvider = { quote, history, candles };

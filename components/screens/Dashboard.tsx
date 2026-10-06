@@ -16,7 +16,7 @@ import {
   ArrowRight,
   ArrowUpRight,
 } from "lucide-react";
-import { levels } from "@/lib/education";
+import { levels, lessons } from "@/lib/education";
 export default function Dashboard({
   state,
   p,
@@ -158,7 +158,9 @@ export default function Dashboard({
           </div>
           <div className="progress-label">
             <span>Your learning progress</span>
-            <strong>{state.learning.completed.length}/25</strong>
+            <strong>
+              {state.learning.completed.length}/{lessons.length}
+            </strong>
           </div>
           <div className="progress-track">
             <span style={{ width: `${progress}%` }} />

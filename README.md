@@ -58,8 +58,9 @@ You can view the screenshots and moving previews on GitHub without downloading t
 
 - First-run landing page and experience-based onboarding; automatic Beginner Mode for new learners.
 - Dashboard with account value, cash, invested value, daily change, total return, watchlist, recent trades, learning progress, and market examples.
-- All 25 lessons across five levels, examples, explanations, quizzes, accuracy, learning streak, XP, level-completion bonuses, and six achievements.
-- Searchable market with ten seeded stocks/funds, company descriptions, interactive charts, five timeframes, and watchlist controls.
+- All 30 lessons across six levels, examples, explanations, quizzes, accuracy, learning streak, XP, level-completion bonuses, and six achievements.
+- Searchable market with ten seeded stocks/funds, company descriptions, line/candlestick charts, five timeframes, and watchlist controls. Candles show simulated open/high/low/close prices with hover and keyboard-accessible period inspection.
+- A five-lesson Candlestick Practice level covers bodies/wicks, colors/gaps, doji, hammers, and engulfing patterns with visual examples and quizzes. Stock charts link directly to the first lesson.
 - Whole-share market buys and sells, weighted average cost, realized/unrealized gains, friendly validation, and Beginner Mode confirmations.
 - Pending limit orders, cancellation, and deterministic market advancement. Every fill opens **Explain My Trade**, including 5%/10% price and dollar scenarios. History can reopen explanations.
 - Holdings, portfolio allocation, performance chart, profile settings, simulator reset, and separate learning reset.
@@ -117,7 +118,7 @@ Portfolio value equals cash plus current holdings. Total return is measured agai
 - `components/Learning.tsx`, `Trading.tsx`, `Chart.tsx`, `Dialog.tsx`, `ui/`: reusable interactive UI.
 - `lib/trading/`: single source for account initialization, buy/sell validation, weighted cost, portfolio values, limits, and trade scenarios.
 - `lib/market/`: deterministic seeded data and replaceable provider interface.
-- `lib/education/`: 25 lessons, quizzes, completion/XP/streak rules, and achievements.
+- `lib/education/`: 30 lessons, quizzes, completion/XP/streak rules, and achievements.
 - `lib/storage/`: persistence adapter and hydration-safe React account subscription.
 - `types/`: users, profiles, preferences, accounts, stocks/history, holdings, trades/orders, lessons/quizzes, attempts/progress, and achievements.
 - `tests/`: financial/learning/storage unit tests and browser journeys.

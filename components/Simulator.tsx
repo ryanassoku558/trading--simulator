@@ -116,7 +116,7 @@ export default function Simulator() {
   const stock = ticker ? stocks.find((s) => s.ticker === ticker) : null;
   const current = stock ? quote(stock.ticker, state.tick) : null;
   const page = path.split("/")[1] || "dashboard";
-  const progress = (state.learning.completed.length / 25) * 100;
+  const progress = (state.learning.completed.length / lessons.length) * 100;
   const recommendedStart =
     state.profile.experience === "experienced"
       ? 21

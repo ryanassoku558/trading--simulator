@@ -2,10 +2,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { State, Trade, Stock } from "@/types";
-import { money, history } from "@/lib/market";
+import { money, history, candles } from "@/lib/market";
 import { StockBadge, Delta } from "../ui/MarketUI";
 
 import Chart from "../Chart";
+import CandlestickChart from "../CandlestickChart";
 import { TradePanel } from "../Trading";
 import { RefreshCw, Star, Lightbulb, BookOpen } from "lucide-react";
 export default function StockDetail({
@@ -28,6 +29,7 @@ export default function StockDetail({
   guided: boolean;
 }) {
   const [range, setRange] = useState("1M");
+  const [chartType, setChartType] = useState<"line" | "candles">("line");
   return (
     <>
       <div className="page-heading">
@@ -60,7 +62,41 @@ export default function StockDetail({
               <Delta value={current.change} percent />{" "}
               <span className="muted">simulated today</span>
             </p>
-            <Chart data={history(ticker, range, state.tick)} />
+            <div
+              className="chart-type-buttons"
+              role="group"
+              aria-label="Chart style"
+            >
+              <button
+                className={chartType === "line" ? "active" : ""}
+                aria-pressed={chartType === "line"}
+                onClick={() => setChartType("line")}
+              >
+                Line chart
+              </button>
+              <button
+                className={chartType === "candles" ? "active" : ""}
+                aria-pressed={chartType === "candles"}
+                onClick={() => setChartType("candles")}
+              >
+                Candlesticks
+              </button>
+            </div>
+            {chartType === "line" ? (
+              <Chart data={history(ticker, range, state.tick)} />
+            ) : (
+              <CandlestickChart data={candles(ticker, range, state.tick)} />
+            )}
+            {chartType === "candles" && (
+              <p className="small">
+                Each candle shows one simulated period. The body connects
+                opening and closing prices; the wicks show the highest and
+                lowest prices. Green closes higher, red closes lower.{" "}
+                <Link className="text-link" href="/learn?lesson=26">
+                  Learn to read candlesticks →
+                </Link>
+              </p>
+            )}
             <div className="range-buttons">
               {["1D", "1W", "1M", "3M", "1Y"].map((r) => (
                 <button
