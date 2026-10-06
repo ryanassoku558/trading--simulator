@@ -1,8 +1,4 @@
+import LoadingBrand from "@/components/ui/LoadingBrand";
 export default function Loading() {
-  return (
-    <main className="loading" aria-label="Loading your practice space">
-      <div className="skeleton" />
-      <p>Preparing your practice space…</p>
-    </main>
-  );
+  return <main className="sprout-loading" aria-label="Loading your practice space"><LoadingBrand /></main>;
 }

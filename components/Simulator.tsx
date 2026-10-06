@@ -37,6 +37,7 @@ import {
   earned,
   beginnerLearningOrder,
 } from "@/lib/education";
+import LoadingBrand from "./ui/LoadingBrand";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
 import ThemeToggle from "./ThemeToggle";
@@ -107,27 +108,17 @@ export default function Simulator() {
     if (unlocked.length)
       setToast(`${unlocked.map((a) => a.title).join(" · ")} unlocked!`);
   }
+  if (!state && !error)
+    return <main className="sprout-loading" aria-label="Loading your practice space"><LoadingBrand /></main>;
   if (!state)
     return (
       <main className="loading">
         <Logo />
-        {error ? (
-          <>
-            <p role="alert">{error}</p>
-            <button
-              className="primary"
-              onClick={() => (user ? retry() : update(initialState()))}
-            >
-              {user ? "Retry loading account" : "Reset local account"}
-            </button>
-            <AuthPanel user={user} pending={pending} />
-          </>
-        ) : (
-          <>
-            <div className="skeleton" />
-            <p>Preparing your practice space…</p>
-          </>
-        )}
+        <p role="alert">{error}</p>
+        <button className="primary" onClick={() => (user ? retry() : update(initialState()))}>
+          {user ? "Retry loading account" : "Reset local account"}
+        </button>
+        <AuthPanel user={user} pending={pending} />
       </main>
     );
   const guided =
@@ -222,9 +213,7 @@ export default function Simulator() {
           accountPanel={<AuthPanel user={user} pending={pending} />}
         />
         {pending && (
-          <div className="sync-overlay" role="status">
-            Saving your progress…
-          </div>
+          <div className="sync-overlay"><LoadingBrand compact message="Saving your progress…" /></div>
         )}
       </>
     );
@@ -450,9 +439,7 @@ export default function Simulator() {
         </main>
       </div>
       {pending && (
-        <div className="sync-overlay" role="status">
-          Saving your progress…
-        </div>
+        <div className="sync-overlay"><LoadingBrand compact message="Saving your progress…" /></div>
       )}
       {trade && (
         <ExplainTrade

@@ -35,10 +35,10 @@ export default function CandlestickChart({ data }: { data: PriceCandle[] }) {
                 x2="705"
                 y1={y(value)}
                 y2={y(value)}
-                stroke="#e9eeeb"
+                stroke="var(--line)"
                 strokeDasharray="4 4"
               />
-              <text x="715" y={y(value) + 4} fill="#7b8982" fontSize="12">
+              <text x="715" y={y(value) + 4} fill="var(--muted)" fontSize="12">
                 {money(value)}
               </text>
             </g>
@@ -86,7 +86,7 @@ export default function CandlestickChart({ data }: { data: PriceCandle[] }) {
                   y="257"
                   textAnchor="middle"
                   fontSize="11"
-                  fill="#7b8982"
+                  fill="var(--muted)"
                 >
                   {c.period}
                 </text>

@@ -33,7 +33,7 @@ export default function Chart({
           </defs>
           <CartesianGrid
             vertical={false}
-            stroke="#e9eeeb"
+            stroke="var(--line)"
             strokeDasharray="4 4"
           />
           <XAxis
@@ -41,12 +41,12 @@ export default function Chart({
             tickLine={false}
             axisLine={false}
             minTickGap={45}
-            tick={{ fontSize: 11, fill: "#88938f" }}
+            tick={{ fontSize: 11, fill: "var(--muted)" }}
           />
           <YAxis hide domain={["dataMin - 5", "dataMax + 5"]} />
           <Tooltip
             formatter={(v) => money(Number(v))}
-            contentStyle={{ borderRadius: 12, border: "1px solid #e4eae6" }}
+            contentStyle={{ borderRadius: 12, border: "1px solid var(--line)", background: "var(--surface)", color: "var(--ink)" }}
           />
           <Area
             type="monotone"
