@@ -49,7 +49,7 @@ async function switchUser(user: User | null) {
   snapshot = { state: null, error: "", user, pending: true };
   emit();
   try {
-    const result = await loadCloudAccount(user.id, user.email || "");
+    const result = await loadCloudAccount(user.id, user.email || "", typeof user.user_metadata?.first_name === "string" ? user.user_metadata.first_name : "");
     if (current !== generation) return;
     version = result.version;
     snapshot = { state: result.state, error: "", user, pending: false };

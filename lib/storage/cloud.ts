@@ -9,6 +9,7 @@ export interface CloudAccount {
 export async function loadCloudAccount(
   id: string,
   email: string,
+  firstName = "",
 ): Promise<CloudAccount> {
   const { data, error } = await supabase
     .from("paper_accounts")
@@ -28,7 +29,7 @@ export async function loadCloudAccount(
   state.profile = {
     ...state.profile,
     id,
-    name: email.split("@")[0].slice(0, 30) || "Learner",
+    name: firstName.trim().slice(0, 60) || email.split("@")[0].slice(0, 30) || "Member",
   };
   const inserted = await supabase
     .from("paper_accounts")
@@ -37,7 +38,7 @@ export async function loadCloudAccount(
     .single();
   if (inserted.error) {
     // Another tab may have initialized this same account first.
-    if (inserted.error.code === "23505") return loadCloudAccount(id, email);
+    if (inserted.error.code === "23505") return loadCloudAccount(id, email, firstName);
     throw new Error(
       `Unable to create your cloud account: ${inserted.error.message}`,
     );

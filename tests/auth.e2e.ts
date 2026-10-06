@@ -20,11 +20,14 @@ test("sign-up is visible on welcome and explains email confirmation", async ({
   await expect(
     panel.getByRole("heading", { name: "Save your progress" }),
   ).toBeVisible();
+  await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill("learner@example.com");
   await panel.getByLabel("Password", { exact: true }).fill("test-password-123");
+  const signupRequest = page.waitForRequest("**/auth/v1/signup**");
   await panel
     .getByRole("button", { name: "Create account", exact: true })
     .click();
+  expect((await signupRequest).postDataJSON().data.first_name).toBe("Taylor");
   await expect(panel.getByRole("status")).toContainText("Check your email");
   await page.getByRole("button", { name: "Explore Demo" }).click();
   await expect(
@@ -47,6 +50,7 @@ test("failed sign-in reports the error and keeps guest mode", async ({
   );
   await page.goto("/");
   const panel = page.getByRole("region", { name: "Account sign-in" });
+  await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill("learner@example.com");
   await panel.getByLabel("Password", { exact: true }).fill("test-password-123");
   await panel.getByRole("button", { name: "Sign in", exact: true }).click();
@@ -129,6 +133,7 @@ test("signed-in state survives reload and sign-out restores separate guest state
   );
   await page.goto("/");
   const panel = page.getByRole("region", { name: "Account sign-in" });
+  await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill(user.email);
   await panel.getByLabel("Password", { exact: true }).fill("test-password-123");
   await panel.getByRole("button", { name: "Sign in", exact: true }).click();

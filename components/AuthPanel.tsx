@@ -9,11 +9,16 @@ export default function AuthPanel({
   user: User | null;
   pending: boolean;
 }) {
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   async function authenticate(signup: boolean) {
+    if (signup && !firstName.trim()) {
+      setMessage("Enter your first name to create your account.");
+      return;
+    }
     setBusy(true);
     setMessage("");
     try {
@@ -21,7 +26,7 @@ export default function AuthPanel({
         ? await supabase.auth.signUp({
             email,
             password,
-            options: { emailRedirectTo: window.location.origin },
+            options: { emailRedirectTo: window.location.origin, data: { first_name: firstName.trim() } },
           })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
@@ -69,6 +74,10 @@ export default function AuthPanel({
           }}
         >
           <label>
+            First name <small>For new accounts</small>
+            <input aria-label="First name" name="firstName" autoComplete="given-name" maxLength={60} value={firstName} onChange={e=>setFirstName(e.target.value)}/>
+          </label>
+          <label>
             Email
             <input
               type="email"
@@ -100,7 +109,7 @@ export default function AuthPanel({
             <button
               className="secondary"
               disabled={busy || pending}
-              type="submit"
+              type="button"
               onClick={(e) => {
                 const form = e.currentTarget.form;
                 if (form?.reportValidity()) {
