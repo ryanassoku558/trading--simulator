@@ -1,7 +1,11 @@
 import type { Achievement, Lesson, State } from "@/types";
+import { expandedModules, expandedLessons } from "./expanded";
+import { beginnerLearningOrder as coreLearningOrder } from "./dayTrading";
 import { indicatorLessons } from "./indicators";
 import { dayTradingLessons } from "./dayTrading";
-export { beginnerLearningOrder, accountRulesMetadata } from "./dayTrading";
+export { accountRulesMetadata } from "./dayTrading";
+export { expandedModules } from "./expanded";
+export const beginnerLearningOrder=[...coreLearningOrder,...expandedLessons.map(l=>l.id)];
 export const levels = [
   "Trading Basics",
   "Understanding Prices",
@@ -15,6 +19,7 @@ export const levels = [
   "Real-World Trading Context",
   "Beginner Practice Lab",
   "Indicators Explained",
+  ...expandedModules.map(m=>m.title),
 ];
 const content = [
   [
@@ -332,7 +337,7 @@ const originalLessons: Lesson[] = content.map((c, i) => ({
     explanation: c[2] + " " + c[3],
   },
 }));
-export const lessons: Lesson[] = [...originalLessons, ...dayTradingLessons, ...indicatorLessons];
+export const lessons: Lesson[] = [...originalLessons, ...dayTradingLessons, ...indicatorLessons, ...expandedLessons];
 export function answerLesson(s: State, id: number, answer: number): State {
   const lesson = lessons.find((l) => l.id === id);
   if (!lesson) throw new Error("Lesson not found.");
@@ -400,8 +405,16 @@ export const achievements: Achievement[] = [
     title: "Quiz Master",
     description: "Answer 10 knowledge checks correctly",
   },
+  ...expandedModules.map((m,i)=>({id:`module-${i+13}`,title:m.reward,description:`Complete all lessons in ${m.title}`})),
+  {id:"fifty",title:"50 Lessons Completed",description:"Build understanding across fifty lessons"},
+  {id:"hundred",title:"100 Lessons Completed",description:"Complete one hundred knowledge checks"},
+  {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the current trading and personal finance curriculum"},
 ];
 export function earned(s: State, id: string): boolean {
+  if(id.startsWith("module-")){const level=Number(id.slice(7));const group=lessons.filter(l=>l.level===level);return group.length>0&&group.every(l=>s.learning.completed.includes(l.id));}
+  if(id==="fifty")return s.learning.completed.length>=50;
+  if(id==="hundred")return s.learning.completed.length>=100;
+  if(id==="curriculum")return lessons.every(l=>s.learning.completed.includes(l.id));
   return (
     (
       {

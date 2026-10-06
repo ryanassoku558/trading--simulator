@@ -106,6 +106,7 @@ export default function Landing({
               Try the Simulator <ArrowUpRight size={18} />
             </button>
           </div>
+          <p className="starting-message">There’s no single amount everyone needs to start. The best time to begin learning is now—start with virtual practice, at your own pace.</p>
           <span className="hero-disclosure">
             <ShieldCheck size={16} /> Educational simulation. No real money
             required.
@@ -317,6 +318,7 @@ export default function Landing({
           title="Let’s find your starting point."
           onClose={() => setOnboarding(false)}
         >
+          <Sprouty compact completed={state.learning.completed.length} message="We’ll start with what you know and build from there. Every lesson stays open to you."/>
           <p>How much do you know about trading?</p>
           <div className="onboarding-options">
             {(

@@ -9,7 +9,7 @@ import TutorialVideo from "./TutorialVideo";
 import tutorials from "@/lib/education/tutorials.json";
 import CandleLessonExample from "./CandleLessonExample";
 import BeginnerExercise from "./BeginnerExercise";
-import { BookOpen, Check, ArrowRight, Lightbulb } from "lucide-react";
+import { BookOpen, Check, ArrowRight, Lightbulb, Search, Trophy } from "lucide-react";
 import {
   lessons,
   levels,
@@ -28,6 +28,9 @@ export default function Learning({
   update: (s: State) => void;
   firstTrade: () => void;
 }) {
+  const [topic,setTopic]=useState("All topics"),[search,setSearch]=useState("");
+  const matches=(lesson:Lesson)=>((topic==="All topics")||(topic==="Personal finance"&&lesson.level>=13&&lesson.level<=22)||(topic==="Trading"&&lesson.level<=12)||(topic==="Advanced trading"&&lesson.level>=23))&&`${lesson.title} ${lesson.explanation} ${lesson.example}`.toLowerCase().replace(/[^a-z0-9]/g,'').includes(search.trim().toLowerCase().replace(/[^a-z0-9]/g,''));
+  const visibleLessons=lessons.filter(matches);
   const requestedLesson = Number(useSearchParams().get("lesson"));
   const [active, setActive] = useState<Lesson | null>(
       () => lessons.find((lesson) => lesson.id === requestedLesson) || null,
@@ -125,7 +128,10 @@ export default function Learning({
           Start beginner path <ArrowRight size={16} />
         </button>
       </section>
-      {levels.map((level, i) => (
+      <section className="card curriculum-browser" id="curriculum"><div className="card-heading"><div><span className="eyebrow">YOUR TRADING & PERSONAL FINANCE LIBRARY</span><h2>Find your next topic</h2><p>{lessons.length} lessons across {levels.length} modules. Start learning now; no fixed balance is required.</p></div><Trophy size={25}/></div><div className="curriculum-topics" role="group" aria-label="Curriculum topic">{["All topics","Personal finance","Trading","Advanced trading"].map(t=><button key={t} aria-pressed={topic===t} className={topic===t?"active":""} onClick={()=>setTopic(t)}>{t}</button>)}</div><label className="curriculum-search"><Search size={18}/><input aria-label="Search lessons" type="search" placeholder="Search budgeting, options, credit, risk…" value={search} onChange={e=>setSearch(e.target.value)}/></label><p className="small" role="status">{visibleLessons.length} matching lessons · +35 XP per first completion · +100 XP per completed module</p></section>
+      {visibleLessons.length===0&&<p className="card">No lessons match your search. Try a broader term or another topic.</p>}
+      {levels.map((level, i) => visibleLessons.some(l=>l.level===i+1)&&(
+
         <section className="card level" key={level}>
           <div className="level-heading">
             <div className="level-icon">{i + 1}</div>
@@ -144,9 +150,10 @@ export default function Learning({
               /{lessons.filter((l) => l.level === i + 1).length} complete
             </span>
           </div>
+          <div className="module-reward"><Trophy size={16}/>{lessons.filter(l=>l.level===i+1).every(l=>state.learning.completed.includes(l.id))?"Module complete · completion XP earned":"Complete this module to earn +100 XP"}{i>=12&&" and a mastery badge"}</div>
           <div className="lesson-list">
             {lessons
-              .filter((l) => l.level === i + 1)
+              .filter((l) => l.level === i + 1 && matches(l))
               .map((l) => (
                 <button
                   key={l.id}
@@ -194,6 +201,7 @@ export default function Learning({
               <p>{active.why}</p>
             </div>
           </div>
+          {active.level>=13&&<aside className="lesson-sources"><strong>Continue with official guidance</strong><p>Educational examples are general. Account, tax, insurance, and product rules vary by location and circumstances; check current official information before acting.</p><a href={active.level===19||active.level===20?"https://www.irs.gov/":active.level===35?"https://www.sec.gov/edgar/search/":"https://www.investor.gov/"} target="_blank" rel="noreferrer">{active.level===19||active.level===20?"IRS tax and retirement guidance":active.level===35?"SEC EDGAR public filings":"Investor.gov education and resources"} <ArrowRight size={14}/></a></aside>}
           {[32, 39, 40, 48].includes(active.id) && (
             <aside className="lesson-sources">
               <strong>Scope and current requirements</strong>
@@ -234,6 +242,7 @@ export default function Learning({
               </button>
             ))}
           </div>
+          {feedback && <Sprouty compact completed={state.learning.completed.length} title={feedback==="correct"?"Nice work. You’ve understood this idea.":"Let’s look at the reasoning together."} message={active.quiz.explanation}/>}
           {feedback && (
             <p
               role="status"

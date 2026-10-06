@@ -46,8 +46,8 @@ it("supports full completion and the four-lesson planning module bonus", () => {
   expect(state.learning.xp).toBe(4 * 35 + 100);
   state = initialState();
   for (const id of beginnerLearningOrder) state = answerLesson(state, id, lessons.find(l=>l.id===id)!.quiz.answer);
-  expect(state.learning.completed).toHaveLength(59);
-  expect(state.learning.xp).toBe(59 * 35 + levels.length * 100);
+  expect(state.learning.completed).toHaveLength(151);
+  expect(state.learning.xp).toBe(151 * 35 + levels.length * 100);
   expect(isAccountState(state)).toBe(true);
 });
 it("identifies the jurisdiction and update date for account-rule guidance", () => {

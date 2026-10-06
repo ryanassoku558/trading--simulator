@@ -24,7 +24,7 @@ export default function Achievements({ state }: { state: State }) {
       </div>
       <Sprouty completed={state.learning.completed.length}/>
       <div className="achievement-grid">
-        {achievements.map((a, i) => {const Icon=a.id==="chart"?CandlestickChart:a.id==="risk"?ShieldCheck:a.id==="streak"?Flame:a.id==="lesson"?BookOpen:Trophy;const tier=i<3?"Bronze":i<6?"Silver":"Gold";return (
+        {achievements.map((a, i) => {const Icon=a.id==="chart"?CandlestickChart:a.id==="risk"?ShieldCheck:a.id==="streak"?Flame:a.id==="lesson"?BookOpen:Trophy;const moduleLevel=a.id.startsWith("module-")?Number(a.id.slice(7)):0;const tier=moduleLevel?(moduleLevel<=22?"Bronze":"Silver"):i<3?"Bronze":i<6?"Silver":"Gold";return (
           <section
             key={a.id}
             data-tier={tier.toLowerCase()}

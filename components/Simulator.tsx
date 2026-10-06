@@ -452,6 +452,7 @@ export default function Simulator() {
       {trade && (
         <ExplainTrade
           trade={trade}
+          completed={state.learning.completed.length}
           onClose={() => {
             if (tradeQueue.length) {
               setTrade(tradeQueue[0]);

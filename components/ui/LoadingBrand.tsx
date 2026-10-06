@@ -12,7 +12,7 @@ export default function LoadingBrand({
       <div className="loading-emblem" aria-hidden="true">
         <div className="loading-orbit"><span /><span /><span /></div>
         <div className="loading-ring" />
-        <div className="loading-seed"><Image src="/mascot/sprouty.png" width={112} height={112} alt=""/></div>
+        <div className="loading-seed"><Image src="/mascot/sprouty-minimal.png" width={112} height={112} alt=""/></div>
       </div>
       <Logo />
       <p className="loading-message">{message}</p>

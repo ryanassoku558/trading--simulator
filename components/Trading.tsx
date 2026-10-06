@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { State, Trade } from "@/types";
 import { quote, money } from "@/lib/market";
 import { executeTrade, placeLimit, portfolio, scenarios } from "@/lib/trading";
+import Sprouty from "./Sprouty";
 import Dialog from "./Dialog";
 export function TradePanel({
   state,
@@ -210,15 +211,17 @@ export function TradePanel({
 }
 export function ExplainTrade({
   trade,
+  completed = 0,
   onClose,
 }: {
   trade: Trade;
+  completed?: number;
   onClose: () => void;
 }) {
   const percent = (trade.total / trade.portfolioValue) * 100;
   return (
     <Dialog title="Explain My Trade" onClose={onClose}>
-      <div className="celebrate">✓</div>
+      <Sprouty compact completed={completed} title="Let’s review the decision." message="Compare this entry, position size, and possible loss with your plan. The outcome alone doesn’t tell the whole story."/>
       <div className="eyebrow center">PRACTICE MAKES PROGRESS</div>
       <h3 className="center">
         You {trade.side === "buy" ? "bought" : "sold"} {trade.shares} share
