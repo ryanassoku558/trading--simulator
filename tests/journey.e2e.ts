@@ -10,7 +10,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Learn trading. Build confidence. Skip the risk.",
+      name: "Invest in your understanding.",
     }),
   ).toBeVisible();
   await page
@@ -203,7 +203,7 @@ test("synchronizes trades and resets between open tabs", async ({
   const other = await context.newPage();
   await other.goto("/");
   await expect(
-    other.getByRole("heading", { name: /A little wiser/ }),
+    other.getByRole("heading", { name: /Account overview/ }),
   ).toBeVisible();
   await page.goto("/market/AAPL");
   await page.getByRole("button", { name: "Review buy AAPL" }).click();

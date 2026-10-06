@@ -1,5 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import { candles, quote, money } from "@/lib/market";
+import CandlestickChart from "../CandlestickChart";
 import type { State, Experience } from "@/types";
 import {
   ShieldCheck,
@@ -9,10 +13,9 @@ import {
   ChartNoAxesCombined,
   Lightbulb,
   TrendingUp,
-  GraduationCap,
   Check,
 } from "lucide-react";
-import Chart from "../Chart";
+
 import Dialog from "../Dialog";
 import Logo from "../ui/Logo";
 export default function Landing({
@@ -23,7 +26,9 @@ export default function Landing({
   experience,
   setExperience,
   onboard,
+  accountPanel,
 }: {
+  accountPanel: ReactNode;
   state: State;
   update: (s: State) => void;
   onboarding: boolean;
@@ -33,33 +38,42 @@ export default function Landing({
   onboard: () => void;
 }) {
   const router = useRouter();
+  const [previewTicker, setPreviewTicker] = useState("AAPL");
+  const previewQuote = quote(previewTicker);
   return (
     <main className="landing">
+      <div className="landing-utility">
+        <span>
+          SPROUT TRADING <i /> EDUCATION & PAPER TRADING
+        </span>
+        <span>Simulated markets. Real understanding.</span>
+      </div>
       <header className="landing-nav">
         <Logo />
-        <span className="badge">
-          <ShieldCheck size={15} />
-          100% virtual. 100% yours to explore.
-        </span>
-        <button className="text-link" onClick={() => setOnboarding(true)}>
-          Get started <ArrowUpRight size={16} />
-        </button>
+        <nav aria-label="Website navigation">
+          <a href="#platform">Platform</a>
+          <a href="#education">Education</a>
+          <a href="#how-it-works">How it works</a>
+        </nav>
+        <a className="secondary" href="#account">
+          Sign in <ArrowUpRight size={15} />
+        </a>
       </header>
-      <section className="landing-hero">
-        <div>
+      <section className="landing-hero" id="platform">
+        <div className="hero-copy">
           <span className="eyebrow">
-            <span className="live-dot" /> BIG DREAMS START WITH SMALL STEPS
+            <span className="live-dot" /> A BETTER START TO UNDERSTANDING
+            MARKETS
           </span>
           <h1>
-            Learn trading.
+            Invest in your
             <br />
-            Build confidence.
-            <br />
-            <em>Skip the risk.</em>
+            <em>understanding.</em>
           </h1>
           <p>
-            Learn the basics, practice with $10,000 in virtual cash, and
-            understand every trade you make.
+            Build market knowledge with a workspace designed for practice.
+            Explore stocks, learn to read charts, and test your decisions with
+            $10,000 in virtual cash.
           </p>
           <div className="hero-buttons">
             <button className="primary" onClick={() => setOnboarding(true)}>
@@ -78,80 +92,197 @@ export default function Landing({
               Explore Demo <ArrowUpRight size={18} />
             </button>
           </div>
-          <span className="small">
-            No real money. No pressure. Just practice.
+          <span className="hero-disclosure">
+            <ShieldCheck size={16} /> Educational simulation. No real money
+            required.
           </span>
-        </div>
-        <div className="landing-preview">
-          <div className="card preview-account">
-            <span className="eyebrow">YOUR PRACTICE PORTFOLIO</span>
-            <h2>
-              $10,000<span>.00</span>
-            </h2>
-            <p>
-              <span className="positive">A fresh start</span> · unlimited
-              possibilities
-            </p>
-            <Chart
-              data={[
-                { date: "Start", price: 10000 },
-                { date: "Now", price: 10000 },
-              ]}
-            />
-            <div className="preview-pill">
-              <ShieldCheck size={20} />
-              <span>
-                Real lessons.
-                <br />
-                <strong>Virtual money.</strong>
-              </span>
+          <div className="hero-facts">
+            <div>
+              <strong>$10,000</strong>
+              <span>Virtual starting balance</span>
+            </div>
+            <div>
+              <strong>30</strong>
+              <span>Lessons & quizzes</span>
+            </div>
+            <div>
+              <strong>10</strong>
+              <span>Stocks & funds to explore</span>
             </div>
           </div>
-          <div className="floating-lesson">
-            <span className="level-icon">
-              <GraduationCap />
+        </div>
+        <div className="landing-preview">
+          <div className="terminal-caption">
+            <span>
+              <span className="live-dot" /> YOUR MARKET WORKSPACE
             </span>
-            <div>
-              <strong>Your first step starts here</strong>
-              <small>What is a stock? · 3 min lesson</small>
+            <span>ILLUSTRATIVE DATA</span>
+          </div>
+          <div className="card preview-account">
+            <div className="preview-summary">
+              <div>
+                <span className="eyebrow">PRACTICE ACCOUNT VALUE</span>
+                <h2>
+                  $10,000<span>.00</span>
+                </h2>
+              </div>
+              <span className="badge">VIRTUAL CASH</span>
             </div>
-            <ArrowRight size={18} />
+            <div className="preview-stock">
+              <div>
+                <strong>{previewQuote.company}</strong>
+                <span>{previewTicker} · Simulated quote</span>
+              </div>
+              <div>
+                <strong>{money(previewQuote.price)}</strong>
+                <span
+                  className={previewQuote.change >= 0 ? "positive" : "negative"}
+                >
+                  {previewQuote.change >= 0 ? "+" : ""}
+                  {previewQuote.change.toFixed(2)}%
+                </span>
+              </div>
+            </div>
+            <div
+              className="preview-tabs"
+              role="group"
+              aria-label="Preview stock"
+            >
+              {["AAPL", "MSFT", "NVDA"].map((t) => (
+                <button
+                  key={t}
+                  aria-pressed={previewTicker === t}
+                  className={previewTicker === t ? "active" : ""}
+                  onClick={() => setPreviewTicker(t)}
+                >
+                  {t}
+                </button>
+              ))}
+              <span>1M · Candlesticks</span>
+            </div>
+            <CandlestickChart data={candles(previewTicker)} />
+            <div className="preview-bottom">
+              <ShieldCheck size={15} />
+              <span>Practice every decision. Understand every trade.</span>
+            </div>
           </div>
         </div>
       </section>
-      <div className="landing-features">
-        {[
-          {
-            icon: BookOpen,
-            title: "Learn the Basics",
-            text: "Small lessons. Clear examples. Real confidence.",
-          },
-          {
-            icon: ChartNoAxesCombined,
-            title: "Practice Trading",
-            text: "Make your first move with $10,000 in virtual cash.",
-          },
-          {
-            icon: Lightbulb,
-            title: "Understand Every Trade",
-            text: "See what every price change means for you.",
-          },
-          {
-            icon: TrendingUp,
-            title: "Track Your Progress",
-            text: "Watch your knowledge and your portfolio grow.",
-          },
-        ].map((f) => (
-          <section key={f.title}>
-            <f.icon />
-            <h3>{f.title}</h3>
-            <p>{f.text}</p>
-          </section>
-        ))}
+      <section className="capabilities" id="education">
+        <div className="section-intro">
+          <span className="eyebrow">BUILT FOR YOUR NEXT STEP</span>
+          <h2>
+            The tools to learn.
+            <br />
+            The space to practice.
+          </h2>
+          <p>
+            From your first share to your first candlestick pattern, put
+            knowledge into action.
+          </p>
+        </div>
+        <div className="landing-features">
+          {[
+            {
+              icon: BookOpen,
+              title: "Learn the Basics",
+              text: "30 focused lessons, clear examples, and knowledge checks. Progress at your own pace.",
+            },
+            {
+              icon: ChartNoAxesCombined,
+              title: "Read the market",
+              text: "Explore line and candlestick charts across five timeframes with simulated prices.",
+            },
+            {
+              icon: Lightbulb,
+              title: "Understand Every Trade",
+              text: "See position size, potential outcomes, and the impact of each practice decision.",
+            },
+            {
+              icon: TrendingUp,
+              title: "Track Your Progress",
+              text: "Review your holdings, allocation, returns, and learning progress in one workspace.",
+            },
+          ].map((f, index) => (
+            <section key={f.title}>
+              <div className="feature-index">
+                <f.icon size={24} />
+                <span>0{index + 1}</span>
+              </div>
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+      <section className="getting-started" id="how-it-works">
+        <div>
+          <span className="eyebrow">A SIMPLE PATH FORWARD</span>
+          <h2>
+            Make your next move
+            <br />
+            an informed one.
+          </h2>
+          <button className="primary" onClick={() => setOnboarding(true)}>
+            Get started <ArrowRight size={16} />
+          </button>
+        </div>
+        <ol>
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Find your starting point</h3>
+              <p>
+                Choose your experience level. Every lesson remains open to you.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Build a practice portfolio</h3>
+              <p>
+                Buy and sell with virtual cash. Explore charts and review your
+                decisions.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Keep your progress</h3>
+              <p>
+                Create a Sprout account to save your learning and practice
+                portfolio across devices.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <div id="account" className="landing-account">
+        {accountPanel}
       </div>
-      <footer>
-        Educational simulation only. This platform does not provide financial
-        advice and does not use real money.
+      <footer className="corporate-footer">
+        <div>
+          <Logo />
+          <p>Market knowledge for your next chapter.</p>
+        </div>
+        <div className="footer-links">
+          <a href="#platform">Platform</a>
+          <a href="#education">Education</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#account">Account</a>
+        </div>
+        <div className="footer-disclosure">
+          <strong>Practice with perspective.</strong>
+          <p>
+            Sprout is an educational paper-trading simulator. All prices and
+            market examples are simulated. No real money or securities are
+            traded. This platform does not provide investment advice or promise
+            future returns.
+          </p>
+          <span>© {new Date().getFullYear()} Sprout Trading</span>
+        </div>
       </footer>
       {onboarding && (
         <Dialog

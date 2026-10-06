@@ -40,12 +40,12 @@ export default function AuthPanel({
   return (
     <section className="card auth-card" aria-label="Account sign-in">
       <div>
-        <span className="eyebrow">YOUR PROGRESS, WHEREVER YOU GROW</span>
+        <span className="eyebrow">YOUR SPROUT ACCOUNT</span>
         <h2>{user ? "Your Sprout account" : "Save your progress"}</h2>
         <p>
           {user
             ? `Signed in as ${user.email}`
-            : "Create an account to save your portfolio and lessons across devices. Guest practice stays separate."}
+            : "Save your portfolio and learning across devices. Sign in or create your account to continue."}
         </p>
       </div>
       {user ? (

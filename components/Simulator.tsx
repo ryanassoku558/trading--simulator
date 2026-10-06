@@ -18,6 +18,7 @@ import {
   ChevronRight,
   Menu,
   Check,
+  Search,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { stocks, quote } from "@/lib/market";
@@ -32,6 +33,7 @@ import { useAccount } from "@/lib/storage/useAccount";
 import { lessons, achievements, earned } from "@/lib/education";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
+import MarketTicker from "./MarketTicker";
 import Landing from "./screens/Landing";
 import Market from "./screens/Market";
 import StockDetail from "./screens/StockDetail";
@@ -65,7 +67,8 @@ export default function Simulator() {
     [reset, setReset] = useState<"simulator" | "learning" | null>(null),
     [toast, setToast] = useState(""),
     [mobile, setMobile] = useState(false),
-    [welcome, setWelcome] = useState(false);
+    [welcome, setWelcome] = useState(false),
+    [marketSearch, setMarketSearch] = useState("");
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(""), 4500);
@@ -179,9 +182,6 @@ export default function Simulator() {
   if (!state.profile.onboarded)
     return (
       <>
-        <div className="landing-auth">
-          <AuthPanel user={user} pending={pending} />
-        </div>
         <Landing
           state={state}
           update={update}
@@ -190,6 +190,7 @@ export default function Simulator() {
           experience={experience}
           setExperience={setExperience}
           onboard={onboard}
+          accountPanel={<AuthPanel user={user} pending={pending} />}
         />
         {pending && (
           <div className="sync-overlay" role="status">
@@ -204,7 +205,7 @@ export default function Simulator() {
         <Link href="/" aria-label="Sprout dashboard">
           <Logo />
         </Link>
-        <span className="workspace-label">YOUR PRACTICE SPACE</span>
+        <span className="workspace-label">TRADING WORKSPACE</span>
         <nav id="workspace-navigation">
           {navigation.map((n) => (
             <Link
@@ -279,11 +280,35 @@ export default function Simulator() {
                     : page.charAt(0).toUpperCase() + page.slice(1)}
             </strong>
           </div>
+          <form
+            className="global-search"
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(
+                `/market?q=${encodeURIComponent(marketSearch.trim())}`,
+              );
+            }}
+          >
+            <Search size={16} />
+            <input
+              aria-label="Search the market"
+              placeholder="Search stocks & funds"
+              value={marketSearch}
+              onChange={(e) => setMarketSearch(e.target.value)}
+            />
+            <button type="submit" aria-label="Submit market search">
+              <ArrowRight size={15} />
+            </button>
+          </form>
           <div className="topbar-right">
             <span className="demo-badge">
               <span className="live-dot" />{" "}
               {user ? "Cloud account" : "Demo mode"}
             </span>
+            <a href="#account" className="account-link">
+              {user ? "Account" : "Sign in"}
+            </a>
             <span className="streak">
               <Flame size={17} />
               {state.learning.streak} day streak
@@ -293,8 +318,8 @@ export default function Simulator() {
             </Link>
           </div>
         </header>
+        <MarketTicker tick={state.tick} />
         <main className="content">
-          <AuthPanel user={user} pending={pending} />
           {error && (
             <div className="error" role="alert">
               {error}
@@ -314,7 +339,11 @@ export default function Simulator() {
             <Learning state={state} update={update} firstTrade={firstTrade} />
           )}
           {page === "market" && !ticker && (
-            <Market state={state} advance={advance} />
+            <Market
+              key={searchParams.get("q") || ""}
+              state={state}
+              advance={advance}
+            />
           )}
           {page === "market" && ticker && current && (
             <StockDetail
@@ -371,6 +400,9 @@ export default function Simulator() {
               label="Go to dashboard"
             />
           )}
+          <div id="account">
+            <AuthPanel user={user} pending={pending} />
+          </div>
           <footer className="app-footer">
             <span>
               <ShieldCheck size={14} /> Educational simulation only. This

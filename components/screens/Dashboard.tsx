@@ -36,10 +36,9 @@ export default function Dashboard({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">LEARN. PRACTICE. GROW.</span>
+          <span className="eyebrow">YOUR PRACTICE ACCOUNT</span>
           <h1>
-            A little wiser. A little wealthier
-            <span className="heading-dot">.</span>
+            Account overview<span className="heading-dot">.</span>
           </h1>
           <p>
             Welcome back, {state.profile.name}. Your next small step starts
@@ -58,8 +57,8 @@ export default function Dashboard({
         <div>
           <strong>Your money is virtual. Your learning is real.</strong>
           <p>
-            You have $10,000 in practice money to explore, make mistakes, and
-            build confidence.
+            Track your decisions, review your results, and build market
+            knowledge with a virtual account.
           </p>
         </div>
         <span className="badge">PRACTICE ACCOUNT</span>
@@ -104,8 +103,8 @@ export default function Dashboard({
         <section className="card portfolio-card">
           <div className="card-heading">
             <div>
-              <h2>Your portfolio, at a glance</h2>
-              <p>Every journey starts somewhere.</p>
+              <h2>Portfolio performance</h2>
+              <p>Your account value across simulated trades.</p>
             </div>
             <span className="chart-key">
               <span /> Portfolio value

@@ -2,6 +2,12 @@
 
 A beginner-friendly stock education and paper-trading app. Learn in small steps, practice with **$10,000 in virtual cash**, and understand every trade. Educational simulation only: no real money, financial advice, or promised returns.
 
+## Latest financial workspace design
+
+A redesigned welcome page, restrained green brand palette, readable financial summaries, simulated market snapshot strip, global stock search, and sortable market table with an optional card view. Inspired by established brokerage and financial research layouts, with original Sprout branding. Sign-in is available from the header; all market examples remain clearly labeled simulated.
+
+[Homepage preview](docs/previews/institutional-home-desktop.png) · [Dashboard preview](docs/previews/institutional-dashboard-desktop.png) · [Market table preview](docs/previews/institutional-market-desktop.png) · [Mobile preview](docs/previews/institutional-home-mobile.png)
+
 ## App preview
 
 **[Open the full gallery: 28 pictures and 4 videos](docs/previews/README.md)**

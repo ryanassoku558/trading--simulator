@@ -5,7 +5,10 @@ export default function Logo() {
       <span className="logo-symbol">
         <Sprout size={24} />
       </span>
-      sprout<span className="logo-period">.</span>
+      <span className="logo-wordmark">
+        sprout<span className="logo-period">.</span>
+        <small>TRADING</small>
+      </span>
     </span>
   );
 }
