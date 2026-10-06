@@ -20,7 +20,10 @@ export default function Preferences({
         <div>
           <span className="eyebrow">MAKE THIS SPACE YOURS</span>
           <h1>{page === "profile" ? "Your profile" : "Settings"}</h1>
-          <p>Your demo data is stored in this browser on this device.</p>
+          <p>
+            Guest data stays in this browser. Signed-in progress is saved to
+            your Sprout account.
+          </p>
         </div>
       </div>
       <section className="card settings-card">

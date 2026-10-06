@@ -81,23 +81,21 @@ npm run build
 npm start
 ```
 
-## Demo mode and environment variables
+## Accounts and Supabase
 
-**No environment variables or external credentials are required.** The app starts in local demo mode. It has no sign-up or password requirement and makes no market API calls. State is saved under `sprout-trading-v1` in this browser’s localStorage: onboarding, balance, holdings, trades, orders, watchlist, snapshots, and learning progress. Saved data is validated before loading, with a recovery action for corruption. Open tabs synchronize account changes. Clearing browser data removes the account. Different devices and browsers have separate accounts.
+The app supports both local guest practice and Supabase email accounts. **Save your progress** appears on the welcome page and dashboard. Create an account, confirm your email if required, and sign in. Supabase's client restores sessions across reloads and refreshes access tokens. Signed-in portfolio and learning progress are stored in `public.paper_accounts`, with owner-only row-level security. Guest data stays separate and is never automatically uploaded or overwritten when you sign in.
 
-There are no configured Supabase credentials in the supplied environment, so remote authentication and database synchronization are not enabled in this MVP. Do not assume adding keys will automatically switch storage backends.
+The project owner's public Supabase URL and publishable key are defaults in `lib/supabase/client.ts`; these browser credentials are not secret. Optional build-time overrides are `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Never use service-role or secret keys in browser configuration.
 
-### Connecting Supabase in a future integration
+Run `supabase/schema.sql` in the Supabase SQL Editor before using cloud accounts. In Authentication → URL Configuration, set Site URL to your deployed HTTPS origin and add it to Redirect URLs. Enable email authentication. Email delivery and confirmation depend on the project's Supabase settings.
 
-The replacement boundaries are `StateStorage` in `lib/storage/index.ts`, the account store in `lib/storage/useAccount.ts`, and the domain interfaces in `types/index.ts`. To add hosted accounts:
+Signed-in changes save asynchronously. A saving overlay blocks new actions until saving finishes. Failed saves revert to the prior state and show an error. Saves compare `updated_at` atomically so a stale tab/device cannot overwrite newer data; reload after a conflict. State is validated when loading. Cloud loading failure blocks trading until you retry or sign out. This is an educational simulator: the browser calculates trades and users can edit their own state, so it is not a trusted financial ledger.
 
-1. Add a Supabase browser/server client using `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (or the project’s publishable key). Keep service-role credentials server-side; never expose them in browser bundles.
-2. Implement sign-up/login/logout and bind persisted state to `auth.uid()`.
-3. Create profile, account, trade, order, and learning tables (or a versioned account-state document) with row-level security restricting reads/writes to the authenticated owner.
-4. Replace the synchronous browser storage with an asynchronous loading/saving adapter, preserving local fallback and clear synchronization errors.
-5. Move trade execution into an atomic database transaction/server operation before supporting shared account access. Test auth, reload persistence, and concurrent orders with real configured credentials.
+For guests, state uses `sprout-trading-v1` in localStorage and open tabs synchronize changes. Clearing browser data removes guest progress; guest accounts are separate across browsers/devices.
 
-No secrets are checked in, and no Supabase functionality is claimed as tested.
+## Deploying this version
+
+Import this repository into Vercel using the `sprout-supabase` branch, with framework **Next.js**, default `npm run build`, and no custom output-directory override. The previous directly uploaded demo will not change automatically unless its Vercel project is connected to this repository and branch or this branch is deployed separately.
 
 ## Market and trading behavior
 
@@ -144,4 +142,4 @@ npm run test:e2e
 
 Linux browser tests use npm-packaged Chromium, avoiding an additional browser download. On other operating systems, install Playwright Chromium with `npx playwright install chromium` first. `TEST_BASE_URL` can target a running production server on another port. The tests cover onboarding, a lesson/quiz, guided first trade, buy/sell math and validation, every main route, limit execution, history explanations, reload persistence, resets, mobile navigation, search, horizontal layout overflow, corrupt-data recovery, accessible dialog dismissal, and synchronization between open tabs. Screenshots are written to the system temporary directory.
 
-This is an educational local MVP. Hosted authentication, multi-device persistence, real market data, stop orders, dividends, fees, splits, tax calculations, and professional trading features remain future work.
+This is an educational local MVP. Real market data, stop orders, dividends, fees, splits, tax calculations, and professional trading features remain future work.

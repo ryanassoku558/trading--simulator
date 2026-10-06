@@ -31,6 +31,7 @@ import {
 import { useAccount } from "@/lib/storage/useAccount";
 import { lessons, achievements, earned } from "@/lib/education";
 import Logo from "./ui/Logo";
+import AuthPanel from "./AuthPanel";
 import Landing from "./screens/Landing";
 import Market from "./screens/Market";
 import StockDetail from "./screens/StockDetail";
@@ -53,7 +54,7 @@ const navigation = [
   { href: "/achievements", label: "Achievements", icon: Trophy },
 ];
 export default function Simulator() {
-  const { state, update: persist, error } = useAccount();
+  const { state, update: persist, error, user, pending, retry } = useAccount();
   const searchParams = useSearchParams();
   const path = usePathname(),
     router = useRouter();
@@ -70,11 +71,18 @@ export default function Simulator() {
     const timer = setTimeout(() => setToast(""), 4500);
     return () => clearTimeout(timer);
   }, [toast]);
-  function update(next: State) {
+  async function update(next: State) {
     const unlocked = state
       ? achievements.filter((a) => !earned(state, a.id) && earned(next, a.id))
       : [];
-    persist(next);
+    if (pending) return;
+    const saved = await persist(next);
+    if (!saved) {
+      setTrade(null);
+      setTradeQueue([]);
+      setToast("Changes were not saved. Please check the error message.");
+      return;
+    }
     if (unlocked.length)
       setToast(`${unlocked.map((a) => a.title).join(" · ")} unlocked!`);
   }
@@ -85,9 +93,13 @@ export default function Simulator() {
         {error ? (
           <>
             <p role="alert">{error}</p>
-            <button className="primary" onClick={() => update(initialState())}>
-              Reset local account
+            <button
+              className="primary"
+              onClick={() => (user ? retry() : update(initialState()))}
+            >
+              {user ? "Retry loading account" : "Reset local account"}
             </button>
+            <AuthPanel user={user} pending={pending} />
           </>
         ) : (
           <>
@@ -166,15 +178,25 @@ export default function Simulator() {
   }
   if (!state.profile.onboarded)
     return (
-      <Landing
-        state={state}
-        update={update}
-        onboarding={onboarding}
-        setOnboarding={setOnboarding}
-        experience={experience}
-        setExperience={setExperience}
-        onboard={onboard}
-      />
+      <>
+        <div className="landing-auth">
+          <AuthPanel user={user} pending={pending} />
+        </div>
+        <Landing
+          state={state}
+          update={update}
+          onboarding={onboarding}
+          setOnboarding={setOnboarding}
+          experience={experience}
+          setExperience={setExperience}
+          onboard={onboard}
+        />
+        {pending && (
+          <div className="sync-overlay" role="status">
+            Saving your progress…
+          </div>
+        )}
+      </>
     );
   return (
     <div className="app-shell">
@@ -259,7 +281,8 @@ export default function Simulator() {
           </div>
           <div className="topbar-right">
             <span className="demo-badge">
-              <span className="live-dot" /> Demo mode
+              <span className="live-dot" />{" "}
+              {user ? "Cloud account" : "Demo mode"}
             </span>
             <span className="streak">
               <Flame size={17} />
@@ -271,6 +294,7 @@ export default function Simulator() {
           </div>
         </header>
         <main className="content">
+          <AuthPanel user={user} pending={pending} />
           {error && (
             <div className="error" role="alert">
               {error}
@@ -359,6 +383,11 @@ export default function Simulator() {
           </footer>
         </main>
       </div>
+      {pending && (
+        <div className="sync-overlay" role="status">
+          Saving your progress…
+        </div>
+      )}
       {trade && (
         <ExplainTrade
           trade={trade}
@@ -408,7 +437,8 @@ export default function Simulator() {
             {reset === "simulator"
               ? "holdings, trades, and orders and restores $10,000 in cash"
               : "completed lessons, quiz attempts, XP, and streak"}{" "}
-            in this browser. This cannot be undone.
+            {user ? "in your cloud account" : "in this browser"}. This cannot be
+            undone.
           </p>
           <button
             className="primary full"

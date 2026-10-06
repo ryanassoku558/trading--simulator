@@ -1,0 +1,122 @@
+"use client";
+import { useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase/client";
+export default function AuthPanel({
+  user,
+  pending,
+}: {
+  user: User | null;
+  pending: boolean;
+}) {
+  const [email, setEmail] = useState(""),
+    [password, setPassword] = useState(""),
+    [message, setMessage] = useState(""),
+    [busy, setBusy] = useState(false);
+  async function authenticate(signup: boolean) {
+    setBusy(true);
+    setMessage("");
+    try {
+      const result = signup
+        ? await supabase.auth.signUp({
+            email,
+            password,
+            options: { emailRedirectTo: window.location.origin },
+          })
+        : await supabase.auth.signInWithPassword({ email, password });
+      if (result.error) throw result.error;
+      setPassword("");
+      setMessage(
+        signup && !result.data.session
+          ? "Check your email to confirm your account, then return here to sign in."
+          : "Signed in. Loading your saved progress…",
+      );
+    } catch (e) {
+      setMessage((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <section className="card auth-card" aria-label="Account sign-in">
+      <div>
+        <span className="eyebrow">YOUR PROGRESS, WHEREVER YOU GROW</span>
+        <h2>{user ? "Your Sprout account" : "Save your progress"}</h2>
+        <p>
+          {user
+            ? `Signed in as ${user.email}`
+            : "Create an account to save your portfolio and lessons across devices. Guest practice stays separate."}
+        </p>
+      </div>
+      {user ? (
+        <button
+          className="secondary"
+          disabled={busy || pending}
+          onClick={async () => {
+            setBusy(true);
+            const { error } = await supabase.auth.signOut();
+            setMessage(error ? error.message : "");
+            setBusy(false);
+          }}
+        >
+          Sign out
+        </button>
+      ) : (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void authenticate(false);
+          }}
+        >
+          <label>
+            Email
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              required
+              minLength={8}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <div className="auth-actions">
+            <button
+              className="primary"
+              disabled={busy || pending}
+              type="submit"
+            >
+              Sign in
+            </button>
+            <button
+              className="secondary"
+              disabled={busy || pending}
+              type="submit"
+              onClick={(e) => {
+                const form = e.currentTarget.form;
+                if (form?.reportValidity()) {
+                  e.preventDefault();
+                  void authenticate(true);
+                }
+              }}
+            >
+              Create account
+            </button>
+          </div>
+        </form>
+      )}
+      <p role="status" aria-live="polite">
+        {pending ? "Saving or loading your progress…" : message}
+      </p>
+    </section>
+  );
+}
