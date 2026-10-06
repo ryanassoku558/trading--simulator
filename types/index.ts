@@ -9,6 +9,14 @@ export interface OnboardingPreferences {
 }
 export interface Profile extends User, OnboardingPreferences {
   onboarded: boolean;
+  avatar?: "sprout" | "leaf" | "sun" | "moon";
+  handle?: string;
+  bio?: string;
+  country?: string;
+  timezone?: string;
+  joinedAt?: string;
+  achievementNotifications?: boolean;
+  hideProfileInsights?: boolean;
 }
 export interface StockPriceHistory {
   date: string;
@@ -71,6 +79,7 @@ export interface QuizAttempt {
   date: string;
 }
 export interface LearningProgress {
+  quizPasses?: number;
   completed: number[];
   attempts: QuizAttempt[];
   xp: number;

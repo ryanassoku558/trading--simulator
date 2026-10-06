@@ -143,7 +143,16 @@ test("signed-in state survives reload and sign-out restores separate guest state
   ).toBeVisible();
   await page.reload();
   await expect(page.getByText("Cloud account", { exact: true })).toBeVisible();
-  await panel.getByRole("button", { name: "Sign out", exact: true }).click();
+  await expect(panel).toHaveCount(0);
+  for(const path of ["/learn","/market","/tools","/profile"]){await page.goto(path);await expect(page.getByRole("heading").first()).toBeVisible();await expect(panel).toHaveCount(0);}
+  await page.getByLabel("Current password", {exact:true}).fill("test-password-123");
+  await page.getByLabel("New password (optional)", {exact:true}).fill("a-new-password-123");
+  const changed=page.waitForRequest(r=>r.url().includes("/auth/v1/user")&&r.method()==="PUT");
+  await page.getByRole("button",{name:"Update account"}).click();
+  expect((await changed).postDataJSON().password).toBe("a-new-password-123");
+  await expect(page.getByText("Your password was updated.")).toBeVisible();
+  await page.getByRole("button", { name: "Sign out", exact: true }).click();
+  await page.goto("/");
   await expect(
     panel.getByRole("button", { name: "Create account", exact: true }),
   ).toBeVisible();

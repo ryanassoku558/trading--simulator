@@ -43,6 +43,10 @@ export function isAccountState(value: unknown): value is State {
     typeof profile.onboarded !== "boolean"
   )
     return false;
+  for(const [key,max] of [['handle',24],['bio',240],['country',80],['timezone',80]] as const){if(profile[key]!==undefined&&(!text(profile[key])||profile[key].length>max))return false;}
+  if(profile.avatar!==undefined&&!['sprout','leaf','sun','moon'].includes(String(profile.avatar)))return false;
+  if(profile.joinedAt!==undefined&&!date(profile.joinedAt))return false;
+  for(const key of ['achievementNotifications','hideProfileInsights'])if(profile[key]!==undefined&&typeof profile[key]!=='boolean')return false;
   if (!nonnegative(value.cash) || !integer(value.tick)) return false;
   if (
     !every(
@@ -101,6 +105,7 @@ export function isAccountState(value: unknown): value is State {
     !value.snapshots.length
   )
     return false;
+  if(learning.quizPasses!==undefined&&!integer(learning.quizPasses))return false;
   if (!every(learning.completed, lesson) || !unique(learning.completed))
     return false;
   if (

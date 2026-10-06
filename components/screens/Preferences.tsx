@@ -1,5 +1,7 @@
 "use client";
 
+import ProfileOverview from "../ProfileOverview";
+import {useAccount} from "@/lib/storage/useAccount";
 import type { State } from "@/types";
 
 import { ShieldCheck } from "lucide-react";
@@ -11,9 +13,10 @@ export default function Preferences({
 }: {
   state: State;
   page: string;
-  update: (s: State) => void;
+  update: (s: State) => void | Promise<unknown>;
   setReset: (v: "simulator" | "learning") => void;
 }) {
+  const {user}=useAccount();
   return (
     <>
       <div className="page-heading">
@@ -26,7 +29,7 @@ export default function Preferences({
           </p>
         </div>
       </div>
-      <section className="card settings-card">
+      {page==="profile"?<ProfileOverview state={state} update={update}/>:<section className="card settings-card">
         <h2>
           {page === "profile"
             ? "A little about you"
@@ -77,13 +80,12 @@ export default function Preferences({
         </div>
         <div className="setting-row">
           <div>
-            <strong>Local demo account</strong>
+            <strong>{user?"Signed-in cloud account":"Local guest account"}</strong>
             <p>
-              No external credentials are configured. Your account works offline
-              after loading.
+              {user?"Your progress is saved to your Sprout account.":"Guest progress is saved in this browser."}
             </p>
           </div>
-          <span className="badge">DEMO</span>
+          <span className="badge">{user?"CLOUD":"GUEST"}</span>
         </div>
         {page === "settings" && (
           <>
@@ -113,7 +115,7 @@ export default function Preferences({
             </div>
           </>
         )}
-      </section>
+      </section>}
     </>
   );
 }

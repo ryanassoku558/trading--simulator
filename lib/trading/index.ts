@@ -8,6 +8,7 @@ export function initialState(): State {
       experience: "new",
       beginner: true,
       onboarded: false,
+      joinedAt: new Date().toISOString(),
     },
     cash: 10000,
     holdings: [],

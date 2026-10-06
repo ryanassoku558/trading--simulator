@@ -38,6 +38,7 @@ import {
   earned,
   beginnerLearningOrder,
 } from "@/lib/education";
+import ActivityTracker from "./ActivityTracker";
 import LoadingBrand from "./ui/LoadingBrand";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
@@ -110,7 +111,7 @@ export default function Simulator() {
       setToast("Changes were not saved. Please check the error message.");
       return false;
     }
-    if (unlocked.length)
+    if (unlocked.length && next.profile.achievementNotifications !== false)
       setToast(`${unlocked.map((a) => a.title).join(" · ")} unlocked!`);
     return true;
   }
@@ -216,7 +217,7 @@ export default function Simulator() {
           experience={experience}
           setExperience={setExperience}
           onboard={onboard}
-          accountPanel={<AuthPanel user={user} pending={pending} />}
+          accountPanel={user?null:<AuthPanel user={user} pending={pending} />}
         />
         {pending && (
           <div className="sync-overlay"><LoadingBrand compact message="Saving your progress…" /></div>
@@ -343,6 +344,7 @@ export default function Simulator() {
             </Link>
           </div>
         </header>
+        <ActivityTracker accountId={state.profile.id} page={page}/>
         <MarketTicker tick={state.tick} />
         <main className="content">
           {error && (
@@ -432,9 +434,9 @@ export default function Simulator() {
             />
           )}
           {page === "profile" && <ReferralCard/>}
-          <div id="account">
+          {!user&&<div id="account">
             <AuthPanel user={user} pending={pending} />
-          </div>
+          </div>}
           <footer className="app-footer">
             <span>
               <ShieldCheck size={14} /> Educational simulation only. This
