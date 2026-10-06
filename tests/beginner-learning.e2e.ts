@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 test("beginner path starts with day trading and continues to ownership without a premature trade prompt", async ({
   page,
 }) => {

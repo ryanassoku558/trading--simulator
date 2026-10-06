@@ -21,6 +21,7 @@ import {
   Search,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
+import { useMarketClock } from "@/lib/market/useMarketClock";
 import { stocks, quote } from "@/lib/market";
 import {
   initialState,
@@ -61,7 +62,14 @@ const navigation = [
   { href: "/achievements", label: "Achievements", icon: Trophy },
 ];
 export default function Simulator() {
-  const { state, update: persist, error, user, pending, retry } = useAccount();
+  const { state: savedState, update: persist, error, user, pending, retry } = useAccount();
+  const liveTick = useMarketClock();
+  const state = savedState ? {...savedState, tick: Math.max(savedState.tick, liveTick)} : null;
+  useEffect(() => {
+    if (!savedState || pending || error || liveTick <= savedState.tick || !savedState.orders.some(o => o.status === "pending")) return;
+    const result = advanceMarket(savedState, liveTick);
+    if (result.state.orders.some((o, i) => o.status !== savedState.orders[i].status)) void persist(result.state);
+  }, [savedState, liveTick, pending, error, persist]);
   const searchParams = useSearchParams();
   const path = usePathname(),
     router = useRouter();
@@ -376,7 +384,7 @@ export default function Simulator() {
           {page === "market" && ticker && !current && (
             <Empty
               title="Stock not found"
-              text="This simulator supports ten seeded stocks and funds."
+              text="Search the US stock and ETF catalog for an available symbol."
               href="/market"
               label="Return to market"
             />

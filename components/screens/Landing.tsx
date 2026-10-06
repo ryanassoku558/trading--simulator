@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { lessons } from "@/lib/education";
-import { candles, quote, money } from "@/lib/market";
+import { candles, quote, money, stocks } from "@/lib/market";
 import CandlestickChart from "../CandlestickChart";
 import type { State, Experience } from "@/types";
 import {
@@ -107,7 +107,7 @@ export default function Landing({
               <span>Lessons & quizzes</span>
             </div>
             <div>
-              <strong>10</strong>
+              <strong>{stocks.length.toLocaleString()}</strong>
               <span>Stocks & funds to explore</span>
             </div>
           </div>

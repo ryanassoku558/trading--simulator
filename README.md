@@ -65,7 +65,7 @@ You can view the screenshots and moving previews on GitHub without downloading t
 - First-run landing page and experience-based onboarding; automatic Beginner Mode for new learners.
 - Dashboard with account value, cash, invested value, daily change, total return, watchlist, recent trades, learning progress, and market examples.
 - All 54 lessons across eleven levels, examples, explanations, quizzes, accuracy, learning streak, XP, level-completion bonuses, and six achievements.
-- Searchable market with ten seeded stocks/funds, company descriptions, line/candlestick charts, five timeframes, and watchlist controls. Candles show simulated open/high/low/close prices with hover and keyboard-accessible period inspection.
+- Searchable, paginated market with 11,787 US-listed securities (5,754 ETFs), company descriptions, line/candlestick charts, five timeframes, and watchlist controls. Candles show simulated open/high/low/close prices with hover and keyboard-accessible period inspection.
 - A five-lesson Candlestick Practice level covers bodies/wicks, colors/gaps, doji, hammers, and engulfing patterns with visual examples and quizzes. Stock charts link directly to the first lesson.
 - Whole-share market buys and sells, weighted average cost, realized/unrealized gains, friendly validation, and Beginner Mode confirmations.
 - Pending limit orders, cancellation, and deterministic market advancement. Every fill opens **Explain My Trade**, including 5%/10% price and dollar scenarios. History can reopen explanations.
@@ -106,11 +106,11 @@ Import this repository into Vercel using the `sprout-supabase` branch, with fram
 
 ## Market and trading behavior
 
-`lib/market/index.ts` owns ten realistic seeded base quotes and deterministic chart samples. These are **illustrations, not actual historical or live prices**. The selected timeframe controls the scale of simulated price variation. `Advance market` increments a persisted tick and changes quotes by a bounded deterministic formula; prices never change randomly during rendering. Market overview numbers are static seeded examples.
+`lib/market/index.ts` provides deterministic simulated prices on a shared two-second clock, 24/7. LIVE charts show 30-second candles over 20 minutes; longer ranges are available. Prices and history are entirely simulated, never a real market feed. Baselines are rough public snapshot prices or illustrative fallback values; missing company statistics are marked unavailable. Market overview numbers are static seeded examples.
 
 Market orders fill immediately at the current quote, without fees or slippage. Whole shares only; no margin, shorting, or fractional shares. Prices and cash transactions are rounded to cents. Weighted average cost retains precision internally and is formatted to cents in the UI.
 
-Limits remain pending until **Advance market** makes the quote satisfy the buy-at-or-below/sell-at-or-above condition. Even a currently marketable limit waits for this manual step. No cash or shares are reserved. At a trigger, resources are checked again; insufficient-resource orders cancel. Limits far from the bounded seeded prices may never fill. Orders are evaluated newest first; multiple fills each receive their own explanation dialog. Stop orders are taught but not implemented.
+Pending limits are evaluated automatically on new clock ticks while the app is open, using the buy-at-or-below/sell-at-or-above condition. Advance market remains available for an extra practice step. Orders do not execute on a server while the app is closed. No cash or shares are reserved. At a trigger, resources are checked again; insufficient-resource orders cancel. Limits far from the bounded seeded prices may never fill. Orders are evaluated newest first; manual fills receive explanation dialogs. Stop orders are taught but not implemented.
 
 Portfolio value equals cash plus current holdings. Total return is measured against the original $10,000. Today’s gain/loss estimates current holdings’ movement from the simulated previous daily close, rather than an exact intraday account ledger. Sell explanations show realized profit/loss and clearly label future scenarios as hypothetical.
 
@@ -156,3 +156,7 @@ This is an educational local MVP. Real market data, stop orders, dividends, fees
 The recommended beginner path covers all 54 lessons, starting with day trading, ownership, quotes, orders, and risk before charts. The 24 appended lessons preserve existing IDs and completion data. They cover market hours, order states, costs, liquidity/volatility, dollar losses, stops/gaps, cash/margin accounts, settlement, planning, emotions, reviews, simulation limits, news/earnings, halts/outages, leverage/short selling, taxes/records, and misleading claims. Five practice labs provide quote reading, an adjustable loss calculation, order comparison, a temporary trade-plan worksheet, and process-versus-result review. Worksheets place no orders. Account-rule lessons identify US examples, the content update date, and official references; users must verify current local/broker requirements. Existing XP and completions remain valid.
 
 [Beginner path preview](docs/previews/beginner-learning-path.png) · [Loss exercise preview](docs/previews/beginner-loss-exercise.png)
+
+### Symbol catalog sources
+
+Catalog snapshot: Nasdaq directory (2026-10-01), other US exchange listings (2026-10-06), excluding test issues, warrants, rights, units, and debt securities. Sources: [datasets/nasdaq-listings](https://github.com/datasets/nasdaq-listings) and [datasets/nyse-other-listings](https://github.com/datasets/nyse-other-listings), public-domain PDDL datasets. Rough stock price seeds: [rreichel3/US-Stock-Symbols](https://github.com/rreichel3/US-Stock-Symbols), 2026-10-06 snapshot. This covers US exchange-listed stocks and ETFs, not worldwide exchanges or OTC stocks. New listings require refreshing the snapshot.

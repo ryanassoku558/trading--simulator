@@ -152,8 +152,8 @@ export function placeLimit(
     ],
   };
 }
-export function advanceMarket(s: State): { state: State; filled: Trade[] } {
-  let next = { ...s, tick: s.tick + 1 };
+export function advanceMarket(s: State, tick = s.tick + 1): { state: State; filled: Trade[] } {
+  let next = { ...s, tick };
   const filled: Trade[] = [];
   for (const order of next.orders.filter((o) => o.status === "pending")) {
     const price = quote(order.ticker, next.tick).price;

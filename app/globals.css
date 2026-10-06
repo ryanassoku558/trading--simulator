@@ -3456,3 +3456,5 @@ td {
     white-space: normal;
   }
 }
+
+.market-pagination { display:flex; align-items:center; justify-content:center; gap:20px; margin:24px 0; }

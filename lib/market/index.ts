@@ -1,5 +1,6 @@
 import type { Stock, StockPriceHistory, PriceCandle } from "@/types";
-export const stocks: Stock[] = [
+import catalog from "./data/us-securities.json";
+const featured: Stock[] = [
   [
     "AAPL",
     "Apple",
@@ -116,79 +117,52 @@ export const money = (value: number) =>
   );
 export const round = (n: number) =>
   Math.round((n + Number.EPSILON) * 100) / 100;
+const featuredMap = new Map(featured.map(s => [s.ticker, s]));
+export const stocks: Stock[] = catalog.map(([ticker, company, type, price]) => ({
+  ticker: String(ticker), company: String(company), price: Number(price), change: 0,
+  cap: "Unavailable", volume: "Unavailable", color: "#147448",
+  description: `${company}. ${type === "ETF" ? "An exchange-traded fund." : "A US-listed company."}`,
+  ...featuredMap.get(String(ticker)), assetType: type === "ETF" ? "ETF" : "Stock",
+}));
+const stockMap = new Map(stocks.map(s => [s.ticker, s]));
+export const marketEpoch = Date.UTC(2026, 9, 6);
+export function clockTick(now = Date.now()) { return Math.max(0, Math.floor((now - marketEpoch) / 2000)); }
+const seeds = new Map(stocks.map(s => [s.ticker, Array.from(s.ticker).reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7) % 1000]));
+function priceAt(stock: Stock, tick: number) {
+  const seed = seeds.get(stock.ticker)!;
+  const motion = (t: number) => .025 * Math.sin(t * .019 + seed) + .012 * Math.sin(t * .061 + seed * .7) + .004 * Math.sin(t * .31 + seed * 1.1);
+  return Math.max(.01, round(stock.price * (1 + motion(tick) - motion(0))));
+}
+let cachedTick = -1;
+const quoteCache = new Map<string, Stock>();
 export function quote(ticker: string, tick = 0): Stock {
-  const stock = stocks.find((s) => s.ticker === ticker);
+  if (tick !== cachedTick) {quoteCache.clear(); cachedTick = tick;}
+  const cached = quoteCache.get(ticker);
+  if (cached) return cached;
+  const stock = stockMap.get(ticker);
   if (!stock) throw new Error("Choose a valid stock.");
-  return {
-    ...stock,
-    price: round(
-      stock.price *
-        (1 +
-          0.006 *
-            Math.sin(tick * 0.9 + stocks.indexOf(stock)) *
-            (tick ? 1 : 0)),
-    ),
-  };
+  const price = priceAt(stock, tick);
+  const result = {...stock, price, change: round((price / priceAt(stock, tick - 43200) - 1) * 100)};
+  quoteCache.set(ticker, result);
+  return result;
 }
-export function history(
-  ticker: string,
-  range = "1M",
-  tick = 0,
-): StockPriceHistory[] {
-  const s = quote(ticker, tick);
-  const scale = (
-    { "1D": 0.007, "1W": 0.02, "1M": 0.045, "3M": 0.09, "1Y": 0.18 } as Record<
-      string,
-      number
-    >
-  )[range];
-  const seed = stocks.findIndex((s) => s.ticker === ticker) + 1;
-  return Array.from({ length: 40 }, (_, i) => ({
-    date: `${i + 1}`,
-    price: round(
-      s.price *
-        (1 +
-          scale *
-            (Math.sin(i * 0.53 + seed) * 0.28 +
-              ((i - 39) / 39) * (s.change > 0 ? 0.7 : -0.7) -
-              Math.sin(39 * 0.53 + seed) * 0.28)),
-    ),
-  }));
+function windows(range: string, tick: number) {
+  const width = ({LIVE: 15, "1D": 1080, "1W": 7560, "1M": 32400, "3M": 97200, "1Y": 394200} as Record<string, number>)[range] ?? 32400;
+  const current = Math.floor(tick / width) * width;
+  return Array.from({length: 40}, (_, i) => ({start: current - (39-i)*width, end: i === 39 ? tick : current - (38-i)*width}));
 }
-/** Illustrative OHLC bars with closes matching the existing simulated history. */
+export function history(ticker: string, range = "1M", tick = 0): StockPriceHistory[] {
+  const stock = stockMap.get(ticker);
+  if (!stock) throw new Error("Choose a valid stock.");
+  return windows(range, tick).map((w, i) => ({date: String(i+1), price: priceAt(stock, w.end)}));
+}
 export function candles(ticker: string, range = "1M", tick = 0): PriceCandle[] {
-  const points = history(ticker, range, tick);
-  const seed = stocks.findIndex((stock) => stock.ticker === ticker) + 1;
-  const volatility =
-    (
-      {
-        "1D": 0.001,
-        "1W": 0.002,
-        "1M": 0.004,
-        "3M": 0.008,
-        "1Y": 0.015,
-      } as Record<string, number>
-    )[range] ?? 0.004;
-  return points.map((point, index) => {
-    const open = index
-      ? points[index - 1].price
-      : round(point.price * (1 + volatility * Math.sin(seed)));
-    const wick =
-      point.price *
-      volatility *
-      (0.35 + Math.abs(Math.sin(index * 1.7 + seed + tick * 0.3)));
-    return {
-      period: point.date,
-      open,
-      close: point.price,
-      high: round(Math.max(open, point.price) + wick),
-      low: round(Math.max(0.01, Math.min(open, point.price) - wick * 0.8)),
-    };
+  const stock = stockMap.get(ticker);
+  if (!stock) throw new Error("Choose a valid stock.");
+  return windows(range, tick).map((w, i) => {
+    const samples = Array.from({length: 17}, (_, j) => priceAt(stock, w.start + (w.end-w.start)*j/16));
+    return {period: String(i+1), open: samples[0], close: samples[16], high: Math.max(...samples), low: Math.min(...samples)};
   });
 }
-export interface MarketDataProvider {
-  quote: typeof quote;
-  history: typeof history;
-  candles: typeof candles;
-}
-export const simulatedMarket: MarketDataProvider = { quote, history, candles };
+export interface MarketDataProvider { quote: typeof quote; history: typeof history; candles: typeof candles; }
+export const simulatedMarket: MarketDataProvider = {quote, history, candles};

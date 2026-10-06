@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 test("first-run learning, trade, persistence, portfolio, orders and resets", async ({
   page,
 }) => {
@@ -154,7 +154,7 @@ test("mobile navigation, market search and layout", async ({ page }) => {
     ).toBe(true);
   }
   await page.goto("/market");
-  await page.getByRole("textbox", { name: "Search stocks" }).fill("apple");
+  await page.getByRole("textbox", { name: "Search stocks" }).fill("AAPL");
   await expect(page.locator(".market-card")).toHaveCount(1);
   await page.getByRole("textbox", { name: "Search stocks" }).fill("unlisted");
   await expect(

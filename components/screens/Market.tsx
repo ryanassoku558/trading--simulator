@@ -20,17 +20,23 @@ export default function Market({
   const [search, setSearch] = useState(params.get("q") || "");
   const [view, setView] = useState<"table" | "cards">("table");
   const [sort, setSort] = useState("symbol");
+  const [asset, setAsset] = useState("All");
+  const [page, setPage] = useState(0);
+  const exact = stocks.find(s => s.ticker === search.trim().toUpperCase());
   const filtered = stocks
     .filter((s) =>
-      `${s.ticker} ${s.company}`.toLowerCase().includes(search.toLowerCase()),
+      (asset === "All" || s.assetType === asset) && (exact ? s.ticker === exact.ticker : `${s.ticker} ${s.company}`.toLowerCase().includes(search.toLowerCase())),
     )
     .sort((a, b) =>
       sort === "price"
         ? quote(b.ticker, state.tick).price - quote(a.ticker, state.tick).price
         : sort === "change"
-          ? b.change - a.change
+          ? quote(b.ticker, state.tick).change - quote(a.ticker, state.tick).change
           : a.ticker.localeCompare(b.ticker),
     );
+  const pages = Math.max(1, Math.ceil(filtered.length / 50));
+  const currentPage = Math.min(page, pages - 1);
+  const visible = filtered.slice(currentPage * 50, currentPage * 50 + 50);
   return (
     <>
       <div className="page-heading">
@@ -54,10 +60,13 @@ export default function Market({
             aria-label="Search stocks"
             placeholder="Search by company or ticker"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {setSearch(e.target.value); setPage(0);}}
           />
         </label>
         <div className="market-controls">
+          <select aria-label="Asset type" value={asset} onChange={e => {setAsset(e.target.value); setPage(0);}}>
+            <option>All</option><option>Stock</option><option>ETF</option>
+          </select>
           <select
             aria-label="Sort market"
             value={sort}
@@ -91,7 +100,7 @@ export default function Market({
       </div>
       <div className="market-results-label">
         <span>{filtered.length} securities</span>
-        <span>SIMULATED QUOTES · TICK {state.tick}</span>
+        <span>SIMULATED · UPDATES EVERY 2 SECONDS · 24/7</span>
       </div>
       {view === "table" ? (
         <section className="card market-table-card">
@@ -101,14 +110,14 @@ export default function Market({
                 <tr>
                   <th>Security</th>
                   <th>Price</th>
-                  <th>Daily change</th>
+                  <th>24h simulated change</th>
                   <th>1M trend</th>
                   <th>Market cap</th>
                   <th>Daily volume</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((s) => {
+                {visible.map((s) => {
                   const q = quote(s.ticker, state.tick),
                     points = history(s.ticker, "1M", state.tick),
                     min = Math.min(...points.map((p) => p.price)),
@@ -123,7 +132,7 @@ export default function Market({
                           <StockBadge ticker={s.ticker} />
                           <span>
                             <strong>{s.ticker}</strong>
-                            <small>{s.company}</small>
+                            <small>{s.assetType} · {s.company}</small>
                           </span>
                         </Link>
                       </td>
@@ -162,7 +171,7 @@ export default function Market({
         </section>
       ) : (
         <div className="market-grid">
-          {filtered.map((s) => {
+          {visible.map((s) => {
             const q = quote(s.ticker, state.tick);
             return (
               <Link
@@ -190,6 +199,11 @@ export default function Market({
           })}
         </div>
       )}
+      <div className="market-pagination">
+        <button className="secondary" disabled={currentPage === 0} onClick={() => setPage(currentPage-1)}>Previous</button>
+        <span>Page {currentPage+1} of {pages.toLocaleString()}</span>
+        <button className="secondary" disabled={currentPage+1 === pages} onClick={() => setPage(currentPage+1)}>Next</button>
+      </div>
       {!stocks.some((s) =>
         `${s.ticker} ${s.company}`.toLowerCase().includes(search.toLowerCase()),
       ) && (

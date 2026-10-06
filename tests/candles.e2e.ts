@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 test("candlestick toggle, OHLC inspection and timeframe changes work on mobile", async ({
   page,
 }) => {
@@ -11,6 +11,8 @@ test("candlestick toggle, OHLC inspection and timeframe changes work on mobile",
     page.getByRole("img", { name: /Simulated candlestick/ }),
   ).toBeVisible();
   await expect(page.locator(".candle-values")).toContainText("Period 40");
+  await page.getByRole("slider", { name: "Candle period" }).focus();
+  await page.getByRole("slider", { name: "Candle period" }).press("Home");
   const values = await page.locator(".candle-values").textContent();
   await page.getByRole("button", { name: "1Y", exact: true }).click();
   await expect(page.locator(".candle-values")).not.toHaveText(values!);

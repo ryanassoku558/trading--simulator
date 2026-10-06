@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 test("sign-up is visible on welcome and explains email confirmation", async ({
   page,
 }) => {

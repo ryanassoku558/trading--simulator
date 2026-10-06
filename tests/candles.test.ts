@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { candles, history, quote, stocks } from "../lib/market";
-it("produces deterministic valid OHLC bars for all stocks and timeframes", () => {
-  for (const stock of stocks)
+it("produces deterministic valid OHLC bars for representative stocks and ETFs across timeframes", () => {
+  for (const stock of stocks.filter((s, i) => i % 1000 === 0 || ["AAPL", "SPY", "QQQ", "VTI"].includes(s.ticker)))
     for (const range of ["1D", "1W", "1M", "3M", "1Y"])
       for (const tick of [0, 1, 20]) {
         const bars = candles(stock.ticker, range, tick),

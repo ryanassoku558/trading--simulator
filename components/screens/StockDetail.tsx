@@ -28,7 +28,7 @@ export default function StockDetail({
   onTrade: (t: Trade) => void;
   guided: boolean;
 }) {
-  const [range, setRange] = useState("1M");
+  const [range, setRange] = useState("LIVE");
   const [chartType, setChartType] = useState<"line" | "candles">("line");
   return (
     <>
@@ -36,7 +36,7 @@ export default function StockDetail({
         <div className="stock-detail-heading">
           <StockBadge ticker={ticker} />
           <div>
-            <span className="eyebrow">{ticker} · SIMULATED MARKET DATA</span>
+            <span className="eyebrow">{ticker} · SIMULATED · 24/7 · UPDATES EVERY 2 SECONDS</span>
             <h1>{current.company}</h1>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function StockDetail({
             <div className="stock-detail-price">{money(current.price)}</div>
             <p>
               <Delta value={current.change} percent />{" "}
-              <span className="muted">simulated today</span>
+              <span className="muted">simulated last 24 hours</span>
             </p>
             <div
               className="chart-type-buttons"
@@ -98,7 +98,7 @@ export default function StockDetail({
               </p>
             )}
             <div className="range-buttons">
-              {["1D", "1W", "1M", "3M", "1Y"].map((r) => (
+              {["LIVE", "1D", "1W", "1M", "3M", "1Y"].map((r) => (
                 <button
                   className={r === range ? "active" : ""}
                   onClick={() => setRange(r)}
@@ -109,8 +109,7 @@ export default function StockDetail({
               ))}
             </div>
             <p className="small">
-              Deterministic illustrative history. Not actual historical market
-              prices.
+              LIVE shows 30-second candles across 20 minutes. Prices move automatically 24/7. All prices and history are simulated.
             </p>
           </section>
           <section className="card about-company">
@@ -119,8 +118,8 @@ export default function StockDetail({
             <div className="tip">
               <Lightbulb size={20} />
               <p>
-                {ticker === "SPY"
-                  ? "Buying SPY means owning a share of a fund that holds many companies."
+                {current.assetType === "ETF"
+                  ? "Buying an ETF means owning a share of a fund, which may hold stocks, bonds, or other assets."
                   : `Buying one share of ${current.company} means owning a tiny piece of ${current.company}.`}
               </p>
             </div>

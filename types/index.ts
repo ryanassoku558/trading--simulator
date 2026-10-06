@@ -15,6 +15,7 @@ export interface StockPriceHistory {
   price: number;
 }
 export interface Stock {
+  assetType?: "Stock" | "ETF";
   ticker: string;
   company: string;
   price: number;
