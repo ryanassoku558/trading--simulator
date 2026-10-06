@@ -1,6 +1,6 @@
 import {test,expect} from './fixtures';
 test('homepage chart slider, calculators, roadmap, and strategy links work',async({page})=>{
- await page.goto('/');await expect(page.getByRole('heading',{name:'Learn Trading the Simple Way'})).toBeVisible();
+ await page.goto('/');await expect(page.getByRole('heading',{name:'Grow Your Trading Skills With Confidence'})).toBeVisible();
  const slider=page.getByRole('slider',{name:'Before and after chart outcome'});await slider.fill('24');await expect(page.getByText('9 periods later')).toBeVisible();
  await page.getByRole('spinbutton',{name:'Calculator practice budget'}).fill('1000');await page.getByRole('slider',{name:'Risk percentage'}).fill('2');await expect(page.locator('.tool-number').first()).toContainText('10');
  await page.getByRole('button',{name:'Continue Indicators'}).click();await expect(page.getByRole('dialog')).toContainText('Moving averages: smoothing the noise');await page.getByRole('button',{name:'Close dialog'}).click();

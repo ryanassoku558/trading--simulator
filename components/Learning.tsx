@@ -1,31 +1,25 @@
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import LearningDiscovery from "./LearningDiscovery";
 import Sprouty from "./Sprouty";
 import {LearningRoadmap} from "./VisualLearning";
 import ChartPractice from "./ChartPractice";
 import TutorialLibrary from "./TutorialLibrary";
-import TutorialVideo from "./TutorialVideo";
-import tutorials from "@/lib/education/tutorials.json";
-import CandleLessonExample from "./CandleLessonExample";
-import BeginnerExercise from "./BeginnerExercise";
-import { BookOpen, Check, ArrowRight, Lightbulb, Search, Trophy } from "lucide-react";
+import LessonPresentation from "./LessonPresentation";
+import { BookOpen, Check, ArrowRight, Search, Trophy } from "lucide-react";
 import {
   lessons,
   levels,
-  answerLesson,
   beginnerLearningOrder,
-  accountRulesMetadata,
 } from "@/lib/education";
 import type { State, Lesson } from "@/types";
-import Dialog from "./Dialog";
 export default function Learning({
   state,
   update,
-  firstTrade,
 }: {
   state: State;
-  update: (s: State) => void;
+  update: (s: State) => void | Promise<unknown>;
   firstTrade: () => void;
 }) {
   const [topic,setTopic]=useState("All topics"),[search,setSearch]=useState("");
@@ -35,23 +29,14 @@ export default function Learning({
   const [active, setActive] = useState<Lesson | null>(
       () => lessons.find((lesson) => lesson.id === requestedLesson) || null,
     ),
-    [answer, setAnswer] = useState<number | null>(null),
-    [feedback, setFeedback] = useState(""),
     [followingPath, setFollowingPath] = useState(
       Boolean(requestedLesson && state.profile.experience === "new"),
     );
-  function open(l: Lesson, path = false) {
+  const [moduleMode,setModuleMode]=useState(false);
+  function open(l: Lesson, path = false, module = false) {
+    setModuleMode(module);
     setFollowingPath(path);
     setActive(l);
-    setAnswer(null);
-    setFeedback("");
-  }
-  function check() {
-    if (active && answer !== null) {
-      const next = answerLesson(state, active.id, answer);
-      update(next);
-      setFeedback(answer === active.quiz.answer ? "correct" : "incorrect");
-    }
   }
   return (
     <>
@@ -102,6 +87,7 @@ export default function Learning({
       <LearningRoadmap state={state} onNavigate={url=>{const id=Number(new URL(url,"https://sprout.local").searchParams.get("lesson"));const lesson=lessons.find(l=>l.id===id);if(lesson)open(lesson);}}/>
       <TutorialLibrary />
       <ChartPractice/>
+      <LearningDiscovery/>
       <section className="card beginner-path">
         <div>
           <span className="eyebrow">
@@ -151,6 +137,7 @@ export default function Learning({
             </span>
           </div>
           <div className="module-reward"><Trophy size={16}/>{lessons.filter(l=>l.level===i+1).every(l=>state.learning.completed.includes(l.id))?"Module complete · completion XP earned":"Complete this module to earn +100 XP"}{i>=12&&" and a mastery badge"}</div>
+          <button className="secondary" onClick={()=>open(lessons.find(l=>l.level===i+1)!,false,true)}>Start module presentation & quiz</button>
           <div className="lesson-list">
             {lessons
               .filter((l) => l.level === i + 1 && matches(l))
@@ -175,7 +162,7 @@ export default function Learning({
                   </span>
                   <span>
                     {l.title}
-                    <small>3 min · +35 XP on first completion</small>
+                    <small>Presentation + quiz · +35 XP on first completion</small>
                   </span>
                   <ArrowRight size={17} />
                 </button>
@@ -183,116 +170,10 @@ export default function Learning({
           </div>
         </section>
       ))}
-      {active && (
-        <Dialog title={active.title} onClose={() => setActive(null)}>
-          <div className="eyebrow">LEVEL {active.level} · BITE-SIZE LESSON</div>
-          {tutorials.find(t=>t.lessonIds.includes(active.id)) && <TutorialVideo key={active.id} slug={tutorials.find(t=>t.lessonIds.includes(active.id))!.slug}/>}
-          <p className="lesson-copy">{active.explanation}</p>
-          <div className="example">
-            <span className="eyebrow">LET’S MAKE IT REAL</span>
-            <p>{active.example}</p>
-            <CandleLessonExample lessonId={active.id} />
-            <BeginnerExercise key={active.id} lessonId={active.id} />
-          </div>
-          <div className="tip">
-            <Lightbulb size={19} />
-            <div>
-              <strong>Why this matters</strong>
-              <p>{active.why}</p>
-            </div>
-          </div>
-          {active.level>=13&&<aside className="lesson-sources"><strong>Continue with official guidance</strong><p>Educational examples are general. Account, tax, insurance, and product rules vary by location and circumstances; check current official information before acting.</p><a href={active.level===19||active.level===20?"https://www.irs.gov/":active.level===35?"https://www.sec.gov/edgar/search/":"https://www.investor.gov/"} target="_blank" rel="noreferrer">{active.level===19||active.level===20?"IRS tax and retirement guidance":active.level===35?"SEC EDGAR public filings":"Investor.gov education and resources"} <ArrowRight size={14}/></a></aside>}
-          {[32, 39, 40, 48].includes(active.id) && (
-            <aside className="lesson-sources">
-              <strong>Scope and current requirements</strong>
-              <p>{accountRulesMetadata.scope}</p>
-              <small>
-                Content updated {accountRulesMetadata.updated}; verify rules
-                with official sources and your broker.
-              </small>
-              <div>
-                {accountRulesMetadata.sources.map((source) => (
-                  <a
-                    key={source.url}
-                    href={source.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {source.label} ↗
-                  </a>
-                ))}
-              </div>
-            </aside>
-          )}
-          <h3>Quick knowledge check</h3>
-          <p>{active.quiz.question}</p>
-          <div className="quiz-options">
-            {active.quiz.options.map((o, i) => (
-              <button
-                className={answer === i ? "chosen" : ""}
-                key={o}
-                disabled={feedback === "correct"}
-                onClick={() => {
-                  setAnswer(i);
-                  setFeedback("");
-                }}
-              >
-                <span>{String.fromCharCode(65 + i)}</span>
-                {o}
-              </button>
-            ))}
-          </div>
-          {feedback && <Sprouty compact completed={state.learning.completed.length} title={feedback==="correct"?"Nice work. You’ve understood this idea.":"Let’s look at the reasoning together."} message={active.quiz.explanation}/>}
-          {feedback && (
-            <p
-              role="status"
-              className={feedback === "correct" ? "success" : "error"}
-            >
-              {feedback === "correct"
-                ? "Correct! +35 XP on your first completion."
-                : "Not quite. Try again."}{" "}
-              {active.quiz.explanation}
-            </p>
-          )}
-          {feedback === "correct" ? (
-            <button
-              className="primary full"
-              onClick={() => {
-                if (
-                  !followingPath &&
-                  active.id === 1 &&
-                  state.trades.length === 0
-                ) {
-                  setActive(null);
-                  firstTrade();
-                } else {
-                  const nextId = followingPath
-                    ? beginnerLearningOrder[
-                        beginnerLearningOrder.indexOf(active.id) + 1
-                      ]
-                    : active.id + 1;
-                  const next = lessons.find((l) => l.id === nextId);
-                  if (next) open(next, followingPath);
-                  else setActive(null);
-                }
-              }}
-            >
-              {!followingPath && active.id === 1 && state.trades.length === 0
-                ? "Make your first practice trade"
-                : "Continue"}{" "}
-              <ArrowRight size={16} />
-            </button>
-          ) : (
-            <button
-              className="primary full"
-              disabled={answer === null}
-              onClick={check}
-            >
-              Check answer
-            </button>
-          )}
-        </Dialog>
-      )}
+      {active && <LessonPresentation key={`${active.id}-${moduleMode}`} group={moduleMode?lessons.filter(l=>l.level===active.level):[active]} moduleMode={moduleMode} state={state} update={update} onClose={()=>setActive(null)} onContinue={module=>{
+        const next=module?lessons.find(l=>l.level===active.level+1):lessons.find(l=>l.id===(followingPath?beginnerLearningOrder[beginnerLearningOrder.indexOf(active.id)+1]:active.id+1));
+        if(next)open(next,followingPath,module);else setActive(null);
+      }}/>}
     </>
   );
 }

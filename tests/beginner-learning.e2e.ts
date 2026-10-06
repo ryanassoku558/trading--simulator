@@ -10,6 +10,9 @@ test("beginner path starts with day trading and continues to ownership without a
   await expect(
     dialog.getByRole("heading", { name: "What is day trading?" }),
   ).toBeVisible();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
+  await dialog.getByRole("button", {name:"Start quiz"}).click();
   await dialog
     .getByRole("button", {
       name: "B No, it spans different trading days",
@@ -17,10 +20,14 @@ test("beginner path starts with day trading and continues to ownership without a
     })
     .click();
   await dialog.getByRole("button", { name: "Check answer" }).click();
-  await dialog.getByRole("button", { name: "Continue", exact: true }).click();
+  await dialog.getByRole("button", {name:"Finish quiz"}).click();
+  await dialog.getByRole("button", { name: "Next lesson", exact: true }).click();
   await expect(
     dialog.getByRole("heading", { name: "What is a stock?" }),
   ).toBeVisible();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
+  await dialog.getByRole("button", {name:"Start quiz"}).click();
   await dialog
     .getByRole("button", { name: "B A small piece of a company", exact: true })
     .click();
@@ -28,7 +35,8 @@ test("beginner path starts with day trading and continues to ownership without a
   await expect(
     dialog.getByRole("button", { name: "Make your first practice trade" }),
   ).toHaveCount(0);
-  await dialog.getByRole("button", { name: "Continue", exact: true }).click();
+  await dialog.getByRole("button", {name:"Finish quiz"}).click();
+  await dialog.getByRole("button", { name: "Next lesson", exact: true }).click();
   await expect(
     dialog.getByRole("heading", { name: "What does buying a stock mean?" }),
   ).toBeVisible();
@@ -45,11 +53,13 @@ test("all five beginner labs work and account-rule references are visible on mob
     name: "Interactive practice exercise",
   });
   await page.goto("/learn?lesson=50");
+  await page.getByRole("button", {name:"Next slide"}).click();
   await exercise
     .getByRole("button", { name: "Show spread calculation" })
     .click();
   await expect(exercise.getByRole("status")).toContainText("$0.20 spread");
   await page.goto("/learn?lesson=51");
+  await page.getByRole("button", {name:"Next slide"}).click();
   await exercise.getByLabel("Practice share count").fill("20");
   await expect(exercise.getByRole("status")).toContainText("$100.00 loss");
   await exercise.getByLabel("Practice share count").fill("0");
@@ -57,11 +67,13 @@ test("all five beginner labs work and account-rule references are visible on mob
     "Enter a whole number",
   );
   await page.goto("/learn?lesson=52");
+  await page.getByRole("button", {name:"Next slide"}).click();
   await exercise
     .getByRole("button", { name: "Compare $100 buy limit", exact: true })
     .click();
   await expect(exercise.getByRole("status")).toContainText("may not fill");
   await page.goto("/learn?lesson=53");
+  await page.getByRole("button", {name:"Next slide"}).click();
   await exercise
     .getByRole("button", { name: "Review my practice plan" })
     .click();
@@ -82,6 +94,7 @@ test("all five beginner labs work and account-rule references are visible on mob
     .click();
   await expect(exercise.getByText(/You have described an entry/)).toBeVisible();
   await page.goto("/learn?lesson=54");
+  await page.getByRole("button", {name:"Next slide"}).click();
   await exercise
     .getByRole("button", { name: "Review the decision process" })
     .click();
@@ -89,7 +102,9 @@ test("all five beginner labs work and account-rule references are visible on mob
     "one trade is not proof",
   );
   await page.goto("/learn?lesson=39");
-  await expect(page.getByText("Scope and current requirements")).toBeVisible();
+  await page.getByRole("button", {name:"Next slide"}).click();
+  await page.getByRole("button", {name:"Next slide"}).click();
+  await expect(page.getByText("Explore reliable sources")).toBeVisible();
   await expect(
     page.getByRole("link", { name: /FINRA investor guidance/ }),
   ).toHaveAttribute("href", "https://www.finra.org/investors");

@@ -102,16 +102,17 @@ export default function Simulator() {
     const unlocked = state
       ? achievements.filter((a) => !earned(state, a.id) && earned(next, a.id))
       : [];
-    if (pending) return;
+    if (pending) return false;
     const saved = await persist(next);
     if (!saved) {
       setTrade(null);
       setTradeQueue([]);
       setToast("Changes were not saved. Please check the error message.");
-      return;
+      return false;
     }
     if (unlocked.length)
       setToast(`${unlocked.map((a) => a.title).join(" · ")} unlocked!`);
+    return true;
   }
   if (!state && !error)
     return <main className="sprout-loading" aria-label="Loading your practice space"><LoadingBrand /></main>;

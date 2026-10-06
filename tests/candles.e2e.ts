@@ -42,14 +42,21 @@ test("candle lessons open from a stock chart and quiz progress persists", async 
   await expect(
     dialog.getByRole("heading", { name: "Candle bodies and wicks" }),
   ).toBeVisible();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
   await expect(
     dialog.getByRole("img", { name: /Simulated candlestick/ }),
   ).toBeVisible();
+  await dialog.getByRole("button", {name:"Next slide"}).click();
+  await dialog.getByRole("button", {name:"Start quiz"}).click();
   await dialog
     .getByRole("button", { name: "B $100 and $105", exact: true })
     .click();
   await dialog.getByRole("button", { name: "Check answer" }).click();
-  await expect(dialog.getByRole("status")).toContainText("Correct!");
+  await expect(dialog.getByRole("status")).toContainText("Correct.");
+  await dialog.getByRole("button", {name:"Next question"}).click();
+  await dialog.locator(".quiz-options button").nth(1).click();
+  await dialog.getByRole("button", {name:"Check answer"}).click();
+  await dialog.getByRole("button", {name:"Finish quiz"}).click();
   await page.reload();
   await expect(page.getByText("1 / 151 lessons")).toBeVisible();
 });

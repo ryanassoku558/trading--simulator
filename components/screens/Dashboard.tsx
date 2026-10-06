@@ -1,4 +1,6 @@
 "use client";
+import PersonalLearning from "../PersonalLearning";
+import {DailyWarmup} from "../LearningDiscovery";
 import TradingBenefits from "../TradingBenefits";
 import ReferralCard from "../ReferralCard";
 import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
@@ -55,6 +57,8 @@ export default function Dashboard({
           Make a trade
         </Link>
       </div>
+      <PersonalLearning state={state}/>
+      <DailyWarmup/>
       <div className="beginner-banner">
         <span className="banner-icon">
           <ShieldCheck size={22} />
@@ -252,6 +256,8 @@ export default function Dashboard({
       </div>
       <DailySnapshot tick={state.tick}/>
       <PracticeStats state={state}/>
+      <Link className="primary" href="/market">Continue Simulator →</Link>
+      <section className="card quick-tools"><h2>Tools you’ll use today</h2><div className="coach-candidates">{["Position size calculator","Risk calculator","Volatility meter","Profit/loss simulator"].map(tool=><Link className="example" key={tool} href="/tools"><strong>{tool}</strong><p>Explore hypothetical inputs before making a practice decision.</p><span>Open tools →</span></Link>)}</div></section>
       <LearningRoadmap state={state}/>
       <ReferralCard/>
       <SproutMission />

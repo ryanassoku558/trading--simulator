@@ -7,6 +7,7 @@ import { stocks, quote, money, history } from "@/lib/market";
 import { StockBadge, Delta, Empty } from "../ui/MarketUI";
 
 import Chart from "../Chart";
+import PortfolioCoach from "../PortfolioCoach";
 
 import { Search, RefreshCw, ArrowUpRight } from "lucide-react";
 export default function Market({
@@ -53,6 +54,7 @@ export default function Market({
           Advance market
         </button>
       </div>
+      <PortfolioCoach state={state}/>
       <div className="market-toolbar">
         <label className="search">
           <Search size={19} />

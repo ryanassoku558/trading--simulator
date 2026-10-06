@@ -84,10 +84,10 @@ export default function Landing({
             MARKETS
           </span>
           <h1>
-            Learn Trading<br/><em>the Simple Way</em>
+            Grow Your Trading Skills<br/><em>With Confidence</em>
           </h1>
           <p>
-            Our mission is to make trading understandable for everyone. Learn the basics, see charts explained, and build confidence one small step at a time—with $10,000 in virtual practice cash.
+            A beginner-friendly platform built for real learning. Understand charts, practice decisions, and build financial confidence through clear explanations and $10,000 in virtual practice cash.
           </p>
           <div className="hero-buttons">
             <button className="primary" onClick={() => setOnboarding(true)}>

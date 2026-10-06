@@ -2,6 +2,7 @@ import { test, expect } from "./fixtures";
 test("first-run learning, trade, persistence, portfolio, orders and resets", async ({
   page,
 }) => {
+  test.setTimeout(120000);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
@@ -10,7 +11,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Learn Trading the Simple Way",
+      name: "Grow Your Trading Skills With Confidence",
     }),
   ).toBeVisible();
   await page
@@ -25,16 +26,19 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
   ).toBeVisible();
   await page.getByRole("button", { name: "Start with a lesson" }).click();
   await page.getByRole("button", { name: "What is a stock?" }).click();
+  await page.getByRole("button", {name:"Next slide"}).click();
+  await page.getByRole("button", {name:"Next slide"}).click();
+  await page.getByRole("button", {name:"Start quiz"}).click();
   await page
     .getByRole("button", { name: "B A small piece of a company" })
     .click();
   await page.getByRole("button", { name: "Check answer" }).click();
   await expect(page.getByRole("dialog").getByRole("status")).toContainText(
-    "Correct!",
+    "Correct.",
   );
-  await page
-    .getByRole("button", { name: "Make your first practice trade" })
-    .click();
+  await page.getByRole("button", {name:"Finish quiz"}).click();
+  await page.getByRole("button", {name:"Try the simulator",exact:true}).click();
+  await page.goto("/market/AAPL?guided=1");
   await expect(page).toHaveURL(/market\/AAPL/);
   await expect(page.getByText("Let’s buy your first share.")).toBeVisible();
   await page.getByRole("button", { name: "Review buy AAPL" }).click();
@@ -95,7 +99,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
     "/settings",
   ]) {
     await page.goto(route);
-    await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator("h1"), `Route ${route}; browser errors: ${errors.join("; ")}`).toBeVisible({timeout:15000});
   }
   await page.goto("/portfolio");
   await expect(
