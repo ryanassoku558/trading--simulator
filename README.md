@@ -2,6 +2,10 @@
 
 A beginner-friendly stock education and paper-trading app. Learn in small steps, practice with **$10,000 in virtual cash**, and understand every trade. Educational simulation only: no real money, financial advice, or promised returns.
 
+## App preview
+
+![Sprout dashboard with a $10,000 virtual practice account](docs/preview.png)
+
 ## Features
 
 - First-run landing page and experience-based onboarding; automatic Beginner Mode for new learners.
