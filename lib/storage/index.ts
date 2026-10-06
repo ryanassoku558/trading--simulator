@@ -22,6 +22,8 @@ export const localStorageAdapter: StateStorage = {
       throw new Error(
         "Saved data could not be read. Reset your local account to start fresh.",
       );
+    if (parsed.profile.id === "local" && parsed.profile.name === "Alex")
+      return { ...parsed, profile: { ...parsed.profile, name: "Guest" } };
     return parsed;
   },
   save(state) {

@@ -4,7 +4,7 @@ export function initialState(): State {
   return {
     profile: {
       id: "local",
-      name: "Alex",
+      name: "Guest",
       experience: "new",
       beginner: true,
       onboarded: false,
