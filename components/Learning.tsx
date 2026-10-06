@@ -2,8 +2,15 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CandleLessonExample from "./CandleLessonExample";
+import BeginnerExercise from "./BeginnerExercise";
 import { BookOpen, Check, ArrowRight, Lightbulb } from "lucide-react";
-import { lessons, levels, answerLesson } from "@/lib/education";
+import {
+  lessons,
+  levels,
+  answerLesson,
+  beginnerLearningOrder,
+  accountRulesMetadata,
+} from "@/lib/education";
 import type { State, Lesson } from "@/types";
 import Dialog from "./Dialog";
 export default function Learning({
@@ -20,8 +27,12 @@ export default function Learning({
       () => lessons.find((lesson) => lesson.id === requestedLesson) || null,
     ),
     [answer, setAnswer] = useState<number | null>(null),
-    [feedback, setFeedback] = useState("");
-  function open(l: Lesson) {
+    [feedback, setFeedback] = useState(""),
+    [followingPath, setFollowingPath] = useState(
+      Boolean(requestedLesson && state.profile.experience === "new"),
+    );
+  function open(l: Lesson, path = false) {
+    setFollowingPath(path);
     setActive(l);
     setAnswer(null);
     setFeedback("");
@@ -78,6 +89,32 @@ export default function Learning({
           <span>Quiz accuracy</span>
         </div>
       </div>
+      <section className="card beginner-path">
+        <div>
+          <span className="eyebrow">
+            START HERE · NO PRIOR KNOWLEDGE NEEDED
+          </span>
+          <h2>Before your first trade</h2>
+          <p>
+            Build a foundation in stocks, quotes, orders, and possible losses
+            before moving to charts. This recommended path covers all{" "}
+            {lessons.length} lessons. You can still explore any lesson
+            independently.
+          </p>
+        </div>
+        <button
+          className="primary"
+          onClick={() => {
+            const id =
+              beginnerLearningOrder.find(
+                (id) => !state.learning.completed.includes(id),
+              ) ?? beginnerLearningOrder[0];
+            open(lessons.find((l) => l.id === id)!, true);
+          }}
+        >
+          Start beginner path <ArrowRight size={16} />
+        </button>
+      </section>
       {levels.map((level, i) => (
         <section className="card level" key={level}>
           <div className="level-heading">
@@ -137,6 +174,7 @@ export default function Learning({
             <span className="eyebrow">LET’S MAKE IT REAL</span>
             <p>{active.example}</p>
             <CandleLessonExample lessonId={active.id} />
+            <BeginnerExercise key={active.id} lessonId={active.id} />
           </div>
           <div className="tip">
             <Lightbulb size={19} />
@@ -145,6 +183,28 @@ export default function Learning({
               <p>{active.why}</p>
             </div>
           </div>
+          {[32, 39, 40, 48].includes(active.id) && (
+            <aside className="lesson-sources">
+              <strong>Scope and current requirements</strong>
+              <p>{accountRulesMetadata.scope}</p>
+              <small>
+                Content updated {accountRulesMetadata.updated}; verify rules
+                with official sources and your broker.
+              </small>
+              <div>
+                {accountRulesMetadata.sources.map((source) => (
+                  <a
+                    key={source.url}
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {source.label} ↗
+                  </a>
+                ))}
+              </div>
+            </aside>
+          )}
           <h3>Quick knowledge check</h3>
           <p>{active.quiz.question}</p>
           <div className="quiz-options">
@@ -178,17 +238,26 @@ export default function Learning({
             <button
               className="primary full"
               onClick={() => {
-                if (active.id === 1 && state.trades.length === 0) {
+                if (
+                  !followingPath &&
+                  active.id === 1 &&
+                  state.trades.length === 0
+                ) {
                   setActive(null);
                   firstTrade();
                 } else {
-                  const next = lessons.find((l) => l.id === active.id + 1);
-                  if (next) open(next);
+                  const nextId = followingPath
+                    ? beginnerLearningOrder[
+                        beginnerLearningOrder.indexOf(active.id) + 1
+                      ]
+                    : active.id + 1;
+                  const next = lessons.find((l) => l.id === nextId);
+                  if (next) open(next, followingPath);
                   else setActive(null);
                 }
               }}
             >
-              {active.id === 1 && state.trades.length === 0
+              {!followingPath && active.id === 1 && state.trades.length === 0
                 ? "Make your first practice trade"
                 : "Continue"}{" "}
               <ArrowRight size={16} />

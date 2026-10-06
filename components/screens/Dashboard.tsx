@@ -164,7 +164,10 @@ export default function Dashboard({
           <div className="progress-track">
             <span style={{ width: `${progress}%` }} />
           </div>
-          <Link href="/learn" className="primary full">
+          <Link
+            href={`/learn?lesson=${nextLesson.id}`}
+            className="primary full"
+          >
             Continue Learning <ArrowRight size={16} />
           </Link>
           <div className="learning-foot">

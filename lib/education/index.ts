@@ -1,4 +1,6 @@
 import type { Achievement, Lesson, State } from "@/types";
+import { dayTradingLessons } from "./dayTrading";
+export { beginnerLearningOrder, accountRulesMetadata } from "./dayTrading";
 export const levels = [
   "Trading Basics",
   "Understanding Prices",
@@ -6,6 +8,11 @@ export const levels = [
   "Reading Charts",
   "Building a Portfolio",
   "Candlestick Practice",
+  "Day Trading Foundations",
+  "Execution, Accounts & Risk",
+  "Planning, Emotions & Reality",
+  "Real-World Trading Context",
+  "Beginner Practice Lab",
 ];
 const content = [
   [
@@ -309,7 +316,7 @@ const content = [
     "Guaranteed future profits",
   ],
 ];
-export const lessons: Lesson[] = content.map((c, i) => ({
+const originalLessons: Lesson[] = content.map((c, i) => ({
   id: i + 1,
   level: Math.floor(i / 5) + 1,
   title: c[0],
@@ -323,6 +330,7 @@ export const lessons: Lesson[] = content.map((c, i) => ({
     explanation: c[2] + " " + c[3],
   },
 }));
+export const lessons: Lesson[] = [...originalLessons, ...dayTradingLessons];
 export function answerLesson(s: State, id: number, answer: number): State {
   const lesson = lessons.find((l) => l.id === id);
   if (!lesson) throw new Error("Lesson not found.");

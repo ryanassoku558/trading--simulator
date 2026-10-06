@@ -3,8 +3,8 @@ import { lessons, levels, answerLesson } from "../lib/education";
 import { initialState } from "../lib/trading";
 import { isAccountState } from "../lib/storage/schema";
 it("keeps the original lesson IDs and adds five candle lessons", () => {
-  expect(lessons).toHaveLength(30);
-  expect(levels).toHaveLength(6);
+  expect(lessons).toHaveLength(54);
+  expect(levels).toHaveLength(11);
   expect(lessons.find((l) => l.id === 18)?.title).toBe("Candlesticks");
   expect(lessons.find((l) => l.id === 25)?.title).toBe("Reviewing performance");
   expect(lessons.filter((l) => l.level === 6)).toHaveLength(5);
@@ -19,7 +19,7 @@ it("persists new lesson progress with one-time XP and a level completion bonus",
   expect(answerLesson(state, 26, 1).learning.xp).toBe(275);
   const invalid = {
     ...state,
-    learning: { ...state.learning, completed: [31] },
+    learning: { ...state.learning, completed: [55] },
   };
   expect(isAccountState(invalid)).toBe(false);
 });

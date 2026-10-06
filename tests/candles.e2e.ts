@@ -49,5 +49,5 @@ test("candle lessons open from a stock chart and quiz progress persists", async 
   await dialog.getByRole("button", { name: "Check answer" }).click();
   await expect(dialog.getByRole("status")).toContainText("Correct!");
   await page.reload();
-  await expect(page.getByText("1 / 30 lessons")).toBeVisible();
+  await expect(page.getByText("1 / 54 lessons")).toBeVisible();
 });

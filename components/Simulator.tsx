@@ -30,7 +30,12 @@ import {
   resetLearning,
 } from "@/lib/trading";
 import { useAccount } from "@/lib/storage/useAccount";
-import { lessons, achievements, earned } from "@/lib/education";
+import {
+  lessons,
+  achievements,
+  earned,
+  beginnerLearningOrder,
+} from "@/lib/education";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
 import MarketTicker from "./MarketTicker";
@@ -126,7 +131,18 @@ export default function Simulator() {
       : state.profile.experience === "basics"
         ? 11
         : 1;
+  const beginnerNext =
+    state.profile.experience === "new"
+      ? lessons.find(
+          (l) =>
+            l.id ===
+            beginnerLearningOrder.find(
+              (id) => !state.learning.completed.includes(id),
+            ),
+        )
+      : null;
   const nextLesson =
+    beginnerNext ||
     lessons.find(
       (l) =>
         l.id >= recommendedStart && !state.learning.completed.includes(l.id),

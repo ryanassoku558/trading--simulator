@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { lessons } from "@/lib/education";
 import { candles, quote, money } from "@/lib/market";
 import CandlestickChart from "../CandlestickChart";
 import type { State, Experience } from "@/types";
@@ -102,7 +103,7 @@ export default function Landing({
               <span>Virtual starting balance</span>
             </div>
             <div>
-              <strong>30</strong>
+              <strong>{lessons.length}</strong>
               <span>Lessons & quizzes</span>
             </div>
             <div>
@@ -186,7 +187,7 @@ export default function Landing({
             {
               icon: BookOpen,
               title: "Learn the Basics",
-              text: "30 focused lessons, clear examples, and knowledge checks. Progress at your own pace.",
+              text: `${lessons.length} focused lessons, clear examples, and knowledge checks. Progress at your own pace.`,
             },
             {
               icon: ChartNoAxesCombined,

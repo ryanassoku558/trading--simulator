@@ -3344,3 +3344,115 @@ td {
     padding: 0;
   }
 }
+.beginner-path {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 28px;
+  border-left: 3px solid var(--green);
+  background: #f6faf7;
+}
+.beginner-path h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+.beginner-path p {
+  font-size: 13px;
+  max-width: 740px;
+}
+.beginner-path .primary {
+  flex-shrink: 0;
+}
+.practice-exercise {
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  padding: 18px;
+  border-radius: 6px;
+  background: white;
+}
+.practice-exercise label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.practice-exercise input,
+.practice-exercise textarea {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font: inherit;
+  width: 100%;
+  min-height: 42px;
+}
+.practice-exercise textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+.quote-exercise {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+}
+.quote-exercise dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+.quote-exercise dd {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.review-examples {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 18px 0;
+}
+.review-examples > div {
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 4px;
+}
+.practice-exercise .auth-actions {
+  margin: 16px 0;
+}
+.practice-exercise [role="status"] {
+  color: var(--deep);
+}
+.lesson-sources {
+  padding: 16px;
+  border-left: 3px solid #7c9486;
+  background: #f5f7f8;
+  font-size: 12px;
+  margin: 20px 0;
+}
+.lesson-sources > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.lesson-sources a {
+  color: var(--green);
+  text-decoration: underline;
+}
+@media (max-width: 700px) {
+  .beginner-path {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .quote-exercise {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .review-examples {
+    grid-template-columns: 1fr;
+  }
+  .practice-exercise .auth-actions > button {
+    white-space: normal;
+  }
+}

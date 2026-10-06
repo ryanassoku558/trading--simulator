@@ -64,7 +64,7 @@ You can view the screenshots and moving previews on GitHub without downloading t
 
 - First-run landing page and experience-based onboarding; automatic Beginner Mode for new learners.
 - Dashboard with account value, cash, invested value, daily change, total return, watchlist, recent trades, learning progress, and market examples.
-- All 30 lessons across six levels, examples, explanations, quizzes, accuracy, learning streak, XP, level-completion bonuses, and six achievements.
+- All 54 lessons across eleven levels, examples, explanations, quizzes, accuracy, learning streak, XP, level-completion bonuses, and six achievements.
 - Searchable market with ten seeded stocks/funds, company descriptions, line/candlestick charts, five timeframes, and watchlist controls. Candles show simulated open/high/low/close prices with hover and keyboard-accessible period inspection.
 - A five-lesson Candlestick Practice level covers bodies/wicks, colors/gaps, doji, hammers, and engulfing patterns with visual examples and quizzes. Stock charts link directly to the first lesson.
 - Whole-share market buys and sells, weighted average cost, realized/unrealized gains, friendly validation, and Beginner Mode confirmations.
@@ -124,7 +124,7 @@ Portfolio value equals cash plus current holdings. Total return is measured agai
 - `components/Learning.tsx`, `Trading.tsx`, `Chart.tsx`, `Dialog.tsx`, `ui/`: reusable interactive UI.
 - `lib/trading/`: single source for account initialization, buy/sell validation, weighted cost, portfolio values, limits, and trade scenarios.
 - `lib/market/`: deterministic seeded data and replaceable provider interface.
-- `lib/education/`: 30 lessons, quizzes, completion/XP/streak rules, and achievements.
+- `lib/education/`: 54 lessons, quizzes, completion/XP/streak rules, and achievements.
 - `lib/storage/`: persistence adapter and hydration-safe React account subscription.
 - `types/`: users, profiles, preferences, accounts, stocks/history, holdings, trades/orders, lessons/quizzes, attempts/progress, and achievements.
 - `tests/`: financial/learning/storage unit tests and browser journeys.
@@ -150,3 +150,9 @@ npm run test:e2e
 Linux browser tests use npm-packaged Chromium, avoiding an additional browser download. On other operating systems, install Playwright Chromium with `npx playwright install chromium` first. `TEST_BASE_URL` can target a running production server on another port. The tests cover onboarding, a lesson/quiz, guided first trade, buy/sell math and validation, every main route, limit execution, history explanations, reload persistence, resets, mobile navigation, search, horizontal layout overflow, corrupt-data recovery, accessible dialog dismissal, and synchronization between open tabs. Screenshots are written to the system temporary directory.
 
 This is an educational local MVP. Real market data, stop orders, dividends, fees, splits, tax calculations, and professional trading features remain future work.
+
+## Beginner day-trading curriculum
+
+The recommended beginner path covers all 54 lessons, starting with day trading, ownership, quotes, orders, and risk before charts. The 24 appended lessons preserve existing IDs and completion data. They cover market hours, order states, costs, liquidity/volatility, dollar losses, stops/gaps, cash/margin accounts, settlement, planning, emotions, reviews, simulation limits, news/earnings, halts/outages, leverage/short selling, taxes/records, and misleading claims. Five practice labs provide quote reading, an adjustable loss calculation, order comparison, a temporary trade-plan worksheet, and process-versus-result review. Worksheets place no orders. Account-rule lessons identify US examples, the content update date, and official references; users must verify current local/broker requirements. Existing XP and completions remain valid.
+
+[Beginner path preview](docs/previews/beginner-learning-path.png) · [Loss exercise preview](docs/previews/beginner-loss-exercise.png)
