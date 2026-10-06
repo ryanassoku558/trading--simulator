@@ -4,7 +4,55 @@ A beginner-friendly stock education and paper-trading app. Learn in small steps,
 
 ## App preview
 
+**[Open the full gallery: 28 pictures and 4 videos](docs/previews/README.md)**
+
+You can view the screenshots and moving previews on GitHub without downloading the app.
+
+### Dashboard
+
 ![Sprout dashboard with a $10,000 virtual practice account](docs/preview.png)
+
+### Video previews
+
+#### From welcome to your first lesson and trade
+
+[![Moving preview: From welcome to your first lesson and trade](docs/previews/01-first-steps.gif)](docs/previews/01-first-steps.mp4)
+
+#### Buying, tracking a portfolio, and selling
+
+[![Moving preview: Buying, tracking a portfolio, and selling](docs/previews/02-portfolio-trading.gif)](docs/previews/02-portfolio-trading.mp4)
+
+#### Explore stocks, charts, watchlists, and limit orders
+
+[![Moving preview: Explore stocks, charts, watchlists, and limit orders](docs/previews/03-market-limit-orders.gif)](docs/previews/03-market-limit-orders.mp4)
+
+#### A complete tour on a phone-sized screen
+
+[![Moving preview: A complete tour on a phone-sized screen](docs/previews/04-mobile-tour.gif)](docs/previews/04-mobile-tour.mp4)
+
+### More screens
+
+#### Welcome page
+
+![Welcome page](docs/previews/01-landing.png)
+
+#### Understand price moves and position size
+
+![Understand price moves and position size](docs/previews/09-explain-trade.png)
+
+#### Three-stock portfolio, returns, and allocation
+
+![Three-stock portfolio, returns, and allocation](docs/previews/11-portfolio.png)
+
+#### Ten simulated stocks and funds
+
+![Ten simulated stocks and funds](docs/previews/15-market.png)
+
+#### First Lesson, First Trade, and Portfolio Builder
+
+![First Lesson, First Trade, and Portfolio Builder](docs/previews/12-achievements.png)
+
+[View all desktop and mobile screenshots](docs/previews/README.md)
 
 ## Features
 
