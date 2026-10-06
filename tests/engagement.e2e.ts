@@ -19,7 +19,7 @@ test("themes persist, ticker pauses, and tutorial video actually plays",async({p
 });
 test("chart replays, journal saving, and challenge progress work on mobile",async({page})=>{
  await page.setViewportSize({width:390,height:844});
- await page.goto('/');await page.getByRole('button',{name:'Explore Demo'}).click();
+ await page.goto('/');await page.getByRole('button',{name:'Try the Simulator'}).click();
  await page.goto('/practice');
  await page.getByRole('button',{name:'Pause and define a risk plan'}).click();
  await expect(page.locator('.lab-feedback')).toContainText('Good reasoning');
@@ -46,7 +46,7 @@ test("chart replays, journal saving, and challenge progress work on mobile",asyn
 test("community drafts and chart annotations work without pretending to publish",async({page})=>{
  await page.route('**/api/community/status',r=>r.fulfill({contentType:'application/json',body:JSON.stringify({community:false,reviews:false})}));
  await page.route('**/rest/v1/community_posts**',r=>r.fulfill({status:404,contentType:'application/json',body:JSON.stringify({code:'PGRST205'})}));
- await page.goto('/');await page.getByRole('button',{name:'Explore Demo'}).click();await page.goto('/community');
+ await page.goto('/');await page.getByRole('button',{name:'Try the Simulator'}).click();await page.goto('/community');
  await expect(page.getByText('The community is opening soon.')).toBeVisible();
  await page.getByRole('button',{name:'Chart competition',exact:true}).click();
  await page.getByRole('button',{name:'Add support line'}).click();

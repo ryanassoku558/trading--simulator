@@ -9,7 +9,7 @@ import {
 import { initialState } from "../lib/trading";
 import { isAccountState } from "../lib/storage/schema";
 it("provides 24 new complete lessons and a path that covers each lesson once", () => {
-  expect(lessons.filter((l) => l.id >= 31)).toHaveLength(24);
+  expect(lessons.filter((l) => l.id >= 31 && l.id <= 54)).toHaveLength(24);
   expect(new Set(beginnerLearningOrder).size).toBe(lessons.length);
   expect([...beginnerLearningOrder].sort((a, b) => a - b)).toEqual(
     lessons.map((l) => l.id),
@@ -45,9 +45,9 @@ it("supports full completion and the four-lesson planning module bonus", () => {
     state = answerLesson(state, l.id, l.quiz.answer);
   expect(state.learning.xp).toBe(4 * 35 + 100);
   state = initialState();
-  for (const id of beginnerLearningOrder) state = answerLesson(state, id, 1);
-  expect(state.learning.completed).toHaveLength(54);
-  expect(state.learning.xp).toBe(54 * 35 + levels.length * 100);
+  for (const id of beginnerLearningOrder) state = answerLesson(state, id, lessons.find(l=>l.id===id)!.quiz.answer);
+  expect(state.learning.completed).toHaveLength(59);
+  expect(state.learning.xp).toBe(59 * 35 + levels.length * 100);
   expect(isAccountState(state)).toBe(true);
 });
 it("identifies the jurisdiction and update date for account-rule guidance", () => {

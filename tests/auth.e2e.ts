@@ -29,7 +29,7 @@ test("sign-up is visible on welcome and explains email confirmation", async ({
     .click();
   expect((await signupRequest).postDataJSON().data.first_name).toBe("Taylor");
   await expect(panel.getByRole("status")).toContainText("Check your email");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   await expect(
     panel.getByRole("button", { name: "Create account", exact: true }),
   ).toBeVisible();
@@ -148,6 +148,6 @@ test("signed-in state survives reload and sign-out restores separate guest state
     panel.getByRole("button", { name: "Create account", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Explore Demo" }),
+    page.getByRole("button", { name: "Try the Simulator" }),
   ).toBeVisible();
 });

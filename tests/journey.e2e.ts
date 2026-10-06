@@ -10,7 +10,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Invest in your understanding.",
+      name: "Learn Trading the Simple Way",
     }),
   ).toBeVisible();
   await page
@@ -135,7 +135,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
 test("mobile navigation, market search and layout", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   for (const route of [
     "/",
     "/learn",
@@ -199,7 +199,7 @@ test("synchronizes trades and resets between open tabs", async ({
   context,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   const other = await context.newPage();
   await other.goto("/");
   await expect(

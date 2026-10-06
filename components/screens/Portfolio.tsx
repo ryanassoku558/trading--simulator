@@ -48,7 +48,7 @@ export default function Portfolio({
             <Delta value={p.gain} />
           </h2>
           <small>
-            <Delta value={p.percent} percent /> · today{" "}
+            <Delta value={p.percent} percent /> · deposits excluded · today{" "}
             <Delta value={p.today} />
           </small>
         </section>
@@ -59,7 +59,7 @@ export default function Portfolio({
           <Chart
             data={
               state.snapshots.length > 1
-                ? state.snapshots.map((s) => ({ date: s.date, price: s.value }))
+                ? [...state.snapshots.map((s) => ({ date: s.date, price: s.value })), {date:"Now",price:p.value}]
                 : [
                     { date: "Start", price: 10000 },
                     { date: "Now", price: p.value },

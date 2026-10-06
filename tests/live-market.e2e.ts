@@ -2,7 +2,7 @@ import {test, expect} from "@playwright/test";
 test("automatic quotes and candles move without saving account ticks", async ({page}) => {
  await page.clock.setFixedTime(new Date("2026-10-06T00:00:00Z"));
  await page.goto("/");
- await page.getByRole("button", {name:"Explore Demo"}).click();
+ await page.getByRole("button", {name:"Try the Simulator"}).click();
  await page.goto("/market/VTI");
  await page.getByRole("button", {name:"Candlesticks", exact:true}).click();
  await expect(page.locator(".stock-detail-price")).toHaveText("$280.00");
@@ -15,7 +15,7 @@ test("automatic quotes and candles move without saving account ticks", async ({p
 test("automatically fills pending ETF orders on a new clock tick", async ({page}) => {
  await page.clock.setFixedTime(new Date("2026-10-06T00:00:00Z"));
  await page.goto("/");
- await page.getByRole("button", {name:"Explore Demo"}).click();
+ await page.getByRole("button", {name:"Try the Simulator"}).click();
  await page.evaluate(() => {
   const key="sprout-trading-v1", state=JSON.parse(localStorage.getItem(key)!);
   state.orders=[{id:"auto-etf",ticker:"VTI",side:"buy",shares:1,limit:300,status:"pending",date:new Date().toISOString()}];

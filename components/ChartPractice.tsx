@@ -1,4 +1,5 @@
 "use client";
+import {useSearchParams} from "next/navigation";
 import {useState} from "react";
 import {RotateCcw, ChevronRight, Lightbulb} from "lucide-react";
 const scenarios=[
@@ -16,7 +17,8 @@ function Sketch({prices,annotated=false,entry}: {prices:number[];annotated?:bool
  </svg>;
 }
 export default function ChartPractice(){
- const [tab,setTab]=useState("Replay"),[scenario,setScenario]=useState(0),[step,setStep]=useState(8),[choice,setChoice]=useState<number|null>(null),[pattern,setPattern]=useState("");
+ const requested=Number(useSearchParams().get("scenario"));
+ const [tab,setTab]=useState("Replay"),[scenario,setScenario]=useState(()=>Number.isInteger(requested)&&requested>=0&&requested<scenarios.length?requested:0),[step,setStep]=useState(8),[choice,setChoice]=useState<number|null>(null),[pattern,setPattern]=useState("");
  const current=scenarios[scenario];
  return <section className="card chart-lab" id="chart-practice">
   <div className="card-heading"><div><span className="eyebrow">INTERACTIVE CHART LAB</span><h2>What would you do here?</h2><p>Learn the process before trying to time a purchase.</p></div><Lightbulb size={25}/></div>

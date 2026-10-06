@@ -5,6 +5,8 @@ import type {State,Trade} from "@/types";
 import {money} from "@/lib/market";
 import {performance} from "@/lib/trading/analytics";
 import {portfolio} from "@/lib/trading";
+import {PracticeStats,PsychologyVisuals,ReturnChallenge} from "../PracticeVisuals";
+import {StrategyCards} from "../VisualLearning";
 import ChartPractice from "../ChartPractice";
 import {Trophy,NotebookPen,ArrowUpRight} from "lucide-react";
 function JournalEditor({trade,state,update}: {trade:Trade;state:State;update:(s:State)=>void}){
@@ -31,7 +33,11 @@ export default function Practice({state,update}: {state:State;update:(s:State)=>
  const target=challenge?.id==="seven-days"?7:3,progress=challenge?.id==="seven-days"?days:reviewed.length;
  const start=(id:string)=>update({...state,challenge:{id,startedAt:new Date().toISOString(),startingEquity:portfolio(state).value,startTradeCount:state.trades.length}});
  return <><div className="page-heading"><div><span className="eyebrow">TURN PRACTICE INTO UNDERSTANDING</span><h1>Your practice lab</h1><p>Replay a chart, reflect on a trade, and measure the process.</p></div><Link className="primary" href="/market">Open simulator <ArrowUpRight size={17}/></Link></div>
+  <PracticeStats state={state}/>
   <ChartPractice/>
+  <ReturnChallenge state={state} update={update}/>
+  <PsychologyVisuals state={state} update={update}/>
+  <StrategyCards/>
   <section className="card practice-challenges"><div className="card-heading"><div><span className="eyebrow">SMALL GOALS. THOUGHTFUL HABITS.</span><h2>Practice challenges</h2></div><Trophy size={24}/></div>
    <p>Build a repeatable learning process. There is no promised return or pressure to trade every day.</p>
    <div className="challenge-grid"><div><h3>Plan & review 3 trades</h3><p>Make three virtual trades and journal each decision. Review the reason, size, and possible loss.</p><button className="secondary" disabled={challenge?.id==="plan-3"} onClick={()=>start("plan-3")}>{challenge?.id==="plan-3"?"Active challenge":"Start three-trade challenge"}</button></div><div><h3>7 days of reflection</h3><p>Review trades from seven distinct days, at your own pace. Learning consistency matters more than chasing a return target.</p><button className="secondary" disabled={challenge?.id==="seven-days"} onClick={()=>start("seven-days")}>{challenge?.id==="seven-days"?"Active challenge":"Start reflection challenge"}</button></div></div>

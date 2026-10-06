@@ -4,7 +4,7 @@ test("candlestick toggle, OHLC inspection and timeframe changes work on mobile",
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   await page.goto("/market/AAPL");
   await page.getByRole("button", { name: "Candlesticks", exact: true }).click();
   await expect(
@@ -34,7 +34,7 @@ test("candle lessons open from a stock chart and quiz progress persists", async 
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   await page.goto("/market/AAPL");
   await page.getByRole("button", { name: "Candlesticks", exact: true }).click();
   await page.getByRole("link", { name: "Learn to read candlesticks" }).click();
@@ -51,5 +51,5 @@ test("candle lessons open from a stock chart and quiz progress persists", async 
   await dialog.getByRole("button", { name: "Check answer" }).click();
   await expect(dialog.getByRole("status")).toContainText("Correct!");
   await page.reload();
-  await expect(page.getByText("1 / 54 lessons")).toBeVisible();
+  await expect(page.getByText("1 / 59 lessons")).toBeVisible();
 });

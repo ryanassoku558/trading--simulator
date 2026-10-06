@@ -47,7 +47,7 @@ export default function CandlestickChart({ data }: { data: PriceCandle[] }) {
         {data.map((c, i) => {
           const x = 15 + step * (i + 0.5),
             rising = c.close >= c.open,
-            color = rising ? "#14856f" : "#bc4545";
+            color = rising ? "var(--green)" : "var(--candle-loss)";
           return (
             <g
               key={c.period}
@@ -61,7 +61,7 @@ export default function CandlestickChart({ data }: { data: PriceCandle[] }) {
                 y="10"
                 width={step}
                 height="225"
-                fill={i === index ? "#edf6ef" : "transparent"}
+                fill={i === index ? "var(--pale)" : "transparent"}
               />
               <line
                 x1={x}
@@ -76,7 +76,7 @@ export default function CandlestickChart({ data }: { data: PriceCandle[] }) {
                 y={Math.min(y(c.open), y(c.close))}
                 width={bodyWidth}
                 height={Math.max(1.5, Math.abs(y(c.open) - y(c.close)))}
-                fill={rising ? color : "#fff"}
+                fill={rising ? color : "var(--surface)"}
                 stroke={color}
                 strokeWidth="1.5"
               />

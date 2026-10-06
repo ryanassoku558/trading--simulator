@@ -1,4 +1,5 @@
 import type { Achievement, Lesson, State } from "@/types";
+import { indicatorLessons } from "./indicators";
 import { dayTradingLessons } from "./dayTrading";
 export { beginnerLearningOrder, accountRulesMetadata } from "./dayTrading";
 export const levels = [
@@ -13,6 +14,7 @@ export const levels = [
   "Planning, Emotions & Reality",
   "Real-World Trading Context",
   "Beginner Practice Lab",
+  "Indicators Explained",
 ];
 const content = [
   [
@@ -330,7 +332,7 @@ const originalLessons: Lesson[] = content.map((c, i) => ({
     explanation: c[2] + " " + c[3],
   },
 }));
-export const lessons: Lesson[] = [...originalLessons, ...dayTradingLessons];
+export const lessons: Lesson[] = [...originalLessons, ...dayTradingLessons, ...indicatorLessons];
 export function answerLesson(s: State, id: number, answer: number): State {
   const lesson = lessons.find((l) => l.id === id);
   if (!lesson) throw new Error("Lesson not found.");
@@ -374,7 +376,7 @@ export const achievements: Achievement[] = [
     title: "First Lesson",
     description: "Complete your first lesson",
   },
-  { id: "trade", title: "First Trade", description: "Make a practice trade" },
+  { id: "trade", title: "First Trade Completed", description: "Make a practice trade" },
   {
     id: "five",
     title: "5 Lessons Completed",
@@ -390,6 +392,9 @@ export const achievements: Achievement[] = [
     title: "Portfolio Builder",
     description: "Hold three different stocks",
   },
+  {id:"streak",title:"5 Days in a Row",description:"Complete a knowledge check on five consecutive days"},
+  {id:"risk",title:"Risk Mastery",description:"Complete all five execution, accounts, and risk lessons"},
+  {id:"chart",title:"Chart Pro",description:"Complete the chart-reading and candlestick lessons"},
   {
     id: "quiz",
     title: "Quiz Master",
@@ -400,6 +405,9 @@ export function earned(s: State, id: string): boolean {
   return (
     (
       {
+        streak: s.learning.streak >= 5,
+        risk: lessons.filter(l=>l.level===8).every(l=>s.learning.completed.includes(l.id)),
+        chart: lessons.filter(l=>l.level===4||l.level===6).every(l=>s.learning.completed.includes(l.id)),
         lesson: s.learning.completed.length > 0,
         trade: s.trades.length > 0,
         five: s.learning.completed.length >= 5,

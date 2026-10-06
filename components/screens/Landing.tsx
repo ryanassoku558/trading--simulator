@@ -15,8 +15,15 @@ import {
   Lightbulb,
   TrendingUp,
   Check,
+  Calculator, UserRound, Users,
 } from "lucide-react";
 
+import {LearningRoadmap,PatternPreview,StrategyCards} from "../VisualLearning";
+import TradingBenefits from "../TradingBenefits";
+import Sprouty from "../Sprouty";
+import ReferralCard from "../ReferralCard";
+import VisualTools from "../VisualTools";
+import {DailySnapshot} from "../PracticeVisuals";
 import LearnerReviews from "../LearnerReviews";
 import TutorialLibrary from "../TutorialLibrary";
 import ThemeToggle from "../ThemeToggle";
@@ -46,6 +53,7 @@ export default function Landing({
   const router = useRouter();
   const [previewTicker, setPreviewTicker] = useState("AAPL");
   const previewQuote = quote(previewTicker, state.tick);
+  function enter(url:string){update({...state,profile:{...state.profile,onboarded:true}});router.push(url);}
   return (
     <main className="landing">
       <div className="landing-utility">
@@ -57,10 +65,11 @@ export default function Landing({
       <header className="landing-nav">
         <Logo />
         <nav aria-label="Website navigation">
-          <a href="#platform">Platform</a>
-          <a href="#education">Education</a>
-          <a href="#tutorials">Videos</a>
-          <a href="#how-it-works">How it works</a>
+          <a href="#roadmap"><BookOpen size={16}/> Learn</a>
+          <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
+          <a href="#tools"><Calculator size={16}/> Tools</a>
+          <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <a href="#account"><UserRound size={16}/> Account</a>
         </nav>
         <ThemeToggle />
         <a className="secondary" href="#account">
@@ -75,14 +84,10 @@ export default function Landing({
             MARKETS
           </span>
           <h1>
-            Invest in your
-            <br />
-            <em>understanding.</em>
+            Learn Trading<br/><em>the Simple Way</em>
           </h1>
           <p>
-            Build market knowledge with a workspace designed for practice.
-            Explore stocks, learn to read charts, and test your decisions with
-            $10,000 in virtual cash.
+            Our mission is to make trading understandable for everyone. Learn the basics, see charts explained, and build confidence one small step at a time—with $10,000 in virtual practice cash.
           </p>
           <div className="hero-buttons">
             <button className="primary" onClick={() => setOnboarding(true)}>
@@ -98,13 +103,14 @@ export default function Landing({
                 router.push("/");
               }}
             >
-              Explore Demo <ArrowUpRight size={18} />
+              Try the Simulator <ArrowUpRight size={18} />
             </button>
           </div>
           <span className="hero-disclosure">
             <ShieldCheck size={16} /> Educational simulation. No real money
             required.
           </span>
+          <Sprouty completed={state.learning.completed.length}/>
           <div className="hero-facts">
             <div>
               <strong>$10,000</strong>
@@ -268,10 +274,17 @@ export default function Landing({
           </li>
         </ol>
       </section>
+      <PatternPreview onNavigate={enter}/>
+      <LearningRoadmap state={state} onNavigate={enter}/>
+      <StrategyCards onNavigate={enter}/>
+      <VisualTools tick={state.tick}/>
+      <DailySnapshot tick={state.tick}/>
       <TutorialLibrary />
       <SproutMission />
+      <TradingBenefits onNavigate={enter}/>
       <LearnerStories />
       <LearnerReviews/>
+      <ReferralCard/>
       <div id="account" className="landing-account">
         {accountPanel}
       </div>
@@ -281,10 +294,11 @@ export default function Landing({
           <p>Market knowledge for your next chapter.</p>
         </div>
         <div className="footer-links">
-          <a href="#platform">Platform</a>
-          <a href="#education">Education</a>
-          <a href="#tutorials">Videos</a>
-          <a href="#how-it-works">How it works</a>
+          <a href="#roadmap"><BookOpen size={16}/> Learn</a>
+          <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
+          <a href="#tools"><Calculator size={16}/> Tools</a>
+          <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <a href="#account"><UserRound size={16}/> Account</a>
           <a href="#account">Account</a>
         </div>
         <div className="footer-disclosure">

@@ -3,7 +3,7 @@ test("global search, sorting, and both market layouts work", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   await page.getByRole("textbox", { name: "Search the market" }).fill("AAPL");
   await page.getByRole("button", { name: "Submit market search" }).click();
   await expect(

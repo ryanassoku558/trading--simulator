@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Sprouty from "./Sprouty";
+import {LearningRoadmap} from "./VisualLearning";
 import ChartPractice from "./ChartPractice";
 import TutorialLibrary from "./TutorialLibrary";
 import TutorialVideo from "./TutorialVideo";
@@ -93,6 +95,8 @@ export default function Learning({
           <span>Quiz accuracy</span>
         </div>
       </div>
+      <Sprouty completed={state.learning.completed.length}/>
+      <LearningRoadmap state={state} onNavigate={url=>{const id=Number(new URL(url,"https://sprout.local").searchParams.get("lesson"));const lesson=lessons.find(l=>l.id===id);if(lesson)open(lesson);}}/>
       <TutorialLibrary />
       <ChartPractice/>
       <section className="card beginner-path">

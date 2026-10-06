@@ -19,6 +19,7 @@ import {
   Menu,
   Check,
   Search,
+  Calculator,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { useMarketClock } from "@/lib/market/useMarketClock";
@@ -50,6 +51,9 @@ import Preferences from "./screens/Preferences";
 import Dashboard from "./screens/Dashboard";
 import Portfolio from "./screens/Portfolio";
 import Community from "./screens/Community";
+import ReferralCard from "./ReferralCard";
+import VisualTools from "./VisualTools";
+import {PsychologyVisuals} from "./PracticeVisuals";
 import Practice from "./screens/Practice";
 import TradeHistory from "./screens/TradeHistory";
 
@@ -60,7 +64,8 @@ import { ExplainTrade } from "./Trading";
 const navigation = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/learn", label: "Learn", icon: BookOpen },
-  { href: "/market", label: "Market", icon: ChartNoAxesCombined },
+  { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
+  { href: "/tools", label: "Tools", icon: Calculator },
   { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/history", label: "Trade History", icon: History },
@@ -385,6 +390,7 @@ export default function Simulator() {
             />
           )}
           {page === "community" && <Community state={state} user={user}/>}
+          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Explore size, risk, outcomes, and your mindset.</p></div></div><VisualTools tick={state.tick}/><PsychologyVisuals state={state} update={update}/></>}
           {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
@@ -410,6 +416,7 @@ export default function Simulator() {
             "market",
             "portfolio",
             "practice",
+            "tools",
             "community",
             "history",
             "achievements",
@@ -423,6 +430,7 @@ export default function Simulator() {
               label="Go to dashboard"
             />
           )}
+          {page === "profile" && <ReferralCard/>}
           <div id="account">
             <AuthPanel user={user} pending={pending} />
           </div>

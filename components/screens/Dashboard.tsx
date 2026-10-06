@@ -1,4 +1,8 @@
 "use client";
+import TradingBenefits from "../TradingBenefits";
+import ReferralCard from "../ReferralCard";
+import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
+import {LearningRoadmap} from "../VisualLearning";
 import {SproutMission} from "../SproutMission";
 import Link from "next/link";
 import type { State, Trade, Lesson } from "@/types";
@@ -96,7 +100,7 @@ export default function Dashboard({
             <Delta value={p.gain} />
           </h2>
           <small>
-            <Delta value={p.percent} percent /> since you started
+            <Delta value={p.percent} percent /> since you started · deposits excluded
           </small>
         </section>
       </div>
@@ -117,13 +121,14 @@ export default function Dashboard({
           <Chart
             data={
               state.snapshots.length > 1
-                ? state.snapshots.map((s) => ({ date: s.date, price: s.value }))
+                ? [...state.snapshots.map((s) => ({ date: s.date, price: s.value })), {date:"Now",price:p.value}]
                 : [
                     { date: "Starting balance", price: 10000 },
-                    { date: "Now", price: 10000 },
+                    { date: "Now", price: p.value },
                   ]
             }
           />
+          {!!state.referralDeposits&&<p className="small">This equity curve includes virtual referral deposits. Trading returns exclude those deposits.</p>}
           <div className="portfolio-footer">
             <span>
               <i className="legend-dot" />
@@ -245,25 +250,12 @@ export default function Dashboard({
           )}
         </section>
       </div>
-      <section className="market-overview">
-        <div>
-          <span className="eyebrow">THE BIGGER PICTURE</span>
-          <h2>A snapshot of the market</h2>
-          <p>Seeded market examples. No live market connection.</p>
-        </div>
-        {[
-          { name: "S&P 500", price: "5,842.10", delta: 0.56 },
-          { name: "NASDAQ", price: "18,421.09", delta: 1.12 },
-          { name: "Dow Jones", price: "43,218.70", delta: -0.23 },
-        ].map((m) => (
-          <div key={m.name}>
-            <span>{m.name}</span>
-            <strong>{m.price}</strong>
-            <Delta value={m.delta} percent />
-          </div>
-        ))}
-      </section>
+      <DailySnapshot tick={state.tick}/>
+      <PracticeStats state={state}/>
+      <LearningRoadmap state={state}/>
+      <ReferralCard/>
       <SproutMission />
+      <TradingBenefits/>
     </>
   );
 }

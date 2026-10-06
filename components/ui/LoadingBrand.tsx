@@ -1,4 +1,4 @@
-import { Sprout } from "lucide-react";
+import Image from "next/image";
 import Logo from "./Logo";
 export default function LoadingBrand({
   message = "Preparing your practice space…",
@@ -12,7 +12,7 @@ export default function LoadingBrand({
       <div className="loading-emblem" aria-hidden="true">
         <div className="loading-orbit"><span /><span /><span /></div>
         <div className="loading-ring" />
-        <div className="loading-seed"><Sprout size={62} strokeWidth={1.7} /></div>
+        <div className="loading-seed"><Image src="/mascot/sprouty.png" width={112} height={112} alt=""/></div>
       </div>
       <Logo />
       <p className="loading-message">{message}</p>

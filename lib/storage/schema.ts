@@ -28,6 +28,9 @@ export function isAccountState(value: unknown): value is State {
     return false;
   if (value.journal !== undefined && (!every(value.journal, j => record(j) && text(j.tradeId) && text(j.note) && j.note.length <= 4000 && text(j.emotion) && j.emotion.length <= 80 && (j.initialRisk === undefined || positive(j.initialRisk))) || !unique((value.journal as Record<string, unknown>[]).map(j=>j.tradeId)))) return false;
   if (value.challenge !== undefined && (!record(value.challenge) || !["plan-3","seven-days"].includes(String(value.challenge.id)) || !date(value.challenge.startedAt) || !positive(value.challenge.startingEquity) || !integer(value.challenge.startTradeCount))) return false;
+  if (value.referralDeposits !== undefined && !nonnegative(value.referralDeposits)) return false;
+  if (value.moods !== undefined && (!every(value.moods, m=>record(m)&&text(m.id)&&!!m.id&&date(m.date)&&["Calm","Fear","Greed","Tilt","Hesitation"].includes(String(m.mood))) || value.moods.length>90 || !unique(value.moods.map(m=>(m as Record<string,unknown>).id)))) return false;
+  if (value.returnGoal !== undefined && (!record(value.returnGoal)||!date(value.returnGoal.startedAt)||!positive(value.returnGoal.startingEquity)||!positive(value.returnGoal.targetPercent)||value.returnGoal.targetPercent>100)) return false;
   const profile = value.profile,
     learning = value.learning;
   if (

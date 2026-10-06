@@ -6,6 +6,7 @@ export const test = base.extend({
     await freeze(page);
     await page.route("**/api/community/status", r=>r.fulfill({contentType:"application/json",body:JSON.stringify({community:true,reviews:true})}));
     await page.route("**/rest/v1/learner_reviews**", r=>r.fulfill({contentType:"application/json",body:"[]"}));
+    await page.route("**/rest/v1/rpc/sprout_*",r=>r.fulfill({status:404,contentType:"application/json",body:JSON.stringify({code:"PGRST202",message:"Referral activation pending"})}));
     await runFixture(page);
     context.off("page", freeze);
   },

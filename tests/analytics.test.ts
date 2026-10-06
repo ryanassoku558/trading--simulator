@@ -16,7 +16,7 @@ it("calculates win rate, recorded R, and peak-to-trough sampled drawdown",()=>{
  s.trades=[trade,{...trade,id:"loss",realized:-10},{...trade,id:"flat",realized:0}];
  s.journal=[{tradeId:"win",note:"Planned risk",emotion:"Calm",initialRisk:10},{tradeId:"loss",note:"Review",emotion:"Calm",initialRisk:20}];
  s.snapshots=[{date:"start",value:10000},{date:"peak",value:12000},{date:"trough",value:9000}];
- const a=performance(s);expect(a.winRate).toBe(50);expect(a.averageR).toBe(.75);expect(a.maxDrawdown).toBe(25);expect(a.realized).toBe(10);
+ const a=performance(s);expect(a.winRate).toBe(50);expect(a.averageR).toBe(.75);expect(a.maxDrawdown).toBe(25);expect(a.realized).toBe(10);expect(a.bestTrade?.id).toBe("win");expect(a.worstTrade?.id).toBe("loss");
 });
 it("validates journal extensions while preserving old accounts and clearing reset data",()=>{
  const s=initialState();expect(isAccountState(s)).toBe(true);

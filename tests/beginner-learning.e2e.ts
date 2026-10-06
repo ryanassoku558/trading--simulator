@@ -3,7 +3,7 @@ test("beginner path starts with day trading and continues to ownership without a
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   await page.goto("/learn");
   await page.getByRole("button", { name: "Start beginner path" }).click();
   const dialog = page.getByRole("dialog");
@@ -33,14 +33,14 @@ test("beginner path starts with day trading and continues to ownership without a
     dialog.getByRole("heading", { name: "What does buying a stock mean?" }),
   ).toBeVisible();
   await page.reload();
-  await expect(page.getByText("2 / 54 lessons")).toBeVisible();
+  await expect(page.getByText("2 / 59 lessons")).toBeVisible();
 });
 test("all five beginner labs work and account-rule references are visible on mobile", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore Demo" }).click();
+  await page.getByRole("button", { name: "Try the Simulator" }).click();
   const exercise = page.getByRole("region", {
     name: "Interactive practice exercise",
   });

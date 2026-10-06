@@ -259,7 +259,7 @@ export const dayTradingLessons: Lesson[] = content.map((c, index) => ({
 export const beginnerLearningOrder = [
   31, 1, 3, 4, 5, 32, 33, 9, 34, 11, 12, 35, 36, 37, 14, 15, 38, 13, 39, 40, 41,
   42, 43, 44, 2, 6, 7, 8, 10, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 16, 17,
-  18, 19, 20, 26, 27, 28, 29, 30, 21, 22, 23, 24, 25,
+  18, 19, 20, 26, 27, 28, 29, 30, 55, 56, 57, 58, 59, 21, 22, 23, 24, 25,
 ];
 export const accountRulesMetadata = {
   updated: "2026-10-06",
