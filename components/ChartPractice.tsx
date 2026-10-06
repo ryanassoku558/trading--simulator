@@ -1,0 +1,29 @@
+"use client";
+import {useState} from "react";
+import {RotateCcw, ChevronRight, Lightbulb} from "lucide-react";
+const scenarios=[
+ {name:"Breakout or chase?",prices:[98,99,100,99,100,100,101,103,104,101,99,98],answer:1,choices:["Buy immediately because it went up","Pause and define a risk plan","Assume the next candle must be green"],feedback:"A breakout can fail. Pausing to identify your reason, invalidation, and size is a stronger process than buying only because price rose."},
+ {name:"Support under pressure",prices:[105,103,101,100,102,103,101,100,99,97,99,98],answer:0,choices:["A past bounce does not guarantee another","Buy because $100 cannot break","Double the size to recover losses"],feedback:"Support is an observed area, not a floor. Price can move through it. Size the possible loss and avoid treating a pattern as certainty."},
+ {name:"A pullback in an uptrend",prices:[95,97,96,99,98,101,100,99,101,103,100,104],answer:2,choices:["Every dip guarantees a rebound","Ignore size if the chart looks strong","Compare possible loss with a written plan"],feedback:"An uptrend does not remove risk. A planned entry names the condition, the size, and what would invalidate the idea before trading."}
+];
+function Sketch({prices,annotated=false,entry}: {prices:number[];annotated?:boolean;entry?:number}){
+ const x=(i:number)=>32+i*48,y=(n:number)=>210-(n-94)*13;
+ return <svg className="practice-chart" viewBox="0 0 610 270" role="img" aria-label="Illustrative price chart with support near $100 and labeled price levels">
+  {[96,100,104,108].map(n=><g key={n}><line x1="20" x2="580" y1={y(n)} y2={y(n)} stroke="var(--line)"/><text x="5" y={y(n)-7} fill="var(--muted)" fontSize="11">${n}</text></g>)}
+  <polyline points={prices.map((n,i)=>`${x(i)},${y(n)}`).join(' ')} fill="none" stroke="var(--green)" strokeWidth="3"/>
+  {annotated&&<g><line x1="20" x2="580" y1={y(100)} y2={y(100)} stroke="#ae85e7" strokeDasharray="6 5"/><text x="295" y={y(100)+19} fill="var(--muted)" fontSize="12">Observed support / resistance area</text><text x="25" y="244" fill="var(--muted)" fontSize="12">A level can break. A pattern is not a prediction.</text></g>}
+  {entry!==undefined&&<g><circle cx={x(entry)} cy={y(prices[entry])} r="7" fill="#ad89ec"/><text x={Math.min(x(entry)-35,440)} y={y(prices[entry])-17} fill="var(--ink)" fontSize="12">Entry to review</text></g>}
+ </svg>;
+}
+export default function ChartPractice(){
+ const [tab,setTab]=useState("Replay"),[scenario,setScenario]=useState(0),[step,setStep]=useState(8),[choice,setChoice]=useState<number|null>(null),[pattern,setPattern]=useState("");
+ const current=scenarios[scenario];
+ return <section className="card chart-lab" id="chart-practice">
+  <div className="card-heading"><div><span className="eyebrow">INTERACTIVE CHART LAB</span><h2>What would you do here?</h2><p>Learn the process before trying to time a purchase.</p></div><Lightbulb size={25}/></div>
+  <div className="chart-type-buttons" role="group" aria-label="Chart practice mode">{["Replay","Annotated","Compare entries","Pattern practice"].map(t=><button key={t} className={t===tab?"active":""} aria-pressed={t===tab} onClick={()=>setTab(t)}>{t}</button>)}</div>
+  {tab==="Replay"&&<><label className="lab-selector">Scenario<select aria-label="Replay scenario" value={scenario} onChange={e=>{setScenario(Number(e.target.value));setStep(8);setChoice(null);}}>{scenarios.map((s,i)=><option value={i} key={s.name}>{s.name}</option>)}</select></label><Sketch prices={current.prices.slice(0,step)}/><p>Pause at the decision point. Which approach shows a stronger process?</p><div className="lab-choices">{current.choices.map((c,i)=><button className={choice===i?"chosen":""} key={c} onClick={()=>setChoice(i)}>{c}</button>)}</div>{choice!==null&&<p role="status" className="lab-feedback">{choice===current.answer?"Good reasoning. ":"Reconsider the risk. "}{current.feedback}</p>}<div className="hero-buttons"><button className="secondary" onClick={()=>setStep(Math.min(current.prices.length,step+1))} disabled={step===current.prices.length}><ChevronRight size={16}/>Reveal next period</button><button className="secondary" onClick={()=>{setStep(8);setChoice(null);}}><RotateCcw size={16}/>Replay scenario</button></div><small>One possible outcome, shown for learning. No trade is placed.</small></>}
+  {tab==="Annotated"&&<><Sketch prices={scenarios[1].prices} annotated/><p>Price reacted near $100 before moving below it. The annotation identifies an observed area, not a guaranteed future bounce. The line connects sample closes; each step represents one example period.</p></>}
+  {tab==="Compare entries"&&<><div className="entry-comparison"><div><h3>Planned entry</h3><Sketch prices={current.prices} entry={5}/><p>State an entry condition, possible loss, size, and exit plan before you act.</p></div><div><h3>Impulsive entry</h3><Sketch prices={current.prices} entry={8}/><p>Buying because a price is moving quickly leaves no clear risk plan.</p></div></div><div className="tip">“Good” describes a thoughtful process. A planned trade can still lose; a profitable impulse can still be a poor habit.</div></>}
+  {tab==="Pattern practice"&&<><Sketch prices={scenarios[2].prices.slice(0,8)} annotated/><p>Which description fits these sample prices?</p><div className="lab-choices">{["An uptrend with a pullback","A guaranteed profitable setup","A straight line with no price changes"].map(p=><button className={pattern===p?"chosen":""} key={p} onClick={()=>setPattern(p)}>{p}</button>)}</div>{pattern&&<p role="status" className="lab-feedback">{pattern==="An uptrend with a pullback"?"Correct: higher swings followed by a pullback. That describes the past; it does not guarantee what happens next.":"Look at the rising swings and recent dip. Describe what happened without promising the next move."}</p>}</>}
+ </section>;
+}

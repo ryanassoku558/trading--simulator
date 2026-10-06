@@ -1,0 +1,61 @@
+import {test,expect} from "./fixtures";
+test("themes persist, ticker pauses, and tutorial video actually plays",async({page})=>{
+ await page.goto('/');
+ await page.getByRole('button',{name:'Switch to dark mode'}).click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ await page.reload();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ await page.getByRole('button',{name:'Pause stock ticker'}).click();
+ await expect(page.locator('.tape-track')).toHaveCSS('animation-play-state','paused');
+ await page.getByRole('button',{name:'Play stock ownership video'}).click();
+ const video=page.getByRole('dialog').locator('video');
+ await video.evaluate(async(el:HTMLVideoElement)=>{el.muted=true;await el.play();});
+ await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(0);
+ expect(await video.evaluate((el:HTMLVideoElement)=>el.duration)).toBeCloseTo(30,0);
+ await page.getByText('Read video transcript',{exact:true}).click();
+ await expect(page.getByRole('dialog').getByText('A stock represents ownership.',{exact:false})).toBeVisible();
+ await page.getByRole('button',{name:'Close dialog'}).click();
+ await page.getByRole('button',{name:'Switch to light mode'}).click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','light');
+});
+test("chart replays, journal saving, and challenge progress work on mobile",async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/');await page.getByRole('button',{name:'Explore Demo'}).click();
+ await page.goto('/practice');
+ await page.getByRole('button',{name:'Pause and define a risk plan'}).click();
+ await expect(page.locator('.lab-feedback')).toContainText('Good reasoning');
+ await page.getByRole('button',{name:'Reveal next period'}).click();
+ await page.getByRole('button',{name:'Replay scenario'}).click();
+ await expect(page.locator('.lab-feedback')).toHaveCount(0);
+ await page.getByRole('button',{name:'Pattern practice',exact:true}).click();
+ await page.getByRole('button',{name:'An uptrend with a pullback',exact:true}).click();
+ await expect(page.locator('.lab-feedback')).toContainText('Correct');
+ await page.getByRole('button',{name:'Start three-trade challenge'}).click();
+ await page.goto('/market/AAPL');
+ await page.getByRole('button',{name:'Review buy AAPL'}).click();await page.getByRole('button',{name:'Confirm buy'}).click();
+ await page.getByRole('button',{name:'Got it · keep exploring'}).click();
+ await page.goto('/practice');
+ await page.getByRole('textbox',{name:'Trade journal note'}).fill('I used one share and reviewed the possible loss.');
+ await page.getByRole('button',{name:'Save journal entry'}).click();
+ await expect(page.getByText('Trades reviewed: 1 / 3')).toBeVisible();
+ await page.reload();await expect(page.getByRole('textbox',{name:'Trade journal note'})).toHaveValue('I used one share and reviewed the possible loss.');
+ for(const route of ['/practice','/learn','/community']){
+  await page.goto(route);await expect(page.locator('h1')).toHaveCount(1);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ }
+});
+test("community drafts and chart annotations work without pretending to publish",async({page})=>{
+ await page.route('**/api/community/status',r=>r.fulfill({contentType:'application/json',body:JSON.stringify({community:false,reviews:false})}));
+ await page.route('**/rest/v1/community_posts**',r=>r.fulfill({status:404,contentType:'application/json',body:JSON.stringify({code:'PGRST205'})}));
+ await page.goto('/');await page.getByRole('button',{name:'Explore Demo'}).click();await page.goto('/community');
+ await expect(page.getByText('The community is opening soon.')).toBeVisible();
+ await page.getByRole('button',{name:'Chart competition',exact:true}).click();
+ await page.getByRole('button',{name:'Add support line'}).click();
+ await page.getByRole('textbox',{name:'Community post title'}).fill('Support and risk');
+ await page.getByRole('textbox',{name:'Community post body'}).fill('I marked a level and considered what would invalidate it.');
+ await page.getByRole('button',{name:'Save private draft'}).click();
+ await expect(page.getByRole('button',{name:'Publish chart'})).toBeDisabled();
+ await page.reload();await page.getByRole('button',{name:'Chart competition',exact:true}).click();await page.getByRole('button',{name:'Restore draft'}).click();
+ await expect(page.getByRole('textbox',{name:'Community post title'})).toHaveValue('Support and risk');
+ await expect(page.locator('.markup-chart line')).toHaveCount(5);
+ await page.getByRole('button',{name:'Leaderboards',exact:true}).click();await expect(page.getByRole('heading',{name:'Virtual portfolio value',exact:true})).toBeVisible();
+});

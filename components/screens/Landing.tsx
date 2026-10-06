@@ -17,6 +17,11 @@ import {
   Check,
 } from "lucide-react";
 
+import LearnerReviews from "../LearnerReviews";
+import TutorialLibrary from "../TutorialLibrary";
+import ThemeToggle from "../ThemeToggle";
+import MarketTicker from "../MarketTicker";
+import {SproutMission, LearnerStories} from "../SproutMission";
 import Dialog from "../Dialog";
 import Logo from "../ui/Logo";
 export default function Landing({
@@ -40,7 +45,7 @@ export default function Landing({
 }) {
   const router = useRouter();
   const [previewTicker, setPreviewTicker] = useState("AAPL");
-  const previewQuote = quote(previewTicker);
+  const previewQuote = quote(previewTicker, state.tick);
   return (
     <main className="landing">
       <div className="landing-utility">
@@ -54,12 +59,15 @@ export default function Landing({
         <nav aria-label="Website navigation">
           <a href="#platform">Platform</a>
           <a href="#education">Education</a>
+          <a href="#tutorials">Videos</a>
           <a href="#how-it-works">How it works</a>
         </nav>
+        <ThemeToggle />
         <a className="secondary" href="#account">
           Sign in <ArrowUpRight size={15} />
         </a>
       </header>
+      <MarketTicker tick={state.tick}/>
       <section className="landing-hero" id="platform">
         <div className="hero-copy">
           <span className="eyebrow">
@@ -159,9 +167,9 @@ export default function Landing({
                   {t}
                 </button>
               ))}
-              <span>1M · Candlesticks</span>
+              <span>LIVE · Candlesticks</span>
             </div>
-            <CandlestickChart data={candles(previewTicker)} />
+            <CandlestickChart data={candles(previewTicker, "LIVE", state.tick)} />
             <div className="preview-bottom">
               <ShieldCheck size={15} />
               <span>Practice every decision. Understand every trade.</span>
@@ -260,6 +268,10 @@ export default function Landing({
           </li>
         </ol>
       </section>
+      <TutorialLibrary />
+      <SproutMission />
+      <LearnerStories />
+      <LearnerReviews/>
       <div id="account" className="landing-account">
         {accountPanel}
       </div>
@@ -271,6 +283,7 @@ export default function Landing({
         <div className="footer-links">
           <a href="#platform">Platform</a>
           <a href="#education">Education</a>
+          <a href="#tutorials">Videos</a>
           <a href="#how-it-works">How it works</a>
           <a href="#account">Account</a>
         </div>

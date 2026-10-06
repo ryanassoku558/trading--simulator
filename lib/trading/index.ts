@@ -199,6 +199,8 @@ export function resetSimulator(s: State): State {
   const fresh = initialState();
   return {
     ...s,
+    journal: [],
+    challenge: undefined,
     cash: fresh.cash,
     holdings: [],
     trades: [],

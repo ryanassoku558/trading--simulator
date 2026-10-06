@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import ChartPractice from "./ChartPractice";
+import TutorialLibrary from "./TutorialLibrary";
+import TutorialVideo from "./TutorialVideo";
+import tutorials from "@/lib/education/tutorials.json";
 import CandleLessonExample from "./CandleLessonExample";
 import BeginnerExercise from "./BeginnerExercise";
 import { BookOpen, Check, ArrowRight, Lightbulb } from "lucide-react";
@@ -89,6 +93,8 @@ export default function Learning({
           <span>Quiz accuracy</span>
         </div>
       </div>
+      <TutorialLibrary />
+      <ChartPractice/>
       <section className="card beginner-path">
         <div>
           <span className="eyebrow">
@@ -169,6 +175,7 @@ export default function Learning({
       {active && (
         <Dialog title={active.title} onClose={() => setActive(null)}>
           <div className="eyebrow">LEVEL {active.level} · BITE-SIZE LESSON</div>
+          {tutorials.find(t=>t.lessonIds.includes(active.id)) && <TutorialVideo key={active.id} slug={tutorials.find(t=>t.lessonIds.includes(active.id))!.slug}/>}
           <p className="lesson-copy">{active.explanation}</p>
           <div className="example">
             <span className="eyebrow">LET’S MAKE IT REAL</span>

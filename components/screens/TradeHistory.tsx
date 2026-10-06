@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import type { State, Trade } from "@/types";
 import { money } from "@/lib/market";
 import { Delta, Empty } from "../ui/MarketUI";
@@ -23,6 +24,7 @@ export default function TradeHistory({
           <p>Revisit any trade to understand the numbers behind it.</p>
         </div>
       </div>
+      <Link href="/practice#journal" className="secondary journal-history-link">Open trade journal & analytics <ArrowUpRight size={16}/></Link>
       <section className="card">
         <h2>Completed trades</h2>
         {state.trades.length ? (
@@ -80,7 +82,7 @@ export default function TradeHistory({
       <section className="card">
         <h2>Limit orders</h2>
         <p className="small">
-          Use “Advance market” to check price conditions. No funds or shares are
+          Pending limits are checked automatically while the app is open. No funds or shares are
           reserved. Orders without sufficient resources cancel when triggered.
         </p>
         <button className="secondary" onClick={advance}>

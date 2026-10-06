@@ -92,7 +92,13 @@ export interface VirtualAccount {
   trades: Trade[];
   orders: Order[];
 }
+export interface JournalEntry {
+ tradeId: string; note: string; emotion: string; initialRisk?: number;
+}
+export interface PracticeChallenge { id: string; startedAt: string; startingEquity: number; startTradeCount: number; }
 export interface State extends VirtualAccount {
+ journal?: JournalEntry[];
+ challenge?: PracticeChallenge;
   profile: Profile;
   learning: LearningProgress;
   watchlist: string[];

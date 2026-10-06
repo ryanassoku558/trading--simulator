@@ -26,6 +26,8 @@ const unique = (items: unknown[]) => new Set(items).size === items.length;
 export function isAccountState(value: unknown): value is State {
   if (!record(value) || !record(value.profile) || !record(value.learning))
     return false;
+  if (value.journal !== undefined && (!every(value.journal, j => record(j) && text(j.tradeId) && text(j.note) && j.note.length <= 4000 && text(j.emotion) && j.emotion.length <= 80 && (j.initialRisk === undefined || positive(j.initialRisk))) || !unique((value.journal as Record<string, unknown>[]).map(j=>j.tradeId)))) return false;
+  if (value.challenge !== undefined && (!record(value.challenge) || !["plan-3","seven-days"].includes(String(value.challenge.id)) || !date(value.challenge.startedAt) || !positive(value.challenge.startingEquity) || !integer(value.challenge.startTradeCount))) return false;
   const profile = value.profile,
     learning = value.learning;
   if (

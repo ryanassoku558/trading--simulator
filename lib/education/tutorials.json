@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "stocks",
+    "title": "What is a stock?",
+    "lessonIds": [
+      1,
+      3
+    ],
+    "duration": 30,
+    "scenes": [
+      {
+        "title": "A small piece of a company",
+        "caption": "A stock represents ownership. One share is one unit of that ownership.",
+        "visual": "ownership"
+      },
+      {
+        "title": "Cash becomes shares",
+        "caption": "Buy 2 shares at $100 each: spend $200 in cash and own 2 shares.",
+        "visual": "buy"
+      },
+      {
+        "title": "Value can rise",
+        "caption": "If each share reaches $110, 2 shares are worth $220. That is a $20 unrealized gain.",
+        "visual": "gain"
+      },
+      {
+        "title": "Value can fall",
+        "caption": "If each share falls to $90, 2 shares are worth $180. That is a $20 unrealized loss.",
+        "visual": "loss"
+      },
+      {
+        "title": "Practice the idea",
+        "caption": "Use virtual cash in Sprout. A real stock never guarantees a profit.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "day-trading",
+    "title": "Day trading in 30 seconds",
+    "lessonIds": [
+      31
+    ],
+    "duration": 30,
+    "scenes": [
+      {
+        "title": "What is a day trade?",
+        "caption": "Opening and closing a position during the same trading day.",
+        "visual": "day"
+      },
+      {
+        "title": "A same-day example",
+        "caption": "Buy at 10 a.m. Monday. Sell at 2 p.m. Monday. That is a day trade.",
+        "visual": "timeline"
+      },
+      {
+        "title": "A different-day example",
+        "caption": "Buy on Monday and sell on Friday. This is not a same-day trade.",
+        "visual": "week"
+      },
+      {
+        "title": "Speed brings risk",
+        "caption": "Fast price movements can create losses quickly. Frequent trades do not guarantee income.",
+        "visual": "risk"
+      },
+      {
+        "title": "Learn before you trade",
+        "caption": "Sprout runs simulated prices 24/7. Real US regular sessions generally run 9:30 a.m.\u20134 p.m. Eastern on trading days.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "candlesticks",
+    "title": "Read your first candlestick",
+    "lessonIds": [
+      26,
+      27
+    ],
+    "duration": 30,
+    "scenes": [
+      {
+        "title": "Four prices. One candle.",
+        "caption": "A candle summarizes the open, high, low, and close for one time period.",
+        "visual": "candle"
+      },
+      {
+        "title": "The body",
+        "caption": "The body connects the opening and closing prices. It shows the net price change.",
+        "visual": "body"
+      },
+      {
+        "title": "The wicks",
+        "caption": "Thin lines extend to the highest and lowest prices reached during the period.",
+        "visual": "wicks"
+      },
+      {
+        "title": "Green and red",
+        "caption": "Green closes above the open. Red closes below the open. Neither color predicts the next candle.",
+        "visual": "colors"
+      },
+      {
+        "title": "Try the LIVE view",
+        "caption": "Sprout LIVE candles cover 30 seconds each. Inspect a candle and compare its four prices.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "orders",
+    "title": "Market orders vs. limit orders",
+    "lessonIds": [
+      11,
+      12,
+      52
+    ],
+    "duration": 30,
+    "scenes": [
+      {
+        "title": "Two ways to place an order",
+        "caption": "A market order prioritizes execution. A limit order sets a price condition.",
+        "visual": "orders"
+      },
+      {
+        "title": "Market: trade now",
+        "caption": "Sprout fills at its displayed simulated quote. Real market orders may fill at a different price.",
+        "visual": "market"
+      },
+      {
+        "title": "Buy limit: at or below",
+        "caption": "With a $100 buy limit, the purchase can fill at $100 or less. It cannot fill above $100.",
+        "visual": "limit"
+      },
+      {
+        "title": "A limit may never fill",
+        "caption": "If the price stays above $100, that buy limit waits. A chosen price is not a guaranteed trade.",
+        "visual": "wait"
+      },
+      {
+        "title": "Practice both",
+        "caption": "Sprout checks pending limits while the app is open. Real trading has spreads, slippage, and other costs.",
+        "visual": "practice"
+      }
+    ]
+  }
+]

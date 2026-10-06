@@ -39,6 +39,7 @@ import {
 } from "@/lib/education";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
+import ThemeToggle from "./ThemeToggle";
 import MarketTicker from "./MarketTicker";
 import Landing from "./screens/Landing";
 import Market from "./screens/Market";
@@ -47,6 +48,8 @@ import Achievements from "./screens/Achievements";
 import Preferences from "./screens/Preferences";
 import Dashboard from "./screens/Dashboard";
 import Portfolio from "./screens/Portfolio";
+import Community from "./screens/Community";
+import Practice from "./screens/Practice";
 import TradeHistory from "./screens/TradeHistory";
 
 import { Empty } from "./ui/MarketUI";
@@ -57,8 +60,10 @@ const navigation = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/market", label: "Market", icon: ChartNoAxesCombined },
+  { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/history", label: "Trade History", icon: History },
+  { href: "/community", label: "Community", icon: UserRound },
   { href: "/achievements", label: "Achievements", icon: Trophy },
 ];
 export default function Simulator() {
@@ -326,6 +331,7 @@ export default function Simulator() {
             </button>
           </form>
           <div className="topbar-right">
+            <ThemeToggle />
             <span className="demo-badge">
               <span className="live-dot" />{" "}
               {user ? "Cloud account" : "Demo mode"}
@@ -389,6 +395,8 @@ export default function Simulator() {
               label="Return to market"
             />
           )}
+          {page === "community" && <Community state={state} user={user}/>}
+          {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
             <TradeHistory
@@ -412,6 +420,8 @@ export default function Simulator() {
             "learn",
             "market",
             "portfolio",
+            "practice",
+            "community",
             "history",
             "achievements",
             "profile",

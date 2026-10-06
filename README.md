@@ -160,3 +160,18 @@ The recommended beginner path covers all 54 lessons, starting with day trading, 
 ### Symbol catalog sources
 
 Catalog snapshot: Nasdaq directory (2026-10-01), other US exchange listings (2026-10-06), excluding test issues, warrants, rights, units, and debt securities. Sources: [datasets/nasdaq-listings](https://github.com/datasets/nasdaq-listings) and [datasets/nyse-other-listings](https://github.com/datasets/nyse-other-listings), public-domain PDDL datasets. Rough stock price seeds: [rreichel3/US-Stock-Symbols](https://github.com/rreichel3/US-Stock-Symbols), 2026-10-06 snapshot. This covers US exchange-listed stocks and ETFs, not worldwide exchanges or OTC stocks. New listings require refreshing the snapshot.
+
+## Learning and community additions
+
+- Four original 30-second, caption-led MP4 tutorials with posters, caption tracks, and readable transcripts. No autoplay or external video tracking. Regenerate with `node scripts/generate-tutorials.mjs` (ffmpeg required).
+- A looping tape of the top 100 simulated stock gainers, refreshed every minute, with pause, focus/hover pause, and reduced-motion support.
+- Light/dark mode follows system preference initially and saves an explicit choice in this browser.
+- `/practice`: annotated chart examples, three replay scenarios, entry-process comparisons, pattern practice, journal notes, learning challenges, and performance analytics. Old accounts remain compatible.
+- Win rate counts sell fills, excluding breakevens; average R requires user-recorded initial risk for the shares closed. Maximum drawdown uses sampled equity rather than a complete historical equity feed.
+- `/community`: public discussion and strategy boards, chart annotations and voting, optional journal-challenge and virtual-portfolio leaderboards, and learner reviews. All public writes require sign-in. Reviews require explicit publication consent; users can edit/remove their review and remove their portfolio snapshot. Portfolio values and challenge scores are user-shared and not independently verified. No fake reviews or leaderboard users are seeded.
+
+### Activate community sharing and reviews
+
+Run [supabase/community.sql](supabase/community.sql) in your existing project's Supabase SQL Editor. This additive migration creates public community tables with row-level security, owner-only writes, private reports, and indexes. It does not alter paper trading accounts. Shared features remain disabled until the required tables are available; private chart/draft tools continue to work. The `/api/community/status` endpoint checks availability without exposing credentials. Read-only checks confirmed these tables were absent when this change was built; production database policies still need verification after the migration.
+
+Community reports are private to database administrators. Review `community_reports` in Supabase to moderate content; the database administrator can remove inappropriate posts/reviews. The current release shows the latest 50 posts per category, the top 100 leaderboard snapshots, and six recent reviews.

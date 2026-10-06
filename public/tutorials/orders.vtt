@@ -1,0 +1,22 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:06.000
+Two ways to place an order. A market order prioritizes execution. A limit order sets a price condition.
+
+2
+00:00:06.000 --> 00:00:12.000
+Market: trade now. Sprout fills at its displayed simulated quote. Real market orders may fill at a different price.
+
+3
+00:00:12.000 --> 00:00:18.000
+Buy limit: at or below. With a $100 buy limit, the purchase can fill at $100 or less. It cannot fill above $100.
+
+4
+00:00:18.000 --> 00:00:24.000
+A limit may never fill. If the price stays above $100, that buy limit waits. A chosen price is not a guaranteed trade.
+
+5
+00:00:24.000 --> 00:00:30.000
+Practice both. Sprout checks pending limits while the app is open. Real trading has spreads, slippage, and other costs.
+

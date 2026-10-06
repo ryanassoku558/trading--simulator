@@ -1,4 +1,5 @@
 "use client";
+import {SproutMission} from "../SproutMission";
 import Link from "next/link";
 import type { State, Trade, Lesson } from "@/types";
 import { money } from "@/lib/market";
@@ -262,6 +263,7 @@ export default function Dashboard({
           </div>
         ))}
       </section>
+      <SproutMission />
     </>
   );
 }
