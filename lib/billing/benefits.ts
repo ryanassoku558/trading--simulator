@@ -11,6 +11,7 @@ export const proBenefits=[
  '3 visual strategy labs · 3 replay scenarios',
  `${psychologyLessonCount} planning & psychology lessons · 5 mood check-in options`,
  'Unlimited quiz retries · 5 questions per quiz',
+ '3 practice modes · standard, high-volatility & replay',
  '8 simulator performance metrics',
  `${achievements.length} achievement badges · 4 mascot growth levels`,
  '$10,000 starting virtual cash · unlimited resets',
