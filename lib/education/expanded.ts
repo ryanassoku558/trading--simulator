@@ -1,3 +1,4 @@
+import {strategyModules} from "./strategy-setups";
 import type {Lesson} from '@/types';
 // Append-only curriculum: existing lesson IDs and earned XP remain valid.
 type Content=[string,string,string,string,string,string,string,string];
@@ -141,5 +142,6 @@ export const expandedModules=[
  ['Context, trading plans, and limits of insider signals','Insider activity can reflect compensation, diversification, taxes, personal liquidity, or a view of the business. Transactions may occur under prearranged trading plans such as Rule 10b5-1 plans, subject to applicable conditions. Consider size relative to existing holdings, repeated patterns, multiple insiders, timing, and notes. A disclosed purchase or sale cannot reveal every motive or guarantee a future price move.','A planned sale representing a small part of a large holding differs from a large discretionary purchase. Both still need business and valuation context, and neither is an automatic entry instruction.','Use disclosures as one research input instead of treating an insider’s action as certainty.','Does a public insider sale prove the stock will fall?','No, motives and market outcomes are uncertain','Yes, every insider sale is a warning of a crash','Only if the sale was planned'],
  ] as Content[]},
 
+ ...strategyModules,
 ];
 export const expandedLessons:Lesson[]=expandedModules.flatMap((module,m)=>module.content.map((c,i)=>({id:60+m*4+i,level:13+m,title:c[0],explanation:c[1],example:c[2],why:c[3],quiz:{question:c[4],options:[c[6],c[5],c[7]],answer:1,explanation:c[2]+' '+c[3]}})));

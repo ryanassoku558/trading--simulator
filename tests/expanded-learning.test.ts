@@ -3,11 +3,11 @@ import {expandedModules,expandedLessons} from '../lib/education/expanded';
 import {lessons,levels,answerLesson,achievements,earned} from '../lib/education';
 import {initialState} from '../lib/trading';
 import {isAccountState} from '../lib/storage/schema';
-it('adds twenty-three complete modules without changing the original lesson identities',()=>{
- expect(expandedModules).toHaveLength(23);expect(expandedLessons).toHaveLength(92);expect(lessons).toHaveLength(151);expect(levels).toHaveLength(35);
+it('adds twenty-eight complete modules without changing the original lesson identities',()=>{
+ expect(expandedModules).toHaveLength(28);expect(expandedLessons).toHaveLength(112);expect(lessons).toHaveLength(171);expect(levels).toHaveLength(40);
  expect(expandedModules.filter(m=>m.track==='Personal finance')).toHaveLength(10);
  expect(lessons.find(l=>l.id===1)?.title).toBe('What is a stock?');expect(lessons.find(l=>l.id===55)?.title).toContain('Moving averages');
- expect(new Set(lessons.map(l=>l.id)).size).toBe(151);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(92);
+ expect(new Set(lessons.map(l=>l.id)).size).toBe(171);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(112);
  for(const l of expandedLessons){expect(l.explanation.length).toBeGreaterThan(200);expect(l.example.length).toBeGreaterThan(90);expect(l.why.length).toBeGreaterThan(30);expect(new Set(l.quiz.options).size).toBe(3);}
  expect(lessons.find(l=>l.id===60)?.explanation).toContain('no single amount');expect(lessons.find(l=>l.id===60)?.explanation).toContain('best time to begin learning is now');
 });

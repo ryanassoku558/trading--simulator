@@ -8,6 +8,7 @@ import Dialog from './Dialog';
 import Sprouty from './Sprouty';
 import ModuleCelebration from './ModuleCelebration';
 import BeginnerExercise from './BeginnerExercise';
+import StrategyLessonChart from "./StrategyLessonChart";
 import CandleLessonExample from './CandleLessonExample';
 import TutorialVideo from './TutorialVideo';
 import {moduleScenario} from '@/lib/education/scenarios';
@@ -25,7 +26,7 @@ export default function LessonPresentation({title,group,moduleMode,state,update,
 <div className="lesson-content">
  {phase==='presentation'&&<><span className="eyebrow">{moduleMode?'MODULE OVERVIEW':'LEARN FIRST'} · {questions.length} quiz question{questions.length===1?'':'s'}</span><h3>{moduleMode?lesson.title:slide===0?'Understand the idea':slide===1?'Explore the example':'Apply what you learned'}</h3>
  {(moduleMode||slide===0)&&<><p className="lesson-copy">{lesson.explanation}</p>{tutorials.find(t=>t.lessonIds.includes(lesson.id))&&<TutorialVideo slug={tutorials.find(t=>t.lessonIds.includes(lesson.id))!.slug}/>}</>}
- {(moduleMode||slide===1)&&<div className="example"><span className="eyebrow">WORKED EXAMPLE</span><p>{lesson.example}</p><CandleLessonExample lessonId={lesson.id}/><BeginnerExercise key={lesson.id} lessonId={lesson.id}/></div>}
+ {(moduleMode||slide===1)&&<div className="example"><span className="eyebrow">WORKED EXAMPLE</span><p>{lesson.example}</p><CandleLessonExample lessonId={lesson.id}/><StrategyLessonChart lessonId={lesson.id}/><BeginnerExercise key={lesson.id} lessonId={lesson.id}/></div>}
  {(moduleMode||slide===2)&&<><div className="tip"><div><strong>Why this matters</strong><p>{lesson.why}</p></div></div><label className="presentation-reflection">Your takeaway (optional, stays here)<textarea key={lesson.id} placeholder="How would you use this idea in practice?"/></label><aside className="lesson-sources"><strong>Explore reliable sources</strong>{[32,39,40,48].includes(lesson.id)?<><p>{accountRulesMetadata.scope}</p>{accountRulesMetadata.sources.map(s=><a key={s.url} href={s.url} target="_blank" rel="noreferrer">{s.label} ↗ </a>)}</>:<a href={lesson.level===19||lesson.level===20?'https://www.irs.gov/':lesson.level===35?'https://www.sec.gov/edgar/search/':'https://www.investor.gov/'} target="_blank" rel="noreferrer">{lesson.level===35?'SEC EDGAR public filings':lesson.level===19||lesson.level===20?'IRS tax and retirement guidance':'Investor.gov education'} ↗</a>}</aside></>}
 
  {(moduleMode?slide===slides-1:slide===2)&&<aside className="example"><span className="eyebrow">QUIZ PREPARATION · APPLICATION SCENARIO</span><p>{moduleScenario(group[0].level).question}</p><p>{moduleScenario(group[0].level).explanation}</p><small>Worked examples explain concepts under stated assumptions; outcomes depend on circumstances. Your quiz has five questions and needs four correct answers to pass.</small></aside>}
