@@ -14,6 +14,7 @@ export const proBenefits=[
  `1 AI trading module · ${aiLessonCount} lessons on research, testing & verification`,
  'Unlimited quiz retries · 5 questions per quiz',
  '3 practice modes · standard, high-volatility & replay',
+ '16 interactive chart-tour steps · 8 advanced Pro steps',
  '8 simulator performance metrics',
  `${achievements.length} achievement badges · 4 mascot growth levels`,
  '$10,000 starting virtual cash · unlimited resets',

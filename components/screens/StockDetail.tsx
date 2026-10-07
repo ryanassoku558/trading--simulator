@@ -2,11 +2,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { State, Trade, Stock } from "@/types";
-import { money, history, candles } from "@/lib/market";
+import { money, history } from "@/lib/market";
 import { StockBadge, Delta } from "../ui/MarketUI";
 
 import Chart from "../Chart";
-import CandlestickChart from "../CandlestickChart";
+import TradingChart from "../TradingChart";
 import { TradePanel } from "../Trading";
 import { RefreshCw, Star, Lightbulb, BookOpen } from "lucide-react";
 export default function StockDetail({
@@ -86,7 +86,7 @@ export default function StockDetail({
             {chartType === "line" ? (
               <Chart data={history(ticker, range, state.tick)} />
             ) : (
-              <CandlestickChart data={candles(ticker, range, state.tick)} />
+              <TradingChart ticker={ticker} state={state} />
             )}
             {chartType === "candles" && (
               <p className="small">
@@ -98,7 +98,7 @@ export default function StockDetail({
                 </Link>
               </p>
             )}
-            <div className="range-buttons">
+            {chartType==="line"&&<div className="range-buttons">
               {["LIVE", "1D", "1W", "1M", "3M", "1Y"].map((r) => (
                 <button
                   className={r === range ? "active" : ""}
@@ -108,9 +108,9 @@ export default function StockDetail({
                   {r}
                 </button>
               ))}
-            </div>
+            </div>}
             <p className="small">
-              LIVE shows 30-second candles across 20 minutes. Prices move automatically 24/7. All prices and history are simulated.
+              Prices move automatically 24/7. All practice prices and chart history are simulated.
             </p>
           </section>
           <section className="card about-company">

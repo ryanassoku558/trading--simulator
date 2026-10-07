@@ -150,20 +150,20 @@ export function quote(ticker: string, tick = 0): Stock {
   quoteCache.set(ticker, result);
   return result;
 }
-function windows(range: string, tick: number) {
-  const width = ({LIVE: 15, "1D": 1080, "1W": 7560, "1M": 32400, "3M": 97200, "1Y": 394200} as Record<string, number>)[range] ?? 32400;
+function windows(range: string, tick: number, count=40) {
+  const width = ({"30s":15,"1m":30,"5m":150,"15m":450,"1h":1800,"1d":43200,LIVE: 15, "1D": 1080, "1W": 7560, "1M": 32400, "3M": 97200, "1Y": 394200} as Record<string, number>)[range] ?? 32400;
   const current = Math.floor(tick / width) * width;
-  return Array.from({length: 40}, (_, i) => ({start: current - (39-i)*width, end: i === 39 ? tick : current - (38-i)*width}));
+  return Array.from({length: count}, (_, i) => ({start: current - (count-1-i)*width, end: i === count-1 ? tick : current - (count-2-i)*width}));
 }
 export function history(ticker: string, range = "1M", tick = 0): StockPriceHistory[] {
   const stock = stockMap.get(ticker);
   if (!stock) throw new Error("Choose a valid stock.");
   return windows(range, tick).map((w, i) => ({date: String(i+1), price: priceAt(stock, w.end)}));
 }
-export function candles(ticker: string, range = "1M", tick = 0): PriceCandle[] {
+export function candles(ticker: string, range = "1M", tick = 0, count=40): PriceCandle[] {
   const stock = stockMap.get(ticker);
   if (!stock) throw new Error("Choose a valid stock.");
-  return windows(range, tick).map((w, i) => {
+  return windows(range, tick,count).map((w, i) => {
     const samples = Array.from({length: 17}, (_, j) => priceAt(stock, w.start + (w.end-w.start)*j/16));
     return {period: String(i+1), open: samples[0], close: samples[16], high: Math.max(...samples), low: Math.min(...samples)};
   });
