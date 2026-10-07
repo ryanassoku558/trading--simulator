@@ -6,7 +6,7 @@
       1,
       3
     ],
-    "duration": 43,
+    "duration": 40,
     "scenes": [
       {
         "title": "A small piece of a company",
@@ -33,7 +33,8 @@
         "caption": "Use virtual cash in Sprout. A real stock never guarantees a profit.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "day-trading",
@@ -41,7 +42,7 @@
     "lessonIds": [
       31
     ],
-    "duration": 43,
+    "duration": 41,
     "scenes": [
       {
         "title": "What is a day trade?",
@@ -68,7 +69,8 @@
         "caption": "Sprout runs simulated prices 24/7. Real US regular sessions generally run 9:30 a.m.–4 p.m. Eastern on trading days.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "candlesticks",
@@ -77,7 +79,7 @@
       26,
       27
     ],
-    "duration": 39,
+    "duration": 35,
     "scenes": [
       {
         "title": "Four prices. One candle.",
@@ -104,7 +106,8 @@
         "caption": "Sprout LIVE candles cover 30 seconds each. Inspect a candle and compare its four prices.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "orders",
@@ -114,7 +117,7 @@
       12,
       52
     ],
-    "duration": 46,
+    "duration": 42,
     "scenes": [
       {
         "title": "Two ways to place an order",
@@ -141,7 +144,8 @@
         "caption": "Sprout checks pending limits while the app is open. Real trading has spreads, slippage, and other costs.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "risk-planning",
@@ -151,7 +155,7 @@
       14,
       15
     ],
-    "duration": 41,
+    "duration": 38,
     "scenes": [
       {
         "title": "Decide what you can lose",
@@ -178,7 +182,8 @@
         "caption": "A real stop can fill worse than planned. Try these numbers in Sprout’s Tools tab.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "support-resistance",
@@ -186,7 +191,7 @@
     "lessonIds": [
       20
     ],
-    "duration": 41,
+    "duration": 38,
     "scenes": [
       {
         "title": "Think areas, not promises",
@@ -213,7 +218,8 @@
         "caption": "In the Chart lab, describe what you see and plan a possible loss before choosing an entry.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "etfs-diversification",
@@ -223,7 +229,7 @@
       77,
       80
     ],
-    "duration": 43,
+    "duration": 38,
     "scenes": [
       {
         "title": "A fund holds investments",
@@ -250,7 +256,8 @@
         "caption": "Study a fund’s holdings, costs, and purpose. Practice comparing stocks and ETFs in Sprout.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "stock-research",
@@ -258,7 +265,7 @@
     "lessonIds": [
       143
     ],
-    "duration": 42,
+    "duration": 38,
     "scenes": [
       {
         "title": "Start with the business",
@@ -285,7 +292,8 @@
         "caption": "Understanding a company does not guarantee a price move. Record your reasoning in a practice journal.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "trading-emotions",
@@ -293,7 +301,7 @@
     "lessonIds": [
       42
     ],
-    "duration": 40,
+    "duration": 37,
     "scenes": [
       {
         "title": "Notice the urge",
@@ -320,7 +328,8 @@
         "caption": "Use Sprout’s mood check-in and journal. Review your habits rather than judging yourself by one result.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "budgeting",
@@ -328,7 +337,7 @@
     "lessonIds": [
       66
     ],
-    "duration": 43,
+    "duration": 38,
     "scenes": [
       {
         "title": "Know what comes in",
@@ -355,7 +364,8 @@
         "caption": "Do not treat essential bill money as trading capital. You can start learning with virtual money today.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "compound-interest",
@@ -363,7 +373,7 @@
     "lessonIds": [
       73
     ],
-    "duration": 50,
+    "duration": 45,
     "scenes": [
       {
         "title": "Growth can build on growth",
@@ -390,7 +400,8 @@
         "caption": "Investment returns vary and may be negative. Compare assumptions before using any growth projection.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   },
   {
     "slug": "profit-loss",
@@ -400,7 +411,7 @@
       5,
       8
     ],
-    "duration": 45,
+    "duration": 41,
     "scenes": [
       {
         "title": "Compare with what you paid",
@@ -427,6 +438,7 @@
         "caption": "Fees and slippage affect real results. Sprout’s Profit / loss explorer lets you try hypothetical exits.",
         "visual": "practice"
       }
-    ]
+    ],
+    "narrationVersion": "joe-neural-v1"
   }
 ]

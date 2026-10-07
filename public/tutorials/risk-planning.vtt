@@ -1,66 +1,46 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:02.189
-Decide what you can lose. A risk
+00:00:00.000 --> 00:00:01.579
+Decide what you can lose.
 
 2
-00:00:02.189 --> 00:00:04.066
-budget is the planned loss on one
+00:00:01.699 --> 00:00:06.424
+A risk budget is the planned loss on one trade, not the cash spent buying shares.
 
 3
-00:00:04.066 --> 00:00:07.241
-trade, not the cash spent buying shares.
+00:00:06.958 --> 00:00:08.839
+Start with a simple example.
 
 4
-00:00:07.641 --> 00:00:10.636
-Start with a simple example. 1%
+00:00:08.959 --> 00:00:13.905
+1% of a $1,000 practice account is a $10 planned risk budget.
 
 5
-00:00:10.636 --> 00:00:13.112
-of a $1,000 practice account is
+00:00:14.425 --> 00:00:16.074
+Measure the stop distance.
 
 6
-00:00:13.112 --> 00:00:15.395
-a $10 planned risk budget.
+00:00:16.194 --> 00:00:21.848
+A $100 entry and $98 stop give a $2 planned loss per share.
 
 7
-00:00:15.808 --> 00:00:18.786
-Measure the stop distance. A $100
+00:00:22.384 --> 00:00:23.916
+Calculate the share count.
 
 8
-00:00:18.786 --> 00:00:21.161
-entry and $98 stop give
+00:00:24.036 --> 00:00:30.549
+$10 risk budget divided by $2 per share gives 5 shares, costing $500 to buy.
 
 9
-00:00:21.161 --> 00:00:23.482
-a $2 planned loss per share.
+00:00:31.070 --> 00:00:32.556
+Allow for uncertainty.
 
 10
-00:00:23.891 --> 00:00:26.828
-Calculate the share count. $10 risk
+00:00:32.676 --> 00:00:34.974
+A real stop can fill worse than planned.
 
 11
-00:00:26.828 --> 00:00:28.997
-budget divided by $2 per share
-
-12
-00:00:28.997 --> 00:00:32.340
-gives 5 shares, costing $500 to
-
-13
-00:00:32.340 --> 00:00:33.164
-buy.
-
-14
-00:00:33.564 --> 00:00:36.261
-Allow for uncertainty. A real stop can
-
-15
-00:00:36.261 --> 00:00:39.040
-fill worse than planned. Try these numbers
-
-16
-00:00:39.040 --> 00:00:40.875
-in Sprout’s Tools tab.
+00:00:35.094 --> 00:00:37.405
+Try these numbers in Sprout’s Tools tab.
 

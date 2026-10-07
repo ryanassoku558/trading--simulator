@@ -163,7 +163,7 @@ Catalog snapshot: Nasdaq directory (2026-10-01), other US exchange listings (202
 
 ## Learning and community additions
 
-- Twelve original narrated MP4 tutorials with posters, word-timed caption tracks enabled by default, and readable transcripts. No autoplay or external video tracking. Videos adapt to narration length. Regenerate audio with `python scripts/narrate-tutorials.py /tmp/sprout-narration` (piper-tts required for its bundled local eSpeak voice), then run `node scripts/generate-tutorials.mjs` (ffmpeg required). Set `TUTORIAL_NARRATION_DIR` to use another narration directory.
+- Twelve original narrated MP4 tutorials with posters, synchronized caption tracks enabled by default, and readable transcripts. No autoplay or external video tracking. Videos adapt to narration length. Regenerate audio with the neural voice setup in `scripts/voices/README.md`, then run `node scripts/generate-tutorials.mjs` (ffmpeg required). Set `TUTORIAL_NARRATION_DIR` to use another narration directory.
 - A looping tape of the top 100 simulated stock gainers, refreshed every minute, with pause, focus/hover pause, and reduced-motion support.
 - Light/dark mode follows system preference initially and saves an explicit choice in this browser.
 - `/practice`: annotated chart examples, three replay scenarios, entry-process comparisons, pattern practice, journal notes, learning challenges, and performance analytics. Old accounts remain compatible.

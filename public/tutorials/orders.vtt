@@ -1,70 +1,62 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:02.105
-Two ways to place an order. A
+00:00:00.000 --> 00:00:01.463
+Two ways to place an order.
 
 2
-00:00:02.105 --> 00:00:05.750
-market order prioritizes execution. A limit order
+00:00:01.583 --> 00:00:04.346
+A market order prioritizes execution.
 
 3
-00:00:05.750 --> 00:00:07.613
-sets a price condition.
+00:00:04.466 --> 00:00:06.707
+A limit order sets a price condition.
 
 4
-00:00:08.013 --> 00:00:11.198
-Market: trade now. Sprout fills at its
+00:00:07.227 --> 00:00:08.678
+Market: trade now.
 
 5
-00:00:11.198 --> 00:00:14.766
-displayed simulated quote. Real market orders may
+00:00:08.798 --> 00:00:11.294
+Sprout fills at its displayed simulated quote.
 
 6
-00:00:14.766 --> 00:00:16.623
-fill at a different price.
+00:00:11.414 --> 00:00:14.340
+Real market orders may fill at a different price.
 
 7
-00:00:17.023 --> 00:00:19.297
-Buy limit: at or below. With a
+00:00:14.860 --> 00:00:16.462
+Buy limit: at or below.
 
 8
-00:00:19.297 --> 00:00:22.053
-$100 buy limit, the purchase can
+00:00:16.582 --> 00:00:21.725
+With a $100 buy limit, the purchase can fill at $100 or less.
 
 9
-00:00:22.053 --> 00:00:24.811
-fill at $100 or less. It
+00:00:21.845 --> 00:00:24.214
+It cannot fill above $100.
 
 10
-00:00:24.811 --> 00:00:27.406
-cannot fill above $100.
+00:00:24.735 --> 00:00:26.221
+A limit may never fill.
 
 11
-00:00:27.815 --> 00:00:29.863
-A limit may never fill. If the
+00:00:26.341 --> 00:00:30.265
+If the price stays above $100, that buy limit waits.
 
 12
-00:00:29.863 --> 00:00:32.741
-price stays above $100, that buy
+00:00:30.385 --> 00:00:32.974
+A chosen price is not a guaranteed trade.
 
 13
-00:00:32.741 --> 00:00:35.306
-limit waits. A chosen price is not a
+00:00:33.494 --> 00:00:34.551
+Practice both.
 
 14
-00:00:35.306 --> 00:00:36.774
-guaranteed trade.
+00:00:34.671 --> 00:00:37.387
+Sprout checks pending limits while the app is open.
 
 15
-00:00:37.190 --> 00:00:40.605
-Practice both. Sprout checks pending limits while
-
-16
-00:00:40.605 --> 00:00:42.961
-the app is open. Real trading has
-
-17
-00:00:42.961 --> 00:00:45.920
-spreads, slippage, and other costs.
+00:00:37.507 --> 00:00:41.095
+Real trading has spreads, slippage, and other costs.
 
