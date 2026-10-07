@@ -1,11 +1,16 @@
 "use client";
 import {useState} from 'react';
-import {ProGate} from "./Subscription";
+import {ProGate,useSubscription} from "./Subscription";
 import ToolGuide from './ToolGuide';
-import {Calculator,ShieldCheck,TrendingUp,Gauge} from 'lucide-react';
+import {Calculator,ShieldCheck,TrendingUp,Gauge,Lock} from 'lucide-react';
 import {positionSize,hypotheticalProfit,volatility} from '@/lib/trading/tools';
 import {candles,money} from '@/lib/market';
-export default function VisualTools({tick=0}:{tick?:number}){return <ProGate feature="All trading tools"><UnlockedTools tick={tick}/></ProGate>;}
+export default function VisualTools({tick=0}:{tick?:number}){
+ const {pro,upgrade}=useSubscription();
+ if(pro)return <UnlockedTools tick={tick}/>;
+ const previews=[{title:'Position size calculator',icon:Calculator,description:'Estimate how many shares fit your practice budget and planned loss limit.'},{title:'Risk calculator',icon:ShieldCheck,description:'Compare a planned risk percentage with the dollars you could lose.'},{title:'Profit / loss explorer',icon:TrendingUp,description:'Explore hypothetical gains and losses at different exit prices.'},{title:'Volatility meter',icon:Gauge,description:'Understand how much generated price movement varies before a practice trade.'}];
+ return <section className="visual-section" id="tools"><div className="section-intro"><span className="eyebrow">4 FINANCIAL TOOLS · SPROUT PRO</span><h2>Explore your trading toolkit</h2><p>Preview each tool below. Sprout Pro unlocks the calculators, sliders, and interactive displays.</p></div><div className="tools-grid">{previews.map(tool=><article className="card visual-tool locked-tool" key={tool.title}><span className="module-icon"><tool.icon size={24}/></span><span className="pro-pill"><Lock size={13}/> Pro · Locked</span><h3>{tool.title}</h3><p>{tool.description}</p><div className="locked-tool-preview" aria-hidden="true"><tool.icon size={45}/><Lock size={20}/></div><button className="secondary full" onClick={()=>upgrade(tool.title)}><Lock size={15}/>Unlock with Pro</button></article>)}</div></section>;
+}
 function UnlockedTools({tick}:{tick:number}){
  const [balance,setBalance]=useState(1000),[risk,setRisk]=useState(1),[entry,setEntry]=useState(100),[stop,setStop]=useState(98),[exitPercent,setExitPercent]=useState(104);
  const exit=entry*exitPercent/100;

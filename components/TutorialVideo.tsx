@@ -1,6 +1,10 @@
 "use client";
+import {canWatchTutorial} from "@/lib/billing/benefits";
+import {useSubscription,ProGate} from "./Subscription";
 import tutorials from "@/lib/education/tutorials.json";
 export default function TutorialVideo({slug}: {slug:string}) {
+ const {pro}=useSubscription();
+ if(!canWatchTutorial(slug,pro))return <ProGate feature="This video tutorial">{null}</ProGate>;
  const tutorial=tutorials.find(t=>t.slug===slug);
  if(!tutorial)return null;
  return <section className="tutorial-player" aria-label={`${tutorial.title} video tutorial`}>
