@@ -409,7 +409,7 @@ export default function Simulator() {
           {page === "community" && <Community state={state} user={user}/>}
           {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></>}
           {page === "about" && <About/>}
-          {page === "practice" && <ProGate feature="Strategy labs, replay & advanced analytics"><Practice state={state} update={update}/></ProGate>}
+          {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
             <TradeHistory

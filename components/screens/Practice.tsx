@@ -8,7 +8,8 @@ import {portfolio} from "@/lib/trading";
 import {PsychologyVisuals,ReturnChallenge} from "../PracticeVisuals";
 import {StrategyCards} from "../VisualLearning";
 import ChartPractice from "../ChartPractice";
-import {Trophy,NotebookPen,ArrowUpRight} from "lucide-react";
+import {useSubscription} from "../Subscription";
+import {Trophy,NotebookPen,ArrowUpRight,Lock,ChartNoAxesCombined,Brain,Target,Activity} from "lucide-react";
 function JournalEditor({trade,state,update}: {trade:Trade;state:State;update:(s:State)=>void}){
  const existing=state.journal?.find(j=>j.tradeId===trade.id);
  const [note,setNote]=useState(existing?.note??""),[emotion,setEmotion]=useState(existing?.emotion??"Calm"),[risk,setRisk]=useState(existing?.initialRisk?.toString()??"");
@@ -24,6 +25,12 @@ function JournalEditor({trade,state,update}: {trade:Trade;state:State;update:(s:
  </form>;
 }
 export default function Practice({state,update}: {state:State;update:(s:State)=>void}){
+ const {pro,upgrade}=useSubscription();
+ if(pro)return <UnlockedPractice state={state} update={update}/>;
+ const labs=[{title:'Chart replay lab',icon:ChartNoAxesCombined,text:'Explore 3 replayable chart scenarios. Reveal price action step by step and practice explaining your next move.'},{title:'Strategy labs',icon:Target,text:'Study 3 visual setups: breakout and retest, support and resistance, and trend pullbacks.'},{title:'Trade journal',icon:NotebookPen,text:'Record your plan, emotions, and initial risk. Review the reasoning behind each virtual trade.'},{title:'Practice challenges',icon:Trophy,text:'Build consistency with 2 journal challenges and a customizable virtual portfolio goal.'},{title:'Performance review',icon:Activity,text:'Review win rate, average R, realized profit and loss, and drawdown to reflect on your practice.'},{title:'Mindset lab',icon:Brain,text:'Choose from 5 mood check-ins, track your habits, and learn when to pause.'}];
+ return <><div className="page-heading"><div><span className="eyebrow">6 PRACTICE AREAS · SPROUT PRO</span><h1>Your practice lab</h1><p>Explore the labs below. Pro unlocks their activities, replay controls, journaling, and challenges.</p></div><Link className="primary" href="/market">Open free simulator <ArrowUpRight size={17}/></Link></div><div className="tools-grid practice-preview-grid">{labs.map(lab=><article className="card visual-tool locked-tool locked-lab" key={lab.title}><span className="module-icon"><lab.icon size={24}/></span><span className="pro-pill"><Lock size={13}/>Pro · Locked</span><h2>{lab.title}</h2><p>{lab.text}</p><div className="locked-tool-preview" aria-hidden="true"><lab.icon size={45}/><Lock size={20}/></div><button className="secondary full" onClick={()=>upgrade(lab.title)}><Lock size={15}/>Unlock with Pro</button></article>)}</div></>;
+}
+function UnlockedPractice({state,update}: {state:State;update:(s:State)=>void}){
  const hash=useSyncExternalStore(callback=>{window.addEventListener('hashchange',callback);return()=>window.removeEventListener('hashchange',callback);},()=>window.location.hash,()=>"");
  const [section,setSection]=useState('Chart lab');
  const current=hash==='#journal'?'Journal':hash==='#performance'?'Results':hash==='#chart-practice'?'Chart lab':section;
