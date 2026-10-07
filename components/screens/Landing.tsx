@@ -103,7 +103,7 @@ export default function Landing({
                   ...state,
                   profile: { ...state.profile, onboarded: true },
                 });
-                router.push("/");
+                router.push("/dashboard");
               }}
             >
               Try the Simulator <ArrowUpRight size={18} />

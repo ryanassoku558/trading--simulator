@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -65,7 +66,8 @@ import Dialog from "./Dialog";
 import Learning from "./Learning";
 import { ExplainTrade } from "./Trading";
 const navigation = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, group:"Overview" },
+  { href: "/about", label: "About Sprout", icon: Sprout, group:"Overview" },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/learn", label: "Learn", icon: BookOpen, group:"Learn & practice" },
   { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined },
   { href: "/tools", label: "Tools", icon: Calculator },
@@ -75,7 +77,6 @@ const navigation = [
   { href: "/community", label: "Community", icon: UserRound, group:"Community & rewards" },
   { href: "/achievements", label: "Achievements", icon: Trophy },
   { href: "/pricing", label: "Sprout Pro", icon: Trophy },
-  { href: "/about", label: "About Sprout", icon: Sprout },
 ];
 export default function Simulator() {
   const { state: savedState, update: persist, error, user, pending, retry } = useAccount();
@@ -141,7 +142,7 @@ export default function Simulator() {
   const ticker = path.split("/")[2];
   const stock = ticker ? stocks.find((s) => s.ticker === ticker) : null;
   const current = stock ? quote(stock.ticker, state.tick) : null;
-  const page = path.split("/")[1] || "dashboard";
+  const page = path.split("/")[1] || "about";
   const accessibleLessons=lessons.filter(l=>canLearn(l.id,subscription.pro));
   const progress = (state.learning.completed.filter(id=>canLearn(id,subscription.pro)).length / accessibleLessons.length) * 100;
   const recommendedStart =
@@ -191,7 +192,7 @@ export default function Simulator() {
     });
     setOnboarding(false);
     setWelcome(true);
-    router.push("/");
+    router.push("/dashboard");
   }
   function watch(t: string) {
     update({
@@ -215,7 +216,7 @@ export default function Simulator() {
     );
   }
   if (!state.profile.onboarded && page === "pricing") return <main className="content"><Link href="/" className="text-link">← Back to Sprout</Link><Pricing/>{!user&&<div id="account"><AuthPanel user={user} pending={pending}/></div>}</main>;
-  if (!state.profile.onboarded)
+  if (!state.profile.onboarded && page === "welcome")
     return (
       <>
         <Landing
@@ -236,7 +237,7 @@ export default function Simulator() {
   return (
     <div className="app-shell">
       <aside className={`sidebar ${mobile ? "open" : ""}`}>
-        <Link href="/" aria-label="Sprout dashboard">
+        <Link href="/" aria-label="Sprout home">
           <Logo />
         </Link>
         <span className="workspace-label">YOUR SPROUT WORKSPACE</span>
@@ -247,7 +248,7 @@ export default function Simulator() {
               href={n.href}
               key={n.href}
               className={
-                (n.href === "/" ? path === "/" : path.startsWith(n.href))
+                ((n.href === "/about" && path === "/") || path.startsWith(n.href))
                   ? "active"
                   : ""
               }
@@ -351,7 +352,7 @@ export default function Simulator() {
               {state.learning.streak} day streak
             </span>
             <Link href="/profile" className="avatar" aria-label="Open profile">
-              {state.profile.name.slice(0, 1).toUpperCase()}
+              {state.profile.photo?<Image unoptimized src={state.profile.photo} width={40} height={40} alt="Your profile photo"/>:state.profile.name.slice(0, 1).toUpperCase()}
             </Link>
           </div>
         </header>
@@ -446,7 +447,7 @@ export default function Simulator() {
             <Empty
               title="This page has not sprouted yet."
               text="Head back to your practice space."
-              href="/"
+              href="/dashboard"
               label="Go to dashboard"
             />
           )}

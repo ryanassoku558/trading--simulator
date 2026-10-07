@@ -10,7 +10,8 @@ export interface OnboardingPreferences {
 }
 export interface Profile extends User, OnboardingPreferences {
   onboarded: boolean;
-  avatar?: AvatarId;
+  avatar?: AvatarId; // Legacy saved accounts
+  photo?: string;
   handle?: string;
   bio?: string;
   country?: string;
