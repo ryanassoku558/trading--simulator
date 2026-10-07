@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {Sprout,Leaf,Sun,Moon} from 'lucide-react';
 import type {State,Profile} from '@/types';
 import {useAccount} from '@/lib/storage/useAccount';
-import {lessons,levels} from '@/lib/education';
+import {lessons} from '@/lib/education';
 import {profileInsights} from '@/lib/profile';
 import {performance} from '@/lib/trading/analytics';
 import {challengeProgress} from '@/lib/education/challenges';
@@ -12,6 +12,7 @@ import {money} from '@/lib/market';
 import {portfolio} from '@/lib/trading';
 import {activitySnapshot,subscribeActivity,readActivity} from '@/lib/activity';
 import {supabase} from '@/lib/supabase/client';
+import {learningModules} from "@/lib/billing/curriculum";
 import {starterModules,starterLessonIds} from "@/lib/billing/access";
 import {ProGate,useSubscription} from "./Subscription";
 import AccountSettings from './AccountSettings';
@@ -23,7 +24,7 @@ export default function ProfileOverview({state,update}:{state:State;update:(s:St
  const insights=profileInsights(state),stats=performance(state),Avatar=avatars[state.profile.avatar??'sprout'];
  useSyncExternalStore(subscribeActivity,()=>activitySnapshot(state.profile.id),()=> '{}');const activity=readActivity(state.profile.id);
  const times=Intl.supportedValuesOf('timeZone');const joined=user?.created_at||state.profile.joinedAt;
- const counts=[['Modules completed',`${pro?insights.modules:starterModules.filter(m=>m.ids.every(id=>state.learning.completed.includes(id))).length} / ${pro?levels.length:5}`],['Lessons completed',`${pro?state.learning.completed.length:state.learning.completed.filter(id=>starterLessonIds.includes(id)).length} / ${pro?lessons.length:20}`],['Quizzes passed',`${state.learning.quizPasses??state.learning.completed.length}`],['Learning streak',`${state.learning.streak} days`],['Mascot level',`${insights.level} / 4`]];
+ const counts=[['Modules completed',`${pro?learningModules.filter(m=>m.ids.every(id=>state.learning.completed.includes(id))).length:starterModules.filter(m=>m.ids.every(id=>state.learning.completed.includes(id))).length} / ${pro?learningModules.length:5}`],['Lessons completed',`${pro?state.learning.completed.length:state.learning.completed.filter(id=>starterLessonIds.includes(id)).length} / ${pro?lessons.length:20}`],['Quizzes passed',`${state.learning.quizPasses??state.learning.completed.length}`],['Learning streak',`${state.learning.streak} days`],['Mascot level',`${insights.level} / 4`]];
  async function save(){if(!draft.name.trim()||(draft.handle&&!/^[A-Za-z0-9_]{3,24}$/.test(draft.handle))){setMessage("Enter a display name and a valid optional handle.");return;}setSaving(true);try{const result=await update({...state,profile:{...draft,name:draft.name.trim(),handle:draft.handle?.trim()}});setMessage(result===false?'Profile could not be saved. Try again.':'Profile saved.');}catch{setMessage('Profile could not be saved. Try again.');}finally{setSaving(false);}}
  async function removeListings(){if(!user)return;setSaving(true);const results=await Promise.all([supabase.from('community_portfolios').delete().eq('user_id',user.id),supabase.from('community_scores').delete().eq('user_id',user.id)]);setMessage(results.some(r=>r.error)?'Some listings could not be removed. Please retry.':'Your public leaderboard snapshots were removed.');setSaving(false);}
  return <><section className="card profile-hero"><div className="profile-emblem"><Avatar size={42}/></div><div><span className="eyebrow">YOUR SPROUT IDENTITY</span><h2>{state.profile.name}</h2><p>{state.profile.handle?`@${state.profile.handle}`:'Choose a handle below'} · {user?'Cloud account':'Guest account'}</p>{state.profile.bio&&<p>{state.profile.bio}</p>}<small>Joined {joined?new Date(joined).toLocaleDateString(): 'date not recorded'}{state.profile.country?` · ${state.profile.country}`:''}</small></div></section>
