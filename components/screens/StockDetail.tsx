@@ -114,12 +114,12 @@ export default function StockDetail({
             </p>
           </section>
           <section className="card about-company">
-            <h2>What does this company actually do?</h2>
+            <h2>{current.assetType==="Crypto"?"About this digital asset":current.assetType==="ETF"?"About this fund":"What does this company actually do?"}</h2>
             <p>{current.description}</p>
             <div className="tip">
               <Lightbulb size={20} />
               <p>
-                {current.assetType === "ETF"
+                {current.assetType === "Crypto"?"Crypto practice does not create a crypto wallet or transfer real coins. Choose an affordable fractional amount and define your risk.":current.assetType === "ETF"
                   ? "Buying an ETF means owning a share of a fund, which may hold stocks, bonds, or other assets."
                   : `Buying one share of ${current.company} means owning a tiny piece of ${current.company}.`}
               </p>

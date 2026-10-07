@@ -1,4 +1,5 @@
 "use client";
+import {isCryptoTicker} from "@/lib/market/crypto";
 import { useState } from "react";
 import type { State, Trade } from "@/types";
 import { quote, money } from "@/lib/market";
@@ -19,7 +20,7 @@ export function TradePanel({
   guided?: boolean;
 }) {
   const [side, setSide] = useState<"buy" | "sell">("buy"),
-    [shares, setShares] = useState("1"),
+    [shares, setShares] = useState(isCryptoTicker(ticker)?"0.01":"1"),
     [type, setType] = useState("market"),
     [limit, setLimit] = useState(""),
     [error, setError] = useState(""),
@@ -124,11 +125,11 @@ export function TradePanel({
           </>
         )}
         <label>
-          Number of shares
+          {stock.assetType==="Crypto"?`Amount of ${stock.company}`:"Number of shares"}
           <input
             type="number"
-            min="1"
-            step="1"
+            min={stock.assetType==="Crypto"?"0.000001":"1"}
+            step={stock.assetType==="Crypto"?"0.000001":"1"}
             required
             value={shares}
             onChange={(e) => setShares(e.target.value)}
@@ -136,7 +137,7 @@ export function TradePanel({
         </label>
         <div className="order-summary">
           <div>
-            <span>Price per share</span>
+            <span>{stock.assetType==="Crypto"?`Price per ${ticker.split("-")[0]}`:"Price per share"}</span>
             <strong>{money(stock.price)}</strong>
           </div>
           <div>
@@ -224,8 +225,8 @@ export function ExplainTrade({
       <Sprouty compact completed={completed} title="Let’s review the decision." message="Compare this entry, position size, and possible loss with your plan. The outcome alone doesn’t tell the whole story."/>
       <div className="eyebrow center">PRACTICE MAKES PROGRESS</div>
       <h3 className="center">
-        You {trade.side === "buy" ? "bought" : "sold"} {trade.shares} share
-        {trade.shares === 1 ? "" : "s"} of {trade.ticker}.
+        You {trade.side === "buy" ? "bought" : "sold"} {trade.shares} {isCryptoTicker(trade.ticker)?trade.ticker.split("-")[0]:"share"}
+        {!isCryptoTicker(trade.ticker)&&trade.shares !== 1 ? "s" : ""} of {trade.ticker}.
       </h3>
       <p>
         At {money(trade.price)} per share, you{" "}

@@ -1,3 +1,4 @@
+import {cryptoAssets} from "./crypto";
 import type { Stock, StockPriceHistory, PriceCandle } from "@/types";
 import catalog from "./data/us-securities.json";
 const featured: Stock[] = [
@@ -124,6 +125,9 @@ export const stocks: Stock[] = catalog.map(([ticker, company, type, price]) => (
   description: `${company}. ${type === "ETF" ? "An exchange-traded fund." : "A US-listed company."}`,
   ...featuredMap.get(String(ticker)), assetType: type === "ETF" ? "ETF" : "Stock",
 }));
+stocks.push(...cryptoAssets);
+const commodityDescriptions:Record<string,string>={GLD:"Gold exposure through a fund, not ownership of physical bars.",SLV:"Silver exposure through a fund, not physical silver delivery.",USO:"Oil exposure through a futures-linked fund. Fund returns can differ from spot oil because of contract rolls, fees, and structure.",UNG:"Natural gas exposure through a futures-linked fund, with rollover and volatility risks.",DBA:"Agricultural commodity exposure through a diversified futures-linked fund.",DBB:"Industrial metals exposure, including copper, through a futures-linked fund.",PDBC:"Diversified commodity exposure through a futures-linked ETF."};
+for(const stock of stocks)if(commodityDescriptions[stock.ticker])stock.description=commodityDescriptions[stock.ticker];
 const stockMap = new Map(stocks.map(s => [s.ticker, s]));
 export const marketEpoch = Date.UTC(2026, 9, 6);
 export function clockTick(now = Date.now()) { return Math.max(0, Math.floor((now - marketEpoch) / 2000)); }

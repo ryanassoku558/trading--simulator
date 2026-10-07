@@ -25,7 +25,7 @@ export interface StockPriceHistory {
   price: number;
 }
 export interface Stock {
-  assetType?: "Stock" | "ETF";
+  assetType?: "Stock" | "ETF" | "Crypto";
   ticker: string;
   company: string;
   price: number;

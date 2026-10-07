@@ -1,3 +1,5 @@
+import {isCryptoTicker} from "@/lib/market/crypto";
+import {validAssetQuantity,normalizeQuantity} from "@/lib/market/quantity";
 import type { State, Trade } from "@/types";
 import { quote, round } from "@/lib/market";
 export function initialState(): State {
@@ -56,10 +58,11 @@ export function executeTrade(
   side: "buy" | "sell",
   shares: number,
 ): { state: State; trade: Trade } {
-  if (!Number.isInteger(shares) || shares <= 0 || shares > 1000000)
-    throw new Error("Enter a whole number of shares greater than zero.");
+  if (!validAssetQuantity(ticker,shares))
+    throw new Error(isCryptoTicker(ticker)?"Enter a crypto amount with up to six decimal places.":"Enter a whole number of shares greater than zero.");
   const price = quote(ticker, s.tick).price,
     total = round(price * shares);
+  if(total<.01)throw new Error("The practice order must be worth at least $0.01.");
   const old = s.holdings.find((h) => h.ticker === ticker);
   if (side === "buy" && total > s.cash)
     throw new Error("You don’t have enough virtual cash. Try fewer shares.");
@@ -69,13 +72,13 @@ export function executeTrade(
   if (side === "buy")
     holdings.push({
       ticker,
-      shares: (old?.shares || 0) + shares,
+      shares: normalizeQuantity(ticker,(old?.shares || 0) + shares),
       averageCost:
         ((old?.shares || 0) * (old?.averageCost || 0) + total) /
         ((old?.shares || 0) + shares),
     });
   else if (old && old.shares > shares)
-    holdings.push({ ...old, shares: old.shares - shares });
+    holdings.push({ ...old, shares: normalizeQuantity(ticker,old.shares - shares) });
   const trade: Trade = {
     id: crypto.randomUUID(),
     date: new Date().toISOString(),
@@ -130,13 +133,14 @@ export function placeLimit(
   if (!Number.isFinite(limit) || limit <= 0)
     throw new Error("Enter a positive limit price.");
   quote(ticker, s.tick);
-  if (!Number.isInteger(shares) || shares <= 0 || shares > 1000000)
-    throw new Error("Enter a whole number of shares greater than zero.");
+  if (!validAssetQuantity(ticker,shares))
+    throw new Error(isCryptoTicker(ticker)?"Enter a crypto amount with up to six decimal places.":"Enter a whole number of shares greater than zero.");
   if (
     side === "sell" &&
     (s.holdings.find((h) => h.ticker === ticker)?.shares || 0) < shares
   )
     throw new Error("You can only sell shares you own.");
+  if(round(limit*shares)<.01)throw new Error("The practice order must be worth at least $0.01.");
   if (side === "buy" && round(limit * shares) > s.cash)
     throw new Error("The limit order exceeds your available cash.");
   return {

@@ -1,3 +1,4 @@
+import {validAssetQuantity} from "@/lib/market/quantity";
 import {isProfilePhoto} from "@/lib/profile-photo";
 import {avatarIds} from "@/lib/avatars";
 import type { State } from "@/types";
@@ -12,7 +13,6 @@ const nonnegative = (v: unknown): v is number => number(v) && v >= 0;
 const integer = (v: unknown): v is number =>
   nonnegative(v) && Number.isSafeInteger(v);
 const positive = (v: unknown): v is number => number(v) && v > 0;
-const shares = (v: unknown): v is number => integer(v) && v > 0 && v <= 1000000;
 const ticker = (v: unknown) => stocks.some((s) => s.ticker === v);
 const date = (v: unknown) => text(v) && Number.isFinite(Date.parse(v));
 const side = (v: unknown) => v === "buy" || v === "sell";
@@ -60,7 +60,7 @@ export function isAccountState(value: unknown): value is State {
       (h) =>
         record(h) &&
         ticker(h.ticker) &&
-        shares(h.shares) &&
+        validAssetQuantity(h.ticker,h.shares) &&
         positive(h.averageCost),
     )
   )
@@ -77,7 +77,7 @@ export function isAccountState(value: unknown): value is State {
         date(t.date) &&
         ticker(t.ticker) &&
         side(t.side) &&
-        shares(t.shares) &&
+        validAssetQuantity(t.ticker,t.shares) &&
         positive(t.price) &&
         positive(t.total) &&
         number(t.realized) &&
@@ -95,7 +95,7 @@ export function isAccountState(value: unknown): value is State {
         date(o.date) &&
         ticker(o.ticker) &&
         side(o.side) &&
-        shares(o.shares) &&
+        validAssetQuantity(o.ticker,o.shares) &&
         positive(o.limit) &&
         text(o.status) &&
         ["pending", "filled", "cancelled"].includes(o.status),
