@@ -22,7 +22,7 @@ Completion screens distinguish lesson and module completion, show the quiz score
 
 ## Discovery and personal paths
 
-The dashboard adds a daily rotating annotated practice chart (New York calendar day, explicitly illustrative), a four-question education preference quiz, completed lesson and badge counts, missed-answer review links, and tool shortcuts. Preferences persist locally in the same browser; they are not synced to an account. A missed quiz answer is recorded even when an overall module score passes. Learning adds a searchable 20-term glossary with worked examples and tutorial links plus five chart-based common mistake scenarios. The homepage uses the requested confidence headline and the roadmap adds Strategy Labs. Market snapshot and practice statistics continue using actual simulator data, rather than preset example results.
+The dashboard adds a daily rotating annotated practice chart (New York calendar day, explicitly illustrative), a four-question education preference quiz, completed lesson and badge counts, missed-answer review links, and tool shortcuts. Preferences persist locally in the same browser; they are not synced to an account. A missed quiz answer is recorded even when an overall module score passes. Learning adds a searchable 100-term glossary with worked examples and tutorial links plus five chart-based common mistake scenarios. The homepage uses the requested confidence headline and the roadmap adds Strategy Labs. Market snapshot and practice statistics continue using actual simulator data, rather than preset example results.
 
 ## Focused navigation and five-question assessments
 
@@ -33,3 +33,5 @@ Every one of the 151 lesson assessments and 35 module assessments contains exact
 
 All learners now use one consistent presentation and five-question quiz experience. Difficulty selectors have been removed. Main sections include brief introductions explaining their purpose.
 Lesson windows use a viewport-sized layout with fixed navigation controls. Long presentation content scrolls within the window; quiz answers remain separate from the scrollable question/chart and feedback areas.
+
+The glossary shows 16 alphabetized terms initially, expands in batches of 16, and searches terms, definitions, and examples. Related lesson links were corrected where earlier IDs pointed to a different topic.
