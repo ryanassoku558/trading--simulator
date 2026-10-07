@@ -14,8 +14,7 @@ export default function Achievements({ state }: { state: State }) {
           <span className="eyebrow">SMALL WINS ADD UP</span>
           <h1>Your milestones</h1>
           <p>
-            You’ve earned {state.learning.xp} XP. Keep learning at your own
-            pace.
+            Track the badges and experience points (XP) you earn through learning and practice. You’ve earned {state.learning.xp} XP; explore the milestones below.
           </p>
         </div>
         <span className="badge">

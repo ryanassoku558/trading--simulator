@@ -1,4 +1,5 @@
 "use client";
+import {SproutMission} from "../SproutMission";
 import PersonalLearning from "../PersonalLearning";
 import {DailyWarmup} from "../LearningDiscovery";
 import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
@@ -45,7 +46,7 @@ export default function Dashboard({
           </h1>
           <p>
             Welcome back, {state.profile.name}. Your next small step starts
-            here.
+            here. This dashboard brings together your learning progress, virtual account performance, and recommended next steps.
           </p>
         </div>
         <Link href="/market" className="primary">
@@ -53,6 +54,7 @@ export default function Dashboard({
           Make a trade
         </Link>
       </div>
+      <SproutMission compact/>
       <PersonalLearning state={state}/>
       <DailyWarmup/>
       <div className="beginner-banner">

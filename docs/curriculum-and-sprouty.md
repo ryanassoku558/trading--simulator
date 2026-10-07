@@ -30,4 +30,6 @@ Learn now opens directly to Modules & lessons, shows six modules initially, and 
 
 Every one of the 151 lesson assessments and 35 module assessments contains exactly five questions. Lesson quizzes cover the idea, its worked example, why it matters, interpreting assumptions, and a module-specific application scenario. Module quizzes review four module concepts and one application scenario. Presentations introduce the application scenario and assumptions before the quiz. Four correct answers (80%) are required to pass. Existing saved progress, rewards, and completion animations are preserved.
 
-Learning mode is saved in the profile: Beginner presents clear foundations and recall/application checks; Intermediate adds connections within the module and applied reasoning; Advanced adds deeper examples and critical scenario/source analysis. Each mode retains exactly five questions and the 80% pass threshold. Existing profiles default from their onboarding experience, or Beginner when unspecified.
+
+All learners now use one consistent presentation and five-question quiz experience. Difficulty selectors have been removed. Main sections include brief introductions explaining their purpose.
+Lesson windows use a viewport-sized layout with fixed navigation controls. Long presentation content scrolls within the window; quiz answers remain separate from the scrollable question/chart and feedback areas.

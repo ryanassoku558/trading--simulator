@@ -36,7 +36,7 @@ export default function Practice({state,update}: {state:State;update:(s:State)=>
  const days=new Set(reviewed.map(t=>t.date.slice(0,10))).size;
  const target=challenge?.id==="seven-days"?7:3,progress=challenge?.id==="seven-days"?days:reviewed.length;
  const start=(id:string)=>update({...state,challenge:{id,startedAt:new Date().toISOString(),startingEquity:portfolio(state).value,startTradeCount:state.trades.length}});
- return <><div className="page-heading"><div><span className="eyebrow">TURN PRACTICE INTO UNDERSTANDING</span><h1>Your practice lab</h1><p>Replay a chart, reflect on a trade, and measure the process.</p></div><Link className="primary" href="/market">Open simulator <ArrowUpRight size={17}/></Link></div>
+ return <><div className="page-heading"><div><span className="eyebrow">TURN PRACTICE INTO UNDERSTANDING</span><h1>Your practice lab</h1><p>A workspace for hands-on practice: replay chart scenarios, keep a trade journal, try challenges, and review your results and mindset.</p></div><Link className="primary" href="/market">Open simulator <ArrowUpRight size={17}/></Link></div>
   <div className="learning-sections" role="group" aria-label="Practice sections">{["Chart lab","Journal","Challenges","Results","Mindset"].map(value=><button key={value} className={current===value?"active":""} aria-pressed={current===value} onClick={()=>selectSection(value)}>{value}</button>)}</div>
   {current==="Chart lab"&&<ChartPractice/>}
   {current==="Challenges"&&<ReturnChallenge state={state} update={update}/>}

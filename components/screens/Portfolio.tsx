@@ -19,7 +19,7 @@ export default function Portfolio({
         <div>
           <span className="eyebrow">SEE THE WHOLE PICTURE</span>
           <h1>Your portfolio</h1>
-          <p>Your cash and investments, all in one place.</p>
+          <p>Your portfolio is the collection of investments you hold. See your virtual cash, shares, current values, and gains or losses here.</p>
         </div>
         <Link href="/market" className="primary">
           <Plus size={16} />

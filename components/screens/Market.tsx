@@ -45,8 +45,7 @@ export default function Market({
           <span className="eyebrow">MARKET WORKSPACE</span>
           <h1>Markets & research.</h1>
           <p>
-            Real companies. Simulated prices. Find a business you’re curious
-            about.
+            Search stocks and ETFs, explore moving charts, and practice buying or selling with virtual money. Prices are generated for 24/7 practice.
           </p>
         </div>
         <button className="secondary" onClick={advance}>

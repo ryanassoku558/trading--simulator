@@ -12,7 +12,6 @@ import {
   levels,
   beginnerLearningOrder,
 } from "@/lib/education";
-import {learningMode} from "@/lib/education/presentation";
 import type { State, Lesson } from "@/types";
 export default function Learning({
   state,
@@ -53,14 +52,7 @@ export default function Learning({
             A LITTLE KNOWLEDGE. A LOT MORE CONFIDENCE.
           </span>
           <h1>Your learning journey</h1>
-          <p>
-            {state.profile.experience === "new"
-              ? "Start from zero, one small lesson at a time."
-              : state.profile.experience === "basics"
-                ? "Review the basics or jump to placing trades."
-                : "Refresh any topic, or explore portfolio building."}{" "}
-            Every level is open to explore.
-          </p>
+          <p>Build your understanding with modules containing short lessons, examples, and five-question quizzes. Choose a module, learn the material, then score at least 80% to complete it.</p>
         </div>
         <div className="badge">
           <BookOpen size={16} />
@@ -90,7 +82,6 @@ export default function Learning({
           <span>Quiz accuracy</span>
         </div>
       </div>
-      <label className="learning-mode-control">Learning mode<select aria-label="Learning mode" value={learningMode(state)} onChange={e=>void update({...state,profile:{...state.profile,learningMode:e.target.value as "beginner"|"intermediate"|"advanced"}})}><option value="beginner">Beginner · clear foundations</option><option value="intermediate">Intermediate · applied context</option><option value="advanced">Advanced · critical analysis</option></select><small>Sets explanation depth and quiz difficulty. Five questions in every mode; four correct to pass.</small></label>
       <div className="learning-sections" role="group" aria-label="Learning sections">{["Modules & lessons","Video tutorials","Glossary & habits"].map(value=><button aria-pressed={currentSection===value} className={currentSection===value?"active":""} key={value} onClick={()=>selectSection(value)}>{value}</button>)}<Link href="/practice#chart-practice">Chart practice →</Link></div>
       {currentSection==="Video tutorials"&&<TutorialLibrary/>}
       {currentSection==="Glossary & habits"&&<LearningDiscovery/>}

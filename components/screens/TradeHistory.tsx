@@ -21,7 +21,7 @@ export default function TradeHistory({
         <div>
           <span className="eyebrow">EVERY TRADE IS A CHANCE TO LEARN</span>
           <h1>Your trading story</h1>
-          <p>Revisit any trade to understand the numbers behind it.</p>
+          <p>A record of your completed virtual buys and sells. Review prices, quantities, and results, then use your trade journal to reflect on each decision.</p>
         </div>
       </div>
       <Link href="/practice#journal" className="secondary journal-history-link">Open trade journal & analytics <ArrowUpRight size={16}/></Link>

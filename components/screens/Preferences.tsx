@@ -24,8 +24,7 @@ export default function Preferences({
           <span className="eyebrow">MAKE THIS SPACE YOURS</span>
           <h1>{page === "profile" ? "Your profile" : "Settings"}</h1>
           <p>
-            Guest data stays in this browser. Signed-in progress is saved to
-            your Sprout account.
+            {page === "profile" ? "Your personal learning record: update your identity, review learning and simulator statistics, and manage your account." : "Adjust your practice preferences and manage your account settings."} Guest data stays in this browser; signed-in progress is saved to your Sprout account.
           </p>
         </div>
       </div>
