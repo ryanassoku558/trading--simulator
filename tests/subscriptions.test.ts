@@ -1,3 +1,5 @@
+import {canEarnAchievement} from '@/lib/billing/achievements';
+import {achievements} from '@/lib/education';
 import {hasLiveStripeKey} from '@/lib/billing/checkout-availability';
 import {it,expect} from 'vitest';
 import {starterModules,starterLessonIds,canLearn,isProSubscription} from '@/lib/billing/access';
@@ -16,3 +18,5 @@ it('lists every lesson once with the five free modules first',()=>{const ids=lea
 it('unlocks exactly the first five videos for Starter independently of lesson access',()=>{expect(freeTutorialSlugs).toEqual(tutorials.slice(0,5).map(t=>t.slug));for(const [index,video]of tutorials.entries()){expect(canWatchTutorial(video.slug,false)).toBe(index<5);expect(canWatchTutorial(video.slug,true)).toBe(true);}});
 
 it("blocks public sandbox checkout and only recognizes live secret keys",()=>{expect(hasLiveStripeKey(undefined)).toBe(false);expect(hasLiveStripeKey("sk_test_example")).toBe(false);expect(hasLiveStripeKey("pk_live_example")).toBe(false);expect(hasLiveStripeKey("sk_live_example")).toBe(true);});
+
+it("keeps every achievement listed and limits Starter eligibility to the first fifteen",()=>{expect(achievements.filter(a=>canEarnAchievement(a.id,false))).toHaveLength(15);for(const [i,a] of achievements.entries()){expect(canEarnAchievement(a.id,false)).toBe(i<15);expect(canEarnAchievement(a.id,true)).toBe(true);}expect(canEarnAchievement("unknown",true)).toBe(false);});

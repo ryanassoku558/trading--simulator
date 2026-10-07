@@ -1,4 +1,5 @@
 "use client";
+import {canEarnAchievement} from "@/lib/billing/achievements";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
@@ -109,7 +110,7 @@ export default function Simulator() {
   }, [toast]);
   async function update(next: State) {
     const unlocked = state
-      ? achievements.filter((a) => !earned(state, a.id) && earned(next, a.id))
+      ? achievements.filter((a) => canEarnAchievement(a.id,subscription.pro) && !earned(state, a.id) && earned(next, a.id))
       : [];
     if (pending) return false;
     const saved = await persist(next);
@@ -420,7 +421,7 @@ export default function Simulator() {
               advance={advance}
             />
           )}
-          {page === "achievements" && <ProGate feature="Badges & mastery levels"><Achievements state={state} /></ProGate>}
+          {page === "achievements" && <Achievements state={state} />}
           {(page === "settings" || page === "profile") && (
             <Preferences
               state={state}
