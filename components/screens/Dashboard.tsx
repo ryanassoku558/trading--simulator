@@ -1,5 +1,4 @@
 "use client";
-import {SproutMission} from "../SproutMission";
 import PersonalLearning from "../PersonalLearning";
 import {DailyWarmup} from "../LearningDiscovery";
 import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
@@ -54,7 +53,6 @@ export default function Dashboard({
           Make a trade
         </Link>
       </div>
-      <SproutMission compact/>
       <PersonalLearning state={state}/>
       <DailyWarmup/>
       <div className="beginner-banner">
