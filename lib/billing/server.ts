@@ -1,4 +1,5 @@
 import 'server-only';
+import {hasLiveStripeKey} from './checkout-availability';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import { isProSubscription } from './access';
@@ -27,6 +28,7 @@ export async function entitlement(request: Request) {
   return { db, user, subscription: data, pro: !!data && isProSubscription(data.status, data.expires_at) };
 }
 export function billingReady() { return !!(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PRICE_ID && process.env.STRIPE_WEBHOOK_SECRET && process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_APP_URL); }
+export function checkoutReady(){return billingReady()&&hasLiveStripeKey(process.env.STRIPE_SECRET_KEY);}
 export function failure(error: unknown, status = 400) { return Response.json({ error: error instanceof Error ? error.message : 'Unable to complete this request.' }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 export async function reconcile(subscriptionId: string, userId: string) {
   const subscription = await stripe().subscriptions.retrieve(subscriptionId);

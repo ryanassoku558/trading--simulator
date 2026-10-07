@@ -1,3 +1,4 @@
+import {hasLiveStripeKey} from '@/lib/billing/checkout-availability';
 import {it,expect} from 'vitest';
 import {starterModules,starterLessonIds,canLearn,isProSubscription} from '@/lib/billing/access';
 import {canWatchTutorial,freeTutorialSlugs} from '@/lib/billing/benefits';
@@ -13,3 +14,5 @@ it('excludes recharges from trading profit and validates deposit data',()=>{cons
 it('lists every lesson once with the five free modules first',()=>{const ids=learningModules.flatMap(m=>m.ids);expect(ids.length).toBe(lessons.length);expect(new Set(ids).size).toBe(lessons.length);expect(learningModules.slice(0,5)).toEqual(starterModules);expect(learningModules.slice(5).every(m=>m.ids.every(id=>!canLearn(id,false)))).toBe(true);});
 
 it('unlocks exactly the first five videos for Starter independently of lesson access',()=>{expect(freeTutorialSlugs).toEqual(tutorials.slice(0,5).map(t=>t.slug));for(const [index,video]of tutorials.entries()){expect(canWatchTutorial(video.slug,false)).toBe(index<5);expect(canWatchTutorial(video.slug,true)).toBe(true);}});
+
+it("blocks public sandbox checkout and only recognizes live secret keys",()=>{expect(hasLiveStripeKey(undefined)).toBe(false);expect(hasLiveStripeKey("sk_test_example")).toBe(false);expect(hasLiveStripeKey("pk_live_example")).toBe(false);expect(hasLiveStripeKey("sk_live_example")).toBe(true);});

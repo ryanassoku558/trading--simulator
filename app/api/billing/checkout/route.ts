@@ -1,13 +1,13 @@
-import { billingReady, entitlement, stripe, failure } from '@/lib/billing/server';
+import { checkoutReady, entitlement, stripe, failure } from '@/lib/billing/server';
 export async function POST(request:Request) {
  try {
-  if(!billingReady()) return failure(Error('Payments are not available yet. Your Starter access remains free.'),503);
+  if(!checkoutReady()) return failure(Error('Payments are not available yet. Your Starter access remains free.'),503);
   const {db,user,subscription,pro}=await entitlement(request);
   if(pro) return failure(Error('You already have Sprout Pro. Use Manage subscription.'),409);
   const app=new URL(process.env.NEXT_PUBLIC_APP_URL!).origin;
   if(request.headers.get("origin")!==app)return failure(Error("Open checkout from the Sprout website."),403);
   const payment=stripe(),price=await payment.prices.retrieve(process.env.STRIPE_PRICE_ID!);
-  if(!price.active||price.unit_amount!==1000||price.currency!=='usd'||price.recurring?.interval!=='month'||price.recurring.interval_count!==1) throw Error('The monthly price needs to be configured correctly.');
+  if(!price.livemode||!price.active||price.unit_amount!==1000||price.currency!=='usd'||price.recurring?.interval!=='month'||price.recurring.interval_count!==1) throw Error('The monthly price needs to be configured correctly.');
   if(subscription?.subscription_id){const current=await payment.subscriptions.retrieve(subscription.subscription_id);if(!["canceled","incomplete_expired"].includes(current.status))return failure(Error("A subscription already exists. Use Manage billing to update it."),409);}
   if(subscription?.checkout_session_id){const existing=await payment.checkout.sessions.retrieve(subscription.checkout_session_id);if(existing.status==="open"&&existing.url)return Response.json({url:existing.url});}
   let customer=subscription?.customer_id;
