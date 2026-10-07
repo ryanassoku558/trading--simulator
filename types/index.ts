@@ -1,3 +1,4 @@
+import type {AvatarId} from "@/lib/avatars";
 export type Experience = "new" | "basics" | "experienced";
 export interface User {
   id: string;
@@ -9,7 +10,7 @@ export interface OnboardingPreferences {
 }
 export interface Profile extends User, OnboardingPreferences {
   onboarded: boolean;
-  avatar?: "sprout" | "leaf" | "sun" | "moon";
+  avatar?: AvatarId;
   handle?: string;
   bio?: string;
   country?: string;
