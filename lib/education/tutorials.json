@@ -6,7 +6,7 @@
       1,
       3
     ],
-    "duration": 30,
+    "duration": 43,
     "scenes": [
       {
         "title": "A small piece of a company",
@@ -41,7 +41,7 @@
     "lessonIds": [
       31
     ],
-    "duration": 30,
+    "duration": 43,
     "scenes": [
       {
         "title": "What is a day trade?",
@@ -65,7 +65,7 @@
       },
       {
         "title": "Learn before you trade",
-        "caption": "Sprout runs simulated prices 24/7. Real US regular sessions generally run 9:30 a.m.\u20134 p.m. Eastern on trading days.",
+        "caption": "Sprout runs simulated prices 24/7. Real US regular sessions generally run 9:30 a.m.–4 p.m. Eastern on trading days.",
         "visual": "practice"
       }
     ]
@@ -77,7 +77,7 @@
       26,
       27
     ],
-    "duration": 30,
+    "duration": 39,
     "scenes": [
       {
         "title": "Four prices. One candle.",
@@ -114,7 +114,7 @@
       12,
       52
     ],
-    "duration": 30,
+    "duration": 46,
     "scenes": [
       {
         "title": "Two ways to place an order",
@@ -139,6 +139,292 @@
       {
         "title": "Practice both",
         "caption": "Sprout checks pending limits while the app is open. Real trading has spreads, slippage, and other costs.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "risk-planning",
+    "title": "Plan your risk and share size",
+    "lessonIds": [
+      13,
+      14,
+      15
+    ],
+    "duration": 41,
+    "scenes": [
+      {
+        "title": "Decide what you can lose",
+        "caption": "A risk budget is the planned loss on one trade, not the cash spent buying shares.",
+        "visual": "risk-budget"
+      },
+      {
+        "title": "Start with a simple example",
+        "caption": "1% of a $1,000 practice account is a $10 planned risk budget.",
+        "visual": "risk-budget"
+      },
+      {
+        "title": "Measure the stop distance",
+        "caption": "A $100 entry and $98 stop give a $2 planned loss per share.",
+        "visual": "risk-budget"
+      },
+      {
+        "title": "Calculate the share count",
+        "caption": "$10 risk budget divided by $2 per share gives 5 shares, costing $500 to buy.",
+        "visual": "risk-budget"
+      },
+      {
+        "title": "Allow for uncertainty",
+        "caption": "A real stop can fill worse than planned. Try these numbers in Sprout’s Tools tab.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "support-resistance",
+    "title": "Understand support and resistance",
+    "lessonIds": [
+      20
+    ],
+    "duration": 41,
+    "scenes": [
+      {
+        "title": "Think areas, not promises",
+        "caption": "Support is an area where buying previously slowed a fall. Resistance is where selling slowed a rise.",
+        "visual": "levels"
+      },
+      {
+        "title": "Notice repeated reactions",
+        "caption": "If price repeatedly turns near $100 or $110, mark those areas to study.",
+        "visual": "levels"
+      },
+      {
+        "title": "A level can break",
+        "caption": "A past reaction does not guarantee another. Price can move through either area.",
+        "visual": "levels"
+      },
+      {
+        "title": "Check the wider picture",
+        "caption": "Compare the trend and timeframe. A chart pattern alone is not a reason to enter.",
+        "visual": "levels"
+      },
+      {
+        "title": "Practice a decision",
+        "caption": "In the Chart lab, describe what you see and plan a possible loss before choosing an entry.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "etfs-diversification",
+    "title": "ETFs and diversification",
+    "lessonIds": [
+      21,
+      77,
+      80
+    ],
+    "duration": 43,
+    "scenes": [
+      {
+        "title": "A fund holds investments",
+        "caption": "An exchange-traded fund, or ETF, holds a collection of assets and trades on an exchange.",
+        "visual": "basket"
+      },
+      {
+        "title": "Spread concentration",
+        "caption": "Holding different investments can reduce dependence on one company’s result.",
+        "visual": "basket"
+      },
+      {
+        "title": "Look inside the basket",
+        "caption": "Two funds may own many of the same companies. More tickers do not always mean more variety.",
+        "visual": "basket"
+      },
+      {
+        "title": "Risk still remains",
+        "caption": "A broad stock fund can fall with the market. Funds also have fees and different strategies.",
+        "visual": "basket"
+      },
+      {
+        "title": "Compare before choosing",
+        "caption": "Study a fund’s holdings, costs, and purpose. Practice comparing stocks and ETFs in Sprout.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "stock-research",
+    "title": "Research a company before a trade",
+    "lessonIds": [
+      143
+    ],
+    "duration": 42,
+    "scenes": [
+      {
+        "title": "Start with the business",
+        "caption": "Explain what the company sells, who buys it, and how it earns money.",
+        "visual": "research"
+      },
+      {
+        "title": "Check public sources",
+        "caption": "Use company reports and SEC filings. Check dates instead of relying on a social media headline.",
+        "visual": "research"
+      },
+      {
+        "title": "Study finances and risks",
+        "caption": "Compare revenue, cash flow, debt, and business risks. One strong number is not the whole story.",
+        "visual": "research"
+      },
+      {
+        "title": "Write what could change your mind",
+        "caption": "State your idea, supporting evidence, and what would make the idea no longer fit.",
+        "visual": "research"
+      },
+      {
+        "title": "Separate research from prediction",
+        "caption": "Understanding a company does not guarantee a price move. Record your reasoning in a practice journal.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "trading-emotions",
+    "title": "Recognize FOMO and revenge trading",
+    "lessonIds": [
+      42
+    ],
+    "duration": 40,
+    "scenes": [
+      {
+        "title": "Notice the urge",
+        "caption": "FOMO is fear of missing out. Revenge trading is trying to win back a loss through another rushed trade.",
+        "visual": "mindset"
+      },
+      {
+        "title": "A fast move is not a plan",
+        "caption": "Seeing a price jump can create urgency. Feeling late does not make an entry suitable.",
+        "visual": "mindset"
+      },
+      {
+        "title": "A loss does not owe you a win",
+        "caption": "Increasing size to recover money can make the next loss larger.",
+        "visual": "mindset"
+      },
+      {
+        "title": "Pause before the next click",
+        "caption": "Check your planned size, exit, and reason for trading. Passing on a trade is an available choice.",
+        "visual": "mindset"
+      },
+      {
+        "title": "Track the feeling",
+        "caption": "Use Sprout’s mood check-in and journal. Review your habits rather than judging yourself by one result.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "budgeting",
+    "title": "Build your first budget",
+    "lessonIds": [
+      66
+    ],
+    "duration": 43,
+    "scenes": [
+      {
+        "title": "Know what comes in",
+        "caption": "Start with take-home income: the money available after deductions.",
+        "visual": "budget"
+      },
+      {
+        "title": "Give essentials a place",
+        "caption": "List housing, food, bills, and debt payments. Include costs that arrive less often.",
+        "visual": "budget"
+      },
+      {
+        "title": "Leave room for goals",
+        "caption": "Plan affordable saving and optional spending. Adjust the plan when income or expenses change.",
+        "visual": "budget"
+      },
+      {
+        "title": "Use a worked example",
+        "caption": "$2,000 income minus $1,500 planned spending leaves $500 for savings and other goals.",
+        "visual": "budget"
+      },
+      {
+        "title": "Protect money you need",
+        "caption": "Do not treat essential bill money as trading capital. You can start learning with virtual money today.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "compound-interest",
+    "title": "Understand compound interest",
+    "lessonIds": [
+      73
+    ],
+    "duration": 50,
+    "scenes": [
+      {
+        "title": "Growth can build on growth",
+        "caption": "Compounding means interest or returns can apply to earlier interest or returns as well as the starting amount.",
+        "visual": "compound"
+      },
+      {
+        "title": "A simple first year",
+        "caption": "At a hypothetical 5% yearly rate, $1,000 becomes $1,050 after one year.",
+        "visual": "compound"
+      },
+      {
+        "title": "The next year builds on $1,050",
+        "caption": "At the same hypothetical rate, another $52.50 brings the balance to $1,102.50.",
+        "visual": "compound"
+      },
+      {
+        "title": "It can work against you",
+        "caption": "Debt interest can also compound. Rates, fees, payments, and terms affect the result.",
+        "visual": "compound"
+      },
+      {
+        "title": "Examples are not forecasts",
+        "caption": "Investment returns vary and may be negative. Compare assumptions before using any growth projection.",
+        "visual": "practice"
+      }
+    ]
+  },
+  {
+    "slug": "profit-loss",
+    "title": "Read gains, losses, and returns",
+    "lessonIds": [
+      4,
+      5,
+      8
+    ],
+    "duration": 45,
+    "scenes": [
+      {
+        "title": "Compare with what you paid",
+        "caption": "A price change creates a gain or loss relative to your purchase price.",
+        "visual": "returns"
+      },
+      {
+        "title": "Count every share",
+        "caption": "Buy 2 shares at $100 and sell at $110: a $20 gain before costs.",
+        "visual": "returns"
+      },
+      {
+        "title": "Use percentages to compare",
+        "caption": "$10 gained on a $100 share is a 10% return. Percentages put different-sized trades in context.",
+        "visual": "returns"
+      },
+      {
+        "title": "Realized versus unrealized",
+        "caption": "A result on shares you still hold is unrealized. Selling makes that result realized.",
+        "visual": "returns"
+      },
+      {
+        "title": "Include the whole picture",
+        "caption": "Fees and slippage affect real results. Sprout’s Profit / loss explorer lets you try hypothetical exits.",
         "visual": "practice"
       }
     ]

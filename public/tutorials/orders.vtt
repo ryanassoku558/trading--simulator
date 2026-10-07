@@ -1,22 +1,70 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:06.000
-Two ways to place an order. A market order prioritizes execution. A limit order sets a price condition.
+00:00:00.000 --> 00:00:02.105
+Two ways to place an order. A
 
 2
-00:00:06.000 --> 00:00:12.000
-Market: trade now. Sprout fills at its displayed simulated quote. Real market orders may fill at a different price.
+00:00:02.105 --> 00:00:05.750
+market order prioritizes execution. A limit order
 
 3
-00:00:12.000 --> 00:00:18.000
-Buy limit: at or below. With a $100 buy limit, the purchase can fill at $100 or less. It cannot fill above $100.
+00:00:05.750 --> 00:00:07.613
+sets a price condition.
 
 4
-00:00:18.000 --> 00:00:24.000
-A limit may never fill. If the price stays above $100, that buy limit waits. A chosen price is not a guaranteed trade.
+00:00:08.013 --> 00:00:11.198
+Market: trade now. Sprout fills at its
 
 5
-00:00:24.000 --> 00:00:30.000
-Practice both. Sprout checks pending limits while the app is open. Real trading has spreads, slippage, and other costs.
+00:00:11.198 --> 00:00:14.766
+displayed simulated quote. Real market orders may
+
+6
+00:00:14.766 --> 00:00:16.623
+fill at a different price.
+
+7
+00:00:17.023 --> 00:00:19.297
+Buy limit: at or below. With a
+
+8
+00:00:19.297 --> 00:00:22.053
+$100 buy limit, the purchase can
+
+9
+00:00:22.053 --> 00:00:24.811
+fill at $100 or less. It
+
+10
+00:00:24.811 --> 00:00:27.406
+cannot fill above $100.
+
+11
+00:00:27.815 --> 00:00:29.863
+A limit may never fill. If the
+
+12
+00:00:29.863 --> 00:00:32.741
+price stays above $100, that buy
+
+13
+00:00:32.741 --> 00:00:35.306
+limit waits. A chosen price is not a
+
+14
+00:00:35.306 --> 00:00:36.774
+guaranteed trade.
+
+15
+00:00:37.190 --> 00:00:40.605
+Practice both. Sprout checks pending limits while
+
+16
+00:00:40.605 --> 00:00:42.961
+the app is open. Real trading has
+
+17
+00:00:42.961 --> 00:00:45.920
+spreads, slippage, and other costs.
 

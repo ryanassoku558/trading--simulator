@@ -1,3 +1,4 @@
+import tutorials from "../lib/education/tutorials.json";
 import {test,expect} from "./fixtures";
 test("themes persist, ticker pauses, and tutorial video actually plays",async({page})=>{
  await page.goto('/');
@@ -10,7 +11,7 @@ test("themes persist, ticker pauses, and tutorial video actually plays",async({p
  const video=page.getByRole('dialog').locator('video');
  await video.evaluate(async(el:HTMLVideoElement)=>{el.muted=true;await el.play();});
  await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(0);
- expect(await video.evaluate((el:HTMLVideoElement)=>el.duration)).toBeCloseTo(30,0);
+ expect(await video.evaluate((el:HTMLVideoElement)=>el.duration)).toBeCloseTo(tutorials[0].duration,0);
  await page.getByText('Read video transcript',{exact:true}).click();
  await expect(page.getByRole('dialog').getByText('A stock represents ownership.',{exact:false})).toBeVisible();
  await page.getByRole('button',{name:'Close dialog'}).click();
