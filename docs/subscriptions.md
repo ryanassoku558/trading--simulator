@@ -1,6 +1,6 @@
 # Sprout access and subscriptions
 
-Starter has five curated modules and twenty lessons, position sizing and volatility tools, and a $10,000 virtual account. Starter cannot reset or recharge. Pro is $10 USD per month; the pricing page lists all curriculum, tools, simulator modes, analytics, rewards, community challenges, advanced Sprouty practice review and priority support requests.
+Starter has five curated modules and twenty lessons and a $10,000 virtual account. Starter cannot reset or recharge. All trading tools are Pro-only. Pro is $10 USD per month; the pricing page lists all curriculum, tools, simulator modes, analytics, rewards, community challenges, advanced Sprouty practice review and priority support requests.
 
 The custom signup referral code gives **the new learner** $5,000 virtual cash after email confirmation, once per account within seven days. The referrer does not receive new cash rewards. Previous rewards are preserved. Bonuses and recharges are excluded from trading return calculations. Pro resets restore $10,000 and clear simulator records but retain learning.
 

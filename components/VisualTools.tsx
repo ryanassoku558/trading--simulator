@@ -5,7 +5,8 @@ import ToolGuide from './ToolGuide';
 import {Calculator,ShieldCheck,TrendingUp,Gauge} from 'lucide-react';
 import {positionSize,hypotheticalProfit,volatility} from '@/lib/trading/tools';
 import {candles,money} from '@/lib/market';
-export default function VisualTools({tick=0}:{tick?:number}){
+export default function VisualTools({tick=0}:{tick?:number}){return <ProGate feature="All trading tools"><UnlockedTools tick={tick}/></ProGate>;}
+function UnlockedTools({tick}:{tick:number}){
  const [balance,setBalance]=useState(1000),[risk,setRisk]=useState(1),[entry,setEntry]=useState(100),[stop,setStop]=useState(98),[exitPercent,setExitPercent]=useState(104);
  const exit=entry*exitPercent/100;
  const size=positionSize(balance,risk,entry,stop),profit=size?hypotheticalProfit(size.shares,entry,exit):0;
