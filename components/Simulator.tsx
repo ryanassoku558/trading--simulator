@@ -383,9 +383,12 @@ export default function Simulator() {
           )}
           {page === "market" && !ticker && (
             <Market
-              key={searchParams.get("q") || ""}
+              key={`${searchParams.get("q")||""}-${searchParams.get("symbol")||""}`}
               state={state}
               advance={advance}
+              watch={watch}
+              update={update}
+              onTrade={onTrade}
             />
           )}
           {page === "market" && ticker && current && (

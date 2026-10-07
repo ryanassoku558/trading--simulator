@@ -29,7 +29,7 @@ export default function StockDetail({
   guided: boolean;
 }) {
   const [range, setRange] = useState("LIVE");
-  const [chartType, setChartType] = useState<"line" | "candles">("line");
+  const [chartType, setChartType] = useState<"line" | "candles">("candles");
   return (
     <>
       <div className="page-heading">
