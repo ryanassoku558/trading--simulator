@@ -1,4 +1,5 @@
 "use client";
+import About from "./About";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
@@ -69,6 +70,7 @@ export default function Landing({
           <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
           <a href="#tools"><Calculator size={16}/> Tools</a>
           <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <a href="#about">About</a>
           <a href="#account"><UserRound size={16}/> Account</a>
         </nav>
         <ThemeToggle />
@@ -281,6 +283,7 @@ export default function Landing({
       <VisualTools tick={state.tick}/>
       <DailySnapshot tick={state.tick}/>
       <TutorialLibrary />
+      <About embedded/>
       <SproutMission />
       <TradingBenefits onNavigate={enter}/>
       <LearnerStories />
@@ -299,6 +302,7 @@ export default function Landing({
           <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
           <a href="#tools"><Calculator size={16}/> Tools</a>
           <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <a href="#about">About</a>
           <a href="#account"><UserRound size={16}/> Account</a>
           <a href="#account">Account</a>
         </div>

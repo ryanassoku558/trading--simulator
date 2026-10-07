@@ -55,6 +55,7 @@ import Community from "./screens/Community";
 import ReferralCard from "./ReferralCard";
 import VisualTools from "./VisualTools";
 import {PsychologyVisuals} from "./PracticeVisuals";
+import About from "./screens/About";
 import Practice from "./screens/Practice";
 import TradeHistory from "./screens/TradeHistory";
 
@@ -65,13 +66,14 @@ import { ExplainTrade } from "./Trading";
 const navigation = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard, group:"Overview" },
   { href: "/learn", label: "Learn", icon: BookOpen, group:"Learn & practice" },
+  { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined },
+  { href: "/tools", label: "Tools", icon: Calculator },
   { href: "/market", label: "Simulator", icon: ChartNoAxesCombined, group:"Trading workspace" },
-  { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined,group:undefined },
-  { href: "/tools", label: "Tools", icon: Calculator,group:undefined },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/history", label: "Trade History", icon: History },
   { href: "/community", label: "Community", icon: UserRound, group:"Community & rewards" },
   { href: "/achievements", label: "Achievements", icon: Trophy },
+  { href: "/about", label: "About Sprout", icon: Sprout },
 ];
 export default function Simulator() {
   const { state: savedState, update: persist, error, user, pending, retry } = useAccount();
@@ -395,6 +397,7 @@ export default function Simulator() {
           )}
           {page === "community" && <Community state={state} user={user}/>}
           {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><PsychologyVisuals state={state} update={update}/></>}
+          {page === "about" && <About/>}
           {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
@@ -415,6 +418,7 @@ export default function Simulator() {
             />
           )}
           {![
+            "about",
             "dashboard",
             "learn",
             "market",
