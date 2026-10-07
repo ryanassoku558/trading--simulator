@@ -358,7 +358,7 @@ export default function Simulator() {
           </div>
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
-        <MarketTicker tick={state.tick} />
+        {!(page==="market"&&!ticker)&&<MarketTicker tick={state.tick} />}
         <main className="content">
           {error && (
             <div className="error" role="alert">

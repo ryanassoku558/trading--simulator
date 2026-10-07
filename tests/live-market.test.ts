@@ -1,3 +1,4 @@
+import {popularSymbols} from '@/lib/market/popular';
 import {expect, it} from "vitest";
 import {stocks, quote, candles, clockTick, marketEpoch} from "../lib/market";
 import {initialState, advanceMarket, placeLimit} from "../lib/trading";
@@ -23,3 +24,5 @@ it("fills an ETF limit at the current automatic tick", () => {
  expect(result.filled[0].price).toBe(quote("VTI",200).price);
  expect(result.state.orders[0].status).toBe("filled");
 });
+
+it("offers a focused shortlist while preserving existing holdings and full catalog lookup",()=>{const popular=stocks.filter(s=>popularSymbols.has(s.ticker));expect(popular.length).toBeGreaterThan(75);expect(popular.length).toBeLessThan(120);for(const ticker of ["AAPL","MSFT","NVDA","SPY","QQQ","VTI","BND"])expect(popular.some(s=>s.ticker===ticker)).toBe(true);expect(popular.some(s=>s.ticker==="AAAC")).toBe(false);expect(quote("AAAC").ticker).toBe("AAAC");});

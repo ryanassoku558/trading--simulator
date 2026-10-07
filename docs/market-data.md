@@ -1,0 +1,9 @@
+# Market data and practice prices
+
+Markets opens to external TradingView market quote widgets: 12 familiar stocks, 8 major ETFs, and 6 continuous futures chart symbols. The embedded provider controls its exchange permissions, timestamps and quote delays. Its attribution remains visible. This is an externally hosted display, not a Sprout API feed. The widget adapts to Sprout's theme. If scripts are blocked, a warning and Yahoo Finance quote links remain accessible.
+
+Virtual trading uses the original generated two-second price model. This is explicitly labeled beside the real quotes and on security detail pages. The default practice list now contains a curated shortlist of familiar stocks and major ETFs; typing a search still queries the full catalog so earlier holdings and symbol links continue working.
+
+No real quote prices are extracted from third-party widgets for virtual executions. Futures are research references only: there is no contract-expiry, multiplier, tick-value, margin, rollover, or futures-order engine. Connecting quote-based trade execution needs an authorized API/data feed and aligned chart/quote/history data, timestamp handling, stale-price guards and session hours. Commercial distribution rights and exchange fees should be checked before purchasing data; personal API plans may not cover public website use.
+
+Validation: unit tests cover shortlist membership and retained catalog access; browser checks cover view selection, source links and blocked-widget fallback. The execution environment's proxy blocks TradingView domains, so actual externally supplied quote values and delays cannot be verified here. Verify the widget in a normal browser before describing quotes as exact or real time.

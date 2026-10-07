@@ -2,8 +2,8 @@ import { test, expect } from "./fixtures";
 test("global search, sorting, and both market layouts work", async ({
   page,
 }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Try the Simulator" }).click();
+  await page.goto("/market");
+  await expect(page.getByRole("heading",{name:"Follow the real market."})).toBeVisible();
   await page.getByRole("textbox", { name: "Search the market" }).fill("AAPL");
   await page.getByRole("button", { name: "Submit market search" }).click();
   await expect(

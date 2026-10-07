@@ -1,4 +1,6 @@
 "use client";
+import RealMarketQuotes from "../RealMarketQuotes";
+import {popularSymbols} from "@/lib/market/popular";
 import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -18,6 +20,7 @@ export default function Market({
   advance: () => void;
 }) {
   const params = useSearchParams();
+  const [marketView,setMarketView]=useState(params.get("q")?"practice":"quotes");
   const [search, setSearch] = useState(params.get("q") || "");
   const [view, setView] = useState<"table" | "cards">("table");
   const [sort, setSort] = useState("symbol");
@@ -26,7 +29,7 @@ export default function Market({
   const exact = stocks.find(s => s.ticker === search.trim().toUpperCase());
   const filtered = stocks
     .filter((s) =>
-      (asset === "All" || s.assetType === asset) && (exact ? s.ticker === exact.ticker : `${s.ticker} ${s.company}`.toLowerCase().includes(search.toLowerCase())),
+      (asset === "All" || s.assetType === asset) && (search.trim()?true:popularSymbols.has(s.ticker)) && (exact ? s.ticker === exact.ticker : `${s.ticker} ${s.company}`.toLowerCase().includes(search.toLowerCase())),
     )
     .sort((a, b) =>
       sort === "price"
@@ -38,14 +41,17 @@ export default function Market({
   const pages = Math.max(1, Math.ceil(filtered.length / 50));
   const currentPage = Math.min(page, pages - 1);
   const visible = filtered.slice(currentPage * 50, currentPage * 50 + 50);
+  const switcher=<div className="chart-type-buttons market-source-switch" role="group" aria-label="Market data view"><button aria-pressed={marketView==="quotes"} onClick={()=>setMarketView("quotes")}>Real market quotes</button><button aria-pressed={marketView==="practice"} onClick={()=>setMarketView("practice")}>Virtual trading simulator</button></div>;
+  if(marketView==="quotes")return <><div className="page-heading"><div><span className="eyebrow">MARKETS & RESEARCH</span><h1>Follow the real market.</h1><p>Explore familiar stocks, major ETFs, and futures using external market quotes.</p></div></div>{switcher}<RealMarketQuotes/></>;
   return (
     <>
+      {switcher}
       <div className="page-heading">
         <div>
           <span className="eyebrow">MARKET WORKSPACE</span>
           <h1>Markets & research.</h1>
           <p>
-            Search stocks and ETFs, explore moving charts, and practice buying or selling with virtual money. Prices are generated for 24/7 practice.
+            Browse familiar stocks and major ETFs, or search the full catalog by name or ticker. Current practice prices and charts are generated estimates, not real market quotes.
           </p>
         </div>
         <button className="secondary" onClick={advance}>
@@ -100,7 +106,7 @@ export default function Market({
         </div>
       </div>
       <div className="market-results-label">
-        <span>{filtered.length} securities</span>
+        <span>{filtered.length} {search.trim()?"matching securities":"popular stocks & ETFs"}</span>
         <span>SIMULATED · UPDATES EVERY 2 SECONDS · 24/7</span>
       </div>
       {view === "table" ? (

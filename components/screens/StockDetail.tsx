@@ -54,6 +54,7 @@ export default function StockDetail({
           </button>
         </div>
       </div>
+      <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
       <div className="detail-grid">
         <div>
           <section className="card">
