@@ -10,7 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "node scripts/browser-tests.mjs",
-    "preview:media": "node scripts/capture-previews.mjs"
+    "preview:media": "node scripts/capture-previews.mjs",
+    "test:database": "node scripts/check-subscriptions.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",
@@ -18,9 +19,11 @@
     "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^3.0.0"
+    "recharts": "^3.0.0",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.51.0",
     "@sparticuz/chromium": "^153.0.0",
     "@tailwindcss/postcss": "^4.0.0",

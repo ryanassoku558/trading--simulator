@@ -31,7 +31,7 @@ export function portfolio(s: State) {
     s.holdings.reduce((n, h) => n + h.shares * h.averageCost, 0),
   );
   const value = round(s.cash + invested),
-    startingCapital = 10000 + (s.referralDeposits??0),
+    startingCapital = 10000 + (s.referralDeposits??0) + (s.simulatorDeposits??0),
     gain = round(value - startingCapital);
   const today = round(
     s.holdings.reduce((n, h) => {
@@ -206,6 +206,7 @@ export function resetSimulator(s: State): State {
     challenge: undefined,
     returnGoal: undefined,
     referralDeposits: 0,
+    simulatorDeposits: 0,
     moods: [],
     cash: fresh.cash,
     holdings: [],

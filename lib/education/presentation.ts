@@ -1,4 +1,5 @@
 import type {Lesson,Quiz,State} from '@/types';
+import {starterModules} from '@/lib/billing/access';
 import {answerLesson} from './index';
 import {moduleScenario} from './scenarios';
 export interface PresentationQuestion extends Quiz {lessonId:number;visual?:boolean;}
@@ -13,5 +14,5 @@ export function presentationQuestions(group:Lesson[]):PresentationQuestion[]{
  const selected=group.length===1?base:questions;
  return selected;
 }
-export function completePresentation(state:State,group:Lesson[],answers?:boolean[]):State{const next=group.reduce((next,l)=>answerLesson(next,l.id,l.quiz.answer),state);return answers?recordPresentationAttempts(state,next,group,answers):next;}
+export function completePresentation(state:State,group:Lesson[],answers?:boolean[]):State{let next=group.reduce((next,l)=>answerLesson(next,l.id,l.quiz.answer),state);const completed=next.learning.starterModulesCompleted??[];const newlyCompleted=starterModules.filter(m=>!completed.includes(m.title)&&m.ids.every(id=>next.learning.completed.includes(id)));if(newlyCompleted.length)next={...next,learning:{...next.learning,xp:next.learning.xp+newlyCompleted.length*100,starterModulesCompleted:[...completed,...newlyCompleted.map(m=>m.title)]}};return answers?recordPresentationAttempts(state,next,group,answers):next;}
 export function recordPresentationAttempts(previous:State,next:State,group:Lesson[],answers:boolean[]):State{const questions=presentationQuestions(group);return {...next,learning:{...next.learning,attempts:[...previous.learning.attempts,...questions.map((q,i)=>({lessonId:q.lessonId,correct:answers[i]===true,date:new Date().toISOString()}))]}};}

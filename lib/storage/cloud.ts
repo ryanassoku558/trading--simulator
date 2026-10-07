@@ -23,6 +23,8 @@ export async function loadCloudAccount(
       throw new Error(
         "Your saved cloud account has an unsupported format. Guest practice remains available after signing out.",
       );
+    const referral=await supabase.rpc?.("sprout_apply_signup_referral");
+    if(referral&&!referral.error&&referral.data?.awarded===5000)return loadCloudAccount(id,email,firstName);
     return { state: data.account, version: data.updated_at };
   }
   const state = initialState();
@@ -43,6 +45,8 @@ export async function loadCloudAccount(
       `Unable to create your cloud account: ${inserted.error.message}`,
     );
   }
+  const referral=await supabase.rpc?.("sprout_apply_signup_referral");
+  if(referral&&!referral.error&&referral.data?.awarded===5000)return loadCloudAccount(id,email,firstName);
   return { state, version: inserted.data.updated_at };
 }
 export async function saveCloudAccount(

@@ -22,7 +22,7 @@ import {
 import {LearningRoadmap,PatternPreview,StrategyCards} from "../VisualLearning";
 import TradingBenefits from "../TradingBenefits";
 import Sprouty from "../Sprouty";
-import ReferralCard from "../ReferralCard";
+import Link from "next/link";
 import VisualTools from "../VisualTools";
 import {DailySnapshot} from "../PracticeVisuals";
 import LearnerReviews from "../LearnerReviews";
@@ -71,6 +71,7 @@ export default function Landing({
           <a href="#tools"><Calculator size={16}/> Tools</a>
           <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
           <a href="#about">About</a>
+          <Link href="/pricing">Pricing</Link>
           <a href="#account"><UserRound size={16}/> Account</a>
         </nav>
         <ThemeToggle />
@@ -288,7 +289,7 @@ export default function Landing({
       <TradingBenefits onNavigate={enter}/>
       <LearnerStories />
       <LearnerReviews/>
-      <ReferralCard/>
+      <Link className="secondary" href="/pricing">Explore Sprout Pro · $10/month</Link>
       <div id="account" className="landing-account">
         {accountPanel}
       </div>
@@ -303,6 +304,7 @@ export default function Landing({
           <a href="#tools"><Calculator size={16}/> Tools</a>
           <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
           <a href="#about">About</a>
+          <Link href="/pricing">Pricing</Link>
           <a href="#account"><UserRound size={16}/> Account</a>
           <a href="#account">Account</a>
         </div>

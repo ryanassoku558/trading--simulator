@@ -1,5 +1,6 @@
 "use client";
 import PersonalLearning from "../PersonalLearning";
+import {ProGate} from "../Subscription";
 import {DailyWarmup} from "../LearningDiscovery";
 import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
 import Link from "next/link";
@@ -54,7 +55,7 @@ export default function Dashboard({
         </Link>
       </div>
       <PersonalLearning state={state}/>
-      <DailyWarmup/>
+      <ProGate feature="Daily market warm-up"><DailyWarmup/></ProGate>
       <div className="beginner-banner">
         <span className="banner-icon">
           <ShieldCheck size={22} />
@@ -128,7 +129,7 @@ export default function Dashboard({
                   ]
             }
           />
-          {!!state.referralDeposits&&<p className="small">This equity curve includes virtual referral deposits. Trading returns exclude those deposits.</p>}
+          {!!(state.referralDeposits||state.simulatorDeposits)&&<p className="small">This equity curve includes virtual practice deposits. Trading returns exclude those deposits.</p>}
           <div className="portfolio-footer">
             <span>
               <i className="legend-dot" />
@@ -251,7 +252,7 @@ export default function Dashboard({
         </section>
       </div>
       <DailySnapshot tick={state.tick}/>
-      <PracticeStats state={state}/>
+      <ProGate feature="Full simulator analytics"><PracticeStats state={state}/></ProGate>
       <Link className="primary" href="/market">Continue Simulator →</Link>
       <section className="card quick-tools"><h2>Tools you’ll use today</h2><div className="coach-candidates">{["Position size calculator","Risk calculator","Volatility meter","Profit/loss simulator"].map(tool=><Link className="example" key={tool} href="/tools"><strong>{tool}</strong><p>Explore hypothetical inputs before making a practice decision.</p><span>Open tools →</span></Link>)}</div></section>
     </>

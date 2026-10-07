@@ -28,7 +28,6 @@ import {
   initialState,
   portfolio,
   advanceMarket,
-  resetSimulator,
   resetLearning,
 } from "@/lib/trading";
 import { useAccount } from "@/lib/storage/useAccount";
@@ -53,6 +52,8 @@ import Dashboard from "./screens/Dashboard";
 import Portfolio from "./screens/Portfolio";
 import Community from "./screens/Community";
 import ReferralCard from "./ReferralCard";
+import {Pricing,ProGate,SimulatorMoney,useSubscription,billingRequest} from "./Subscription";
+import {canLearn} from "@/lib/billing/access";
 import VisualTools from "./VisualTools";
 import {PsychologyVisuals} from "./PracticeVisuals";
 import About from "./screens/About";
@@ -73,17 +74,21 @@ const navigation = [
   { href: "/history", label: "Trade History", icon: History },
   { href: "/community", label: "Community", icon: UserRound, group:"Community & rewards" },
   { href: "/achievements", label: "Achievements", icon: Trophy },
+  { href: "/pricing", label: "Sprout Pro", icon: Trophy },
   { href: "/about", label: "About Sprout", icon: Sprout },
 ];
 export default function Simulator() {
   const { state: savedState, update: persist, error, user, pending, retry } = useAccount();
+  const subscription=useSubscription();
   const liveTick = useMarketClock();
-  const state = savedState ? {...savedState, tick: Math.max(savedState.tick, liveTick)} : null;
+  const [marketPace,setMarketPace]=useState<{base:number;started:number;fast:boolean}|null>(null);
+  const effectiveTick=marketPace?marketPace.base+Math.max(0,liveTick-marketPace.started)*(marketPace.fast&&subscription.pro?4:1):liveTick;
+  const state = savedState ? {...savedState, tick: Math.max(savedState.tick, effectiveTick)} : null;
   useEffect(() => {
-    if (!savedState || pending || error || liveTick <= savedState.tick || !savedState.orders.some(o => o.status === "pending")) return;
-    const result = advanceMarket(savedState, liveTick);
+    if (!savedState || pending || error || effectiveTick <= savedState.tick || !savedState.orders.some(o => o.status === "pending")) return;
+    const result = advanceMarket(savedState, effectiveTick);
     if (result.state.orders.some((o, i) => o.status !== savedState.orders[i].status)) void persist(result.state);
-  }, [savedState, liveTick, pending, error, persist]);
+  }, [savedState, effectiveTick, pending, error, persist]);
   const searchParams = useSearchParams();
   const path = usePathname(),
     router = useRouter();
@@ -137,7 +142,8 @@ export default function Simulator() {
   const stock = ticker ? stocks.find((s) => s.ticker === ticker) : null;
   const current = stock ? quote(stock.ticker, state.tick) : null;
   const page = path.split("/")[1] || "dashboard";
-  const progress = (state.learning.completed.length / lessons.length) * 100;
+  const accessibleLessons=lessons.filter(l=>canLearn(l.id,subscription.pro));
+  const progress = (state.learning.completed.filter(id=>canLearn(id,subscription.pro)).length / accessibleLessons.length) * 100;
   const recommendedStart =
     state.profile.experience === "experienced"
       ? 21
@@ -169,7 +175,7 @@ export default function Simulator() {
     setTrade(t);
     setToast(
       state!.trades.length === 0
-        ? "First Trade unlocked · +50 XP!"
+        ? subscription.pro ? "First Trade unlocked · +50 XP!" : "Your first practice trade is complete."
         : "Practice trade completed",
     );
   }
@@ -208,6 +214,7 @@ export default function Simulator() {
         : "Simulated prices updated",
     );
   }
+  if (!state.profile.onboarded && page === "pricing") return <main className="content"><Link href="/" className="text-link">← Back to Sprout</Link><Pricing/>{!user&&<div id="account"><AuthPanel user={user} pending={pending}/></div>}</main>;
   if (!state.profile.onboarded)
     return (
       <>
@@ -330,6 +337,7 @@ export default function Simulator() {
             </button>
           </form>
           <div className="topbar-right">
+            <button className="pro-pill" onClick={()=>subscription.upgrade("The full Sprout toolkit")}>{subscription.pro?"Sprout Pro":"Explore Pro"}</button>
             <ThemeToggle />
             <span className="demo-badge">
               <span className="live-dot" />{" "}
@@ -355,18 +363,21 @@ export default function Simulator() {
               {error}
             </div>
           )}
+          {page === "pricing" && <Pricing/>}
+          {page === "market" && <div className="simulator-mode-row"><span className="eyebrow">PRACTICE MODES</span><button className="secondary" aria-pressed={!!marketPace?.fast&&subscription.pro} onClick={()=>{if(!subscription.pro){subscription.upgrade("High-Volatility Mode");return;}setMarketPace({base:state.tick,started:liveTick,fast:!marketPace?.fast});}}>{marketPace?.fast&&subscription.pro?"High-volatility · 4× movement speed":"High-Volatility Mode"}</button><button className="secondary" onClick={()=>subscription.pro?router.push("/practice#chart-practice"):subscription.upgrade("Replay Mode")}>Replay Mode</button></div>}
+          {page === "market" && <SimulatorMoney state={state} onReset={()=>setReset("simulator")} onRecharge={async()=>{await billingRequest("simulator",{action:"recharge"});retry();setToast("$5,000 virtual cash added.");}}/>}
           {page === "dashboard" && (
             <Dashboard
               state={state}
               p={p}
-              nextLesson={nextLesson}
+              nextLesson={canLearn(nextLesson.id,subscription.pro)?nextLesson:lessons.find(l=>canLearn(l.id,subscription.pro)&&!state.learning.completed.includes(l.id))||lessons[0]}
               progress={progress}
               setTrade={setTrade}
               firstTrade={firstTrade}
             />
           )}
           {page === "learn" && (
-            <Learning key={searchParams.get("lesson")||"curriculum"} state={state} update={update} firstTrade={firstTrade} />
+            <Learning key={`${subscription.pro}-${searchParams.get("lesson")||"curriculum"}`} state={state} update={update} firstTrade={firstTrade} />
           )}
           {page === "market" && !ticker && (
             <Market
@@ -396,9 +407,9 @@ export default function Simulator() {
             />
           )}
           {page === "community" && <Community state={state} user={user}/>}
-          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><PsychologyVisuals state={state} update={update}/></>}
+          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></>}
           {page === "about" && <About/>}
-          {page === "practice" && <Practice state={state} update={update}/>}
+          {page === "practice" && <ProGate feature="Strategy labs, replay & advanced analytics"><Practice state={state} update={update}/></ProGate>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
             <TradeHistory
@@ -408,16 +419,17 @@ export default function Simulator() {
               advance={advance}
             />
           )}
-          {page === "achievements" && <Achievements state={state} />}
+          {page === "achievements" && <ProGate feature="Badges & mastery levels"><Achievements state={state} /></ProGate>}
           {(page === "settings" || page === "profile") && (
             <Preferences
               state={state}
               page={page}
               update={update}
-              setReset={setReset}
+              setReset={value=>{if(value==="simulator"&&!subscription.pro){subscription.upgrade("Unlimited simulator resets");return;}setReset(value);}}
             />
           )}
           {![
+            "pricing",
             "about",
             "dashboard",
             "learn",
@@ -438,7 +450,8 @@ export default function Simulator() {
               label="Go to dashboard"
             />
           )}
-          {page === "profile" && <ReferralCard/>}
+
+          {page==="profile"&&<ReferralCard/>}
           {!user&&<div id="account">
             <AuthPanel user={user} pending={pending} />
           </div>}
@@ -512,14 +525,9 @@ export default function Simulator() {
           </p>
           <button
             className="primary full"
-            onClick={() => {
-              update(
-                reset === "simulator"
-                  ? resetSimulator(state)
-                  : resetLearning(state),
-              );
-              setReset(null);
-              setToast("Your fresh start is ready.");
+            onClick={async () => {
+              if(reset === "simulator" && !subscription.pro){setReset(null);subscription.upgrade("Unlimited simulator resets");return;}
+              try {if(reset === "simulator"){await billingRequest("simulator",{action:"reset"});retry();}else await update(resetLearning(state));setReset(null);setToast("Your fresh start is ready.");}catch(e){setToast(e instanceof Error?e.message:"Unable to reset.");}
             }}
           >
             Confirm reset

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SubscriptionProvider from "@/components/Subscription";
 import SproutyHelp from "@/components/SproutyHelp";
 export const metadata: Metadata = {
   title: "Sprout Trading | Trading & Personal Finance Education",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body><script dangerouslySetInnerHTML={{__html: `try{const t=localStorage.getItem('sprout-theme');document.documentElement.dataset.theme=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch{document.documentElement.dataset.theme='light';}`}} />{children}<SproutyHelp/></body>
+      <body><script dangerouslySetInnerHTML={{__html: `try{const t=localStorage.getItem('sprout-theme');document.documentElement.dataset.theme=t==='dark'||t==='light'?t:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch{document.documentElement.dataset.theme='light';}`}} /><SubscriptionProvider>{children}<SproutyHelp/></SubscriptionProvider></body>
     </html>
   );
 }

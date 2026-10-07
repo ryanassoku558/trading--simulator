@@ -9,6 +9,7 @@ export default function AuthPanel({
   user: User | null;
   pending: boolean;
 }) {
+  const [referralCode,setReferralCode]=useState("");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
@@ -22,11 +23,12 @@ export default function AuthPanel({
     setBusy(true);
     setMessage("");
     try {
+      if(signup&&referralCode.trim()){const {data,error}=await supabase.rpc("sprout_validate_referral",{input_code:referralCode.trim()});if(error)throw Error("Referral codes are awaiting activation. You can leave the code blank to sign up now.");if(data!==true)throw Error("That referral code was not found. Please check it.");}
       const result = signup
         ? await supabase.auth.signUp({
             email,
             password,
-            options: { emailRedirectTo: window.location.origin, data: { first_name: firstName.trim() } },
+            options: { emailRedirectTo: window.location.origin, data: { first_name: firstName.trim(), referral_code: referralCode.trim().toUpperCase() } },
           })
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
@@ -98,6 +100,7 @@ export default function AuthPanel({
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
+          <label>Referral code <small>Optional · new accounts get $5,000 virtual bonus after email confirmation</small><input aria-label="Signup referral code" maxLength={24} pattern="[A-Za-z0-9_]{3,24}" value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Your friend’s personal code"/></label>
           <div className="auth-actions">
             <button
               className="primary"

@@ -3,6 +3,8 @@ import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import LearningDiscovery from "./LearningDiscovery";
+import {useSubscription} from "./Subscription";
+import {canLearn,starterModules,starterLessonIds} from "@/lib/billing/access";
 import Sprouty from "./Sprouty";
 import TutorialLibrary from "./TutorialLibrary";
 import LessonPresentation from "./LessonPresentation";
@@ -21,6 +23,8 @@ export default function Learning({
   update: (s: State) => void | Promise<unknown>;
   firstTrade: () => void;
 }) {
+  const {pro,upgrade}=useSubscription();
+  const modules=pro?levels.map((title,i)=>({title,ids:lessons.filter(l=>l.level===i+1).map(l=>l.id)})):starterModules;
   const hash=useSyncExternalStore(callback=>{window.addEventListener('hashchange',callback);return()=>window.removeEventListener('hashchange',callback);},()=>window.location.hash,()=>"");
   const [section,setSection]=useState("Modules & lessons");
   const currentSection=hash==="#tutorials"?"Video tutorials":["#glossary","#beginner-mistakes"].includes(hash)?"Glossary & habits":hash==="#curriculum"?"Modules & lessons":section;
@@ -29,17 +33,21 @@ export default function Learning({
   const [topic,setTopic]=useState("All topics"),[search,setSearch]=useState("");
   const matches=(lesson:Lesson)=>((topic==="All topics")||(topic==="Personal finance"&&lesson.level>=13&&lesson.level<=22)||(topic==="Trading"&&lesson.level<=12)||(topic==="Advanced trading"&&lesson.level>=23))&&`${levels[lesson.level-1]} ${lesson.title} ${lesson.explanation} ${lesson.example}`.toLowerCase().replace(/[^a-z0-9]/g,'').includes(search.trim().toLowerCase().replace(/[^a-z0-9]/g,''));
   const visibleLessons=lessons.filter(matches);
-  const matchingModules=levels.map((_,i)=>i).filter(i=>visibleLessons.some(l=>l.level===i+1));
+  const matchingModules=modules.map((_,i)=>i).filter(i=>visibleLessons.some(l=>modules[i].ids.includes(l.id)));
   const shownModules=search?matchingModules:matchingModules.slice(0,moduleLimit);
   const requestedLesson = Number(useSearchParams().get("lesson"));
   const [active, setActive] = useState<Lesson | null>(
-      () => lessons.find((lesson) => lesson.id === requestedLesson) || null,
+      () => lessons.find((lesson) => lesson.id === requestedLesson && canLearn(lesson.id,pro)) || null,
     ),
     [followingPath, setFollowingPath] = useState(
       Boolean(requestedLesson && state.profile.experience === "new"),
     );
   const [moduleMode,setModuleMode]=useState(false);
+  const [activeGroup,setActiveGroup]=useState<Lesson[]>([]),[activeTitle,setActiveTitle]=useState("");
   function open(l: Lesson, path = false, module = false) {
+    if(!canLearn(l.id,pro)){upgrade("The full lesson library");return;}
+    setActiveGroup(module?lessons.filter(lesson=>modules.find(m=>m.ids.includes(l.id))?.ids.includes(lesson.id)):[l]);
+    setActiveTitle(modules.find(m=>m.ids.includes(l.id))?.title||"");
     setModuleMode(module);
     setFollowingPath(path);
     setActive(l);
@@ -56,7 +64,7 @@ export default function Learning({
         </div>
         <div className="badge">
           <BookOpen size={16} />
-          {state.learning.completed.length} / {lessons.length} lessons
+          {state.learning.completed.filter(id=>canLearn(id,pro)).length} / {pro?lessons.length:20} lessons
         </div>
       </div>
       <div className="journey-summary card">
@@ -85,6 +93,7 @@ export default function Learning({
       <div className="learning-sections" role="group" aria-label="Learning sections">{["Modules & lessons","Video tutorials","Glossary & habits"].map(value=><button aria-pressed={currentSection===value} className={currentSection===value?"active":""} key={value} onClick={()=>selectSection(value)}>{value}</button>)}<Link href="/practice#chart-practice">Chart practice →</Link></div>
       {currentSection==="Video tutorials"&&<TutorialLibrary/>}
       {currentSection==="Glossary & habits"&&<LearningDiscovery/>}
+      {requestedLesson>0&&!canLearn(requestedLesson,pro)&&<section className="card pro-lock"><h3>This lesson is part of Sprout Pro.</h3><button className="primary" onClick={()=>upgrade("This lesson")}>Explore Pro</button></section>}
       {currentSection==="Modules & lessons"&&<>
       <section className="card beginner-path">
         <div>
@@ -101,7 +110,7 @@ export default function Learning({
           className="primary"
           onClick={() => {
             const id =
-              beginnerLearningOrder.find(
+              (pro?beginnerLearningOrder:starterLessonIds).find(
                 (id) => !state.learning.completed.includes(id),
               ) ?? beginnerLearningOrder[0];
             open(lessons.find((l) => l.id === id)!, true);
@@ -110,35 +119,35 @@ export default function Learning({
           Start beginner path <ArrowRight size={16} />
         </button>
       </section>
-      <section className="card curriculum-browser" id="curriculum"><div className="card-heading"><div><span className="eyebrow">YOUR TRADING & PERSONAL FINANCE LIBRARY</span><h2>Modules & lessons</h2><p>{lessons.length} lessons across {levels.length} modules. Start learning now; no fixed balance is required.</p></div><Trophy size={25}/></div><div className="curriculum-topics" role="group" aria-label="Curriculum topic">{["All topics","Personal finance","Trading","Advanced trading"].map(t=><button key={t} aria-pressed={topic===t} className={topic===t?"active":""} onClick={()=>{setTopic(t);setModuleLimit(6);}}>{t}</button>)}</div><label className="curriculum-search"><Search size={18}/><input aria-label="Search lessons" type="search" placeholder="Search modules or lessons…" value={search} onChange={e=>setSearch(e.target.value)}/></label><p className="small" role="status">{visibleLessons.length} matching lessons · +35 XP per first completion · +100 XP per completed module</p></section>
+      <section className="card curriculum-browser" id="curriculum"><div className="card-heading"><div><span className="eyebrow">YOUR TRADING & PERSONAL FINANCE LIBRARY</span><h2>Modules & lessons</h2><p>{pro?lessons.length:20} lessons across {modules.length} modules. Start learning now; no fixed balance is required.</p></div><Trophy size={25}/></div><div className="curriculum-topics" role="group" aria-label="Curriculum topic">{["All topics","Personal finance","Trading","Advanced trading"].map(t=><button key={t} aria-pressed={topic===t} className={topic===t?"active":""} onClick={()=>{setTopic(t);setModuleLimit(6);}}>{t}</button>)}</div><label className="curriculum-search"><Search size={18}/><input aria-label="Search lessons" type="search" placeholder="Search modules or lessons…" value={search} onChange={e=>setSearch(e.target.value)}/></label><p className="small" role="status">{visibleLessons.filter(l=>canLearn(l.id,pro)).length} matching lessons · +35 XP per first completion · +100 XP per completed module</p></section>
       <Sprouty compact completed={state.learning.completed.length}/>
       {visibleLessons.length===0&&<p className="card">No lessons match your search. Try a broader term or another topic.</p>}
-      {levels.map((level, i) => shownModules.includes(i)&&(
+      {modules.map((module, i) => shownModules.includes(i)&&(
 
-        <section className="card level" key={level}>
+        <section className="card level" key={module.title}>
           <div className="level-heading">
             <div className="level-icon">{i + 1}</div>
             <div>
               <div className="eyebrow">MODULE {i + 1} · {i<12?"TRADING FOUNDATIONS":i<22?"PERSONAL FINANCE":"ADVANCED TRADING"}</div>
-              <h2>{level}</h2>
+              <h2>{module.title}</h2>
             </div>
             <span className="muted">
               {
                 lessons.filter(
                   (l) =>
-                    l.level === i + 1 &&
+                    module.ids.includes(l.id) &&
                     state.learning.completed.includes(l.id),
                 ).length
               }
-              /{lessons.filter((l) => l.level === i + 1).length} complete
+              /{lessons.filter((l) => module.ids.includes(l.id)).length} complete
             </span>
           </div>
-          <div className="module-reward"><Trophy size={16}/>{lessons.filter(l=>l.level===i+1).every(l=>state.learning.completed.includes(l.id))?"Module complete · completion XP earned":"Complete this module to earn +100 XP"}{i>=12&&" and a mastery badge"}</div>
-          <button className="secondary" onClick={()=>open(lessons.find(l=>l.level===i+1)!,false,true)}>Start module presentation & quiz</button>
-          <details className="module-lessons" open={!!search||i===0}><summary>Lessons in this module · {lessons.filter(l=>l.level===i+1).length}</summary>
+          <div className="module-reward"><Trophy size={16}/>{lessons.filter(l=>module.ids.includes(l.id)).every(l=>state.learning.completed.includes(l.id))?"Module complete · completion XP earned":"Complete this module to earn +100 XP"}{i>=12&&" and a mastery badge"}</div>
+          <button className="secondary" onClick={()=>open(lessons.find(l=>module.ids.includes(l.id))!,false,true)}>Start module presentation & quiz</button>
+          <details className="module-lessons" open={!!search||i===0}><summary>Lessons in this module · {lessons.filter(l=>module.ids.includes(l.id)).length}</summary>
           <div className="lesson-list">
             {lessons
-              .filter((l) => l.level === i + 1 && matches(l))
+              .filter((l) => module.ids.includes(l.id) && matches(l))
               .map((l) => (
                 <button
                   key={l.id}
@@ -168,10 +177,13 @@ export default function Learning({
           </div></details>
         </section>
       ))}
+      {!pro&&<section className="card pro-lock"><h3>Keep learning with Sprout Pro</h3><p>Unlock the full trading and personal finance curriculum.</p><button className="primary" onClick={()=>upgrade("All modules and lessons")}>Explore Pro · $10/month</button></section>}
       {!search&&moduleLimit<matchingModules.length&&<button className="secondary full" onClick={()=>setModuleLimit(moduleLimit+6)}>Show more modules ({shownModules.length} of {matchingModules.length})</button>}
       </>}
-      {active && <LessonPresentation key={`${active.id}-${moduleMode}`} group={moduleMode?lessons.filter(l=>l.level===active.level):[active]} moduleMode={moduleMode} state={state} update={update} onClose={()=>setActive(null)} onContinue={module=>{
-        const next=module?lessons.find(l=>l.level===active.level+1):lessons.find(l=>l.id===(followingPath?beginnerLearningOrder[beginnerLearningOrder.indexOf(active.id)+1]:active.id+1));
+      {active && canLearn(active.id,pro) && <LessonPresentation key={`${active.id}-${moduleMode}`} title={moduleMode?activeTitle:undefined} group={activeGroup.length?activeGroup:[active]} moduleMode={moduleMode} state={state} update={update} onClose={()=>setActive(null)} onContinue={module=>{
+        const moduleIndex=modules.findIndex(m=>m.ids.includes(active.id));
+        const ids=pro?beginnerLearningOrder:starterLessonIds;
+        const next=module?lessons.find(l=>l.id===modules[moduleIndex+1]?.ids[0]):lessons.find(l=>l.id===ids[ids.indexOf(active.id)+1]);
         if(next)open(next,followingPath,module);else setActive(null);
       }}/>}
     </>

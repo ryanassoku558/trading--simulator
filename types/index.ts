@@ -79,6 +79,7 @@ export interface QuizAttempt {
   date: string;
 }
 export interface LearningProgress {
+  starterModulesCompleted?: string[];
   quizPasses?: number;
   completed: number[];
   attempts: QuizAttempt[];
@@ -106,6 +107,7 @@ export interface JournalEntry {
 }
 export interface PracticeChallenge { id: string; startedAt: string; startingEquity: number; startTradeCount: number; }
 export interface State extends VirtualAccount {
+ simulatorDeposits?: number;
  referralDeposits?: number;
  moods?: {id:string;date:string;mood:"Calm"|"Fear"|"Greed"|"Tilt"|"Hesitation"}[];
  returnGoal?: {startedAt:string;startingEquity:number;targetPercent:number};

@@ -1,7 +1,7 @@
 import {it,expect} from 'vitest';
 import {answerHelp} from '../lib/support/answers';
 it('answers platform questions with factual help and internal destinations',()=>{
- expect(answerHelp('How do referrals work?').text).toContain('$10,000');
+ expect(answerHelp('How do referrals work?').text).toContain('$5,000');
  expect(answerHelp('Can I withdraw my profits?').text).toContain('cannot be withdrawn');
  expect(answerHelp('What minimum amount of money do I need to start?').text).toContain('no single amount');
  expect(answerHelp('How much money do I need to start?').text).toContain('no single amount');
