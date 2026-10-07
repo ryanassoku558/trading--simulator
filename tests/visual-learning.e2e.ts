@@ -11,5 +11,5 @@ test('mood tracking and portfolio goals persist and render in dark mode on mobil
  await page.getByRole('button',{name:'Tilt',exact:true}).click();await page.getByRole('button',{name:'Save mood check-in'}).click();await expect(page.getByRole('heading',{name:'Tilt Warning'})).toBeVisible();
  await page.getByRole('button',{name:'Switch to dark mode'}).click();await page.reload();await expect(page.getByRole('heading',{name:'Tilt Warning'})).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
- await page.goto('/practice');await page.getByRole('button',{name:'Start portfolio goal'}).click();await page.reload();await expect(page.getByRole('button',{name:'End portfolio goal'})).toBeVisible();await expect(page.getByRole('progressbar',{name:'Virtual portfolio return goal'})).toHaveAttribute('value','0');
+ await page.goto('/practice');await page.getByRole('button',{name:'Challenges',exact:true}).click();await page.getByRole('button',{name:'Start portfolio goal'}).click();await page.reload();await page.getByRole('button',{name:'Challenges',exact:true}).click();await expect(page.getByRole('button',{name:'End portfolio goal'})).toBeVisible();await expect(page.getByRole('progressbar',{name:'Virtual portfolio return goal'})).toHaveAttribute('value','0');
 });

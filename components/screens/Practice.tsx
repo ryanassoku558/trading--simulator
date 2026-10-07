@@ -1,11 +1,11 @@
 "use client";
-import {useState} from "react";
+import {useState,useSyncExternalStore} from "react";
 import Link from "next/link";
 import type {State,Trade} from "@/types";
 import {money} from "@/lib/market";
 import {performance} from "@/lib/trading/analytics";
 import {portfolio} from "@/lib/trading";
-import {PracticeStats,PsychologyVisuals,ReturnChallenge} from "../PracticeVisuals";
+import {PsychologyVisuals,ReturnChallenge} from "../PracticeVisuals";
 import {StrategyCards} from "../VisualLearning";
 import ChartPractice from "../ChartPractice";
 import {Trophy,NotebookPen,ArrowUpRight} from "lucide-react";
@@ -24,6 +24,10 @@ function JournalEditor({trade,state,update}: {trade:Trade;state:State;update:(s:
  </form>;
 }
 export default function Practice({state,update}: {state:State;update:(s:State)=>void}){
+ const hash=useSyncExternalStore(callback=>{window.addEventListener('hashchange',callback);return()=>window.removeEventListener('hashchange',callback);},()=>window.location.hash,()=>"");
+ const [section,setSection]=useState('Chart lab');
+ const current=hash==='#journal'?'Journal':hash==='#performance'?'Results':hash==='#chart-practice'?'Chart lab':section;
+ function selectSection(value:string){window.history.replaceState(null,'',window.location.pathname+window.location.search);setSection(value);window.dispatchEvent(new HashChangeEvent('hashchange'));}
  const [selected,setSelected]=useState("");
  const trade=state.trades.find(t=>t.id===selected)??state.trades[0];
  const stats=performance(state),challenge=state.challenge;
@@ -33,17 +37,17 @@ export default function Practice({state,update}: {state:State;update:(s:State)=>
  const target=challenge?.id==="seven-days"?7:3,progress=challenge?.id==="seven-days"?days:reviewed.length;
  const start=(id:string)=>update({...state,challenge:{id,startedAt:new Date().toISOString(),startingEquity:portfolio(state).value,startTradeCount:state.trades.length}});
  return <><div className="page-heading"><div><span className="eyebrow">TURN PRACTICE INTO UNDERSTANDING</span><h1>Your practice lab</h1><p>Replay a chart, reflect on a trade, and measure the process.</p></div><Link className="primary" href="/market">Open simulator <ArrowUpRight size={17}/></Link></div>
-  <PracticeStats state={state}/>
-  <ChartPractice/>
-  <ReturnChallenge state={state} update={update}/>
-  <PsychologyVisuals state={state} update={update}/>
-  <StrategyCards/>
-  <section className="card practice-challenges"><div className="card-heading"><div><span className="eyebrow">SMALL GOALS. THOUGHTFUL HABITS.</span><h2>Practice challenges</h2></div><Trophy size={24}/></div>
+  <div className="learning-sections" role="group" aria-label="Practice sections">{["Chart lab","Journal","Challenges","Results","Mindset"].map(value=><button key={value} className={current===value?"active":""} aria-pressed={current===value} onClick={()=>selectSection(value)}>{value}</button>)}</div>
+  {current==="Chart lab"&&<ChartPractice/>}
+  {current==="Challenges"&&<ReturnChallenge state={state} update={update}/>}
+  {current==="Mindset"&&<PsychologyVisuals state={state} update={update}/>}
+  {current==="Chart lab"&&<StrategyCards/>}
+  {current==="Challenges"&&<section className="card practice-challenges"><div className="card-heading"><div><span className="eyebrow">SMALL GOALS. THOUGHTFUL HABITS.</span><h2>Practice challenges</h2></div><Trophy size={24}/></div>
    <p>Build a repeatable learning process. There is no promised return or pressure to trade every day.</p>
    <div className="challenge-grid"><div><h3>Plan & review 3 trades</h3><p>Make three virtual trades and journal each decision. Review the reason, size, and possible loss.</p><button className="secondary" disabled={challenge?.id==="plan-3"} onClick={()=>start("plan-3")}>{challenge?.id==="plan-3"?"Active challenge":"Start three-trade challenge"}</button></div><div><h3>7 days of reflection</h3><p>Review trades from seven distinct days, at your own pace. Learning consistency matters more than chasing a return target.</p><button className="secondary" disabled={challenge?.id==="seven-days"} onClick={()=>start("seven-days")}>{challenge?.id==="seven-days"?"Active challenge":"Start reflection challenge"}</button></div></div>
    {challenge&&<div className="challenge-progress"><label htmlFor="challenge-progress">{challenge.id==="seven-days"?"Days reflected":"Trades reviewed"}: {Math.min(progress,target)} / {target}</label><progress id="challenge-progress" max={target} value={Math.min(progress,target)}/><small>{progress>=target?"Challenge complete. Review what you learned before starting another.":"Only trades made after starting the challenge count. Starting another challenge replaces this one."}</small></div>}
-  </section>
-  <section className="card" id="performance"><div className="card-heading"><div><span className="eyebrow">LEARN FROM YOUR RESULTS</span><h2>Performance analytics</h2></div></div><div className="analytics-grid"><div><span>Win rate</span><strong>{stats.winRate===null?"—":`${stats.winRate.toFixed(1)}%`}</strong><small>{stats.closed} sell fills · {stats.breakeven} breakeven excluded</small></div><div><span>Average R</span><strong>{stats.averageR===null?"—":`${stats.averageR.toFixed(2)}R`}</strong><small>{stats.rCount} sell fills with recorded initial risk</small></div><div><span>Max drawdown</span><strong>{stats.maxDrawdown.toFixed(2)}%</strong><small>From sampled equity peaks</small></div><div><span>Realized profit / loss</span><strong className={stats.realized>=0?"positive":"negative"}>{money(stats.realized)}</strong><small>Closed shares only</small></div></div><p className="small">Win rate counts profitable versus losing sell fills, including partial exits, rather than complete round trips. Drawdown uses saved snapshots and current equity; it may miss price changes between snapshots. Average R uses the initial risk you record in your journal.</p></section>
-  <section className="card" id="journal"><div className="card-heading"><div><span className="eyebrow">YOUR EDGE IS SELF-AWARENESS</span><h2>Trade journal</h2><p>Notes stay with your practice account, locally or in your signed-in cloud account.</p></div><NotebookPen size={25}/></div>{trade?<><label className="journal-select">Choose a trade<select aria-label="Journal trade" value={trade.id} onChange={e=>setSelected(e.target.value)}>{state.trades.map(t=><option key={t.id} value={t.id}>{t.side.toUpperCase()} {t.ticker} · {new Date(t.date).toLocaleString()}</option>)}</select></label><JournalEditor key={trade.id} trade={trade} state={state} update={update}/></>:<div className="journal-empty"><NotebookPen size={30}/><h3>Your next trade has a story.</h3><p>Make a virtual trade, then come back to record the plan and what you learned.</p><Link href="/market" className="text-link">Explore the simulator →</Link></div>}</section>
+  </section>}
+  {current==="Results"&&<section className="card" id="performance"><div className="card-heading"><div><span className="eyebrow">LEARN FROM YOUR RESULTS</span><h2>Performance analytics</h2></div></div><div className="analytics-grid"><div><span>Win rate</span><strong>{stats.winRate===null?"—":`${stats.winRate.toFixed(1)}%`}</strong><small>{stats.closed} sell fills · {stats.breakeven} breakeven excluded</small></div><div><span>Average R</span><strong>{stats.averageR===null?"—":`${stats.averageR.toFixed(2)}R`}</strong><small>{stats.rCount} sell fills with recorded initial risk</small></div><div><span>Max drawdown</span><strong>{stats.maxDrawdown.toFixed(2)}%</strong><small>From sampled equity peaks</small></div><div><span>Realized profit / loss</span><strong className={stats.realized>=0?"positive":"negative"}>{money(stats.realized)}</strong><small>Closed shares only</small></div></div><p className="small">Win rate counts profitable versus losing sell fills, including partial exits, rather than complete round trips. Drawdown uses saved snapshots and current equity; it may miss price changes between snapshots. Average R uses the initial risk you record in your journal.</p></section>}
+  {current==="Journal"&&<section className="card" id="journal"><div className="card-heading"><div><span className="eyebrow">YOUR EDGE IS SELF-AWARENESS</span><h2>Trade journal</h2><p>Notes stay with your practice account, locally or in your signed-in cloud account.</p></div><NotebookPen size={25}/></div>{trade?<><label className="journal-select">Choose a trade<select aria-label="Journal trade" value={trade.id} onChange={e=>setSelected(e.target.value)}>{state.trades.map(t=><option key={t.id} value={t.id}>{t.side.toUpperCase()} {t.ticker} · {new Date(t.date).toLocaleString()}</option>)}</select></label><JournalEditor key={trade.id} trade={trade} state={state} update={update}/></>:<div className="journal-empty"><NotebookPen size={30}/><h3>Your next trade has a story.</h3><p>Make a virtual trade, then come back to record the plan and what you learned.</p><Link href="/market" className="text-link">Explore the simulator →</Link></div>}</section>}
  </>;
 }

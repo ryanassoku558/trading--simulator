@@ -1,11 +1,7 @@
 "use client";
 import PersonalLearning from "../PersonalLearning";
 import {DailyWarmup} from "../LearningDiscovery";
-import TradingBenefits from "../TradingBenefits";
-import ReferralCard from "../ReferralCard";
 import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
-import {LearningRoadmap} from "../VisualLearning";
-import {SproutMission} from "../SproutMission";
 import Link from "next/link";
 import type { State, Trade, Lesson } from "@/types";
 import { money } from "@/lib/market";
@@ -258,10 +254,6 @@ export default function Dashboard({
       <PracticeStats state={state}/>
       <Link className="primary" href="/market">Continue Simulator →</Link>
       <section className="card quick-tools"><h2>Tools you’ll use today</h2><div className="coach-candidates">{["Position size calculator","Risk calculator","Volatility meter","Profit/loss simulator"].map(tool=><Link className="example" key={tool} href="/tools"><strong>{tool}</strong><p>Explore hypothetical inputs before making a practice decision.</p><span>Open tools →</span></Link>)}</div></section>
-      <LearningRoadmap state={state}/>
-      <ReferralCard/>
-      <SproutMission />
-      <TradingBenefits/>
     </>
   );
 }

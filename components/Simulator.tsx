@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -63,14 +63,14 @@ import Dialog from "./Dialog";
 import Learning from "./Learning";
 import { ExplainTrade } from "./Trading";
 const navigation = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/learn", label: "Learn", icon: BookOpen },
-  { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
-  { href: "/tools", label: "Tools", icon: Calculator },
-  { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined },
+  { href: "/", label: "Dashboard", icon: LayoutDashboard, group:"Overview" },
+  { href: "/learn", label: "Learn", icon: BookOpen, group:"Learn & practice" },
+  { href: "/market", label: "Simulator", icon: ChartNoAxesCombined, group:"Trading workspace" },
+  { href: "/practice", label: "Practice Lab", icon: ChartNoAxesCombined,group:undefined },
+  { href: "/tools", label: "Tools", icon: Calculator,group:undefined },
   { href: "/portfolio", label: "Portfolio", icon: Wallet },
   { href: "/history", label: "Trade History", icon: History },
-  { href: "/community", label: "Community", icon: UserRound },
+  { href: "/community", label: "Community", icon: UserRound, group:"Community & rewards" },
   { href: "/achievements", label: "Achievements", icon: Trophy },
 ];
 export default function Simulator() {
@@ -230,10 +230,10 @@ export default function Simulator() {
         <Link href="/" aria-label="Sprout dashboard">
           <Logo />
         </Link>
-        <span className="workspace-label">TRADING WORKSPACE</span>
+        <span className="workspace-label">YOUR SPROUT WORKSPACE</span>
         <nav id="workspace-navigation">
           {navigation.map((n) => (
-            <Link
+            <Fragment key={n.href}>{n.group&&<span className="nav-group-label">{n.group}</span>}<Link
               onClick={() => setMobile(false)}
               href={n.href}
               key={n.href}
@@ -246,7 +246,7 @@ export default function Simulator() {
               <n.icon size={19} />
               {n.label}
               {n.label === "Learn" && <span className="nav-dot" />}
-            </Link>
+            </Link></Fragment>
           ))}
         </nav>
         <div className="sidebar-course">
@@ -263,6 +263,7 @@ export default function Simulator() {
           </Link>
         </div>
         <div className="sidebar-bottom">
+          <span className="nav-group-label">Account</span>
           <Link href="/profile">
             <UserRound size={19} />
             Profile
@@ -363,7 +364,7 @@ export default function Simulator() {
             />
           )}
           {page === "learn" && (
-            <Learning state={state} update={update} firstTrade={firstTrade} />
+            <Learning key={searchParams.get("lesson")||"curriculum"} state={state} update={update} firstTrade={firstTrade} />
           )}
           {page === "market" && !ticker && (
             <Market

@@ -44,6 +44,7 @@ export function isAccountState(value: unknown): value is State {
   )
     return false;
   for(const [key,max] of [['handle',24],['bio',240],['country',80],['timezone',80]] as const){if(profile[key]!==undefined&&(!text(profile[key])||profile[key].length>max))return false;}
+  if(profile.learningMode!==undefined&&!["beginner","intermediate","advanced"].includes(String(profile.learningMode)))return false;
   if(profile.avatar!==undefined&&!['sprout','leaf','sun','moon'].includes(String(profile.avatar)))return false;
   if(profile.joinedAt!==undefined&&!date(profile.joinedAt))return false;
   for(const key of ['achievementNotifications','hideProfileInsights'])if(profile[key]!==undefined&&typeof profile[key]!=='boolean')return false;

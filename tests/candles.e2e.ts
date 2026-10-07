@@ -56,6 +56,7 @@ test("candle lessons open from a stock chart and quiz progress persists", async 
   await dialog.getByRole("button", {name:"Next question"}).click();
   await dialog.locator(".quiz-options button").nth(1).click();
   await dialog.getByRole("button", {name:"Check answer"}).click();
+  for(let i=2;i<5;i++){await dialog.getByRole("button",{name:"Next question"}).click();await dialog.locator(".quiz-options button").nth(1).click();await dialog.getByRole("button",{name:"Check answer"}).click();}
   await dialog.getByRole("button", {name:"Finish quiz"}).click();
   await page.reload();
   await expect(page.getByText("1 / 151 lessons")).toBeVisible();

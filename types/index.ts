@@ -9,6 +9,7 @@ export interface OnboardingPreferences {
 }
 export interface Profile extends User, OnboardingPreferences {
   onboarded: boolean;
+  learningMode?: "beginner" | "intermediate" | "advanced";
   avatar?: "sprout" | "leaf" | "sun" | "moon";
   handle?: string;
   bio?: string;

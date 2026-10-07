@@ -29,15 +29,18 @@ test("chart replays, journal saving, and challenge progress work on mobile",asyn
  await page.getByRole('button',{name:'Pattern practice',exact:true}).click();
  await page.getByRole('button',{name:'An uptrend with a pullback',exact:true}).click();
  await expect(page.locator('.lab-feedback')).toContainText('Correct');
+ await page.getByRole('button',{name:'Challenges',exact:true}).click();
  await page.getByRole('button',{name:'Start three-trade challenge'}).click();
  await page.goto('/market/AAPL');
  await page.getByRole('button',{name:'Review buy AAPL'}).click();await page.getByRole('button',{name:'Confirm buy'}).click();
  await page.getByRole('button',{name:'Got it · keep exploring'}).click();
  await page.goto('/practice');
+ await page.getByRole('button',{name:'Journal',exact:true}).click();
  await page.getByRole('textbox',{name:'Trade journal note'}).fill('I used one share and reviewed the possible loss.');
  await page.getByRole('button',{name:'Save journal entry'}).click();
+ await page.getByRole('button',{name:'Challenges',exact:true}).click();
  await expect(page.getByText('Trades reviewed: 1 / 3')).toBeVisible();
- await page.reload();await expect(page.getByRole('textbox',{name:'Trade journal note'})).toHaveValue('I used one share and reviewed the possible loss.');
+ await page.reload();await page.getByRole('button',{name:'Journal',exact:true}).click();await expect(page.getByRole('textbox',{name:'Trade journal note'})).toHaveValue('I used one share and reviewed the possible loss.');
  for(const route of ['/practice','/learn','/community']){
   await page.goto(route);await expect(page.locator('h1')).toHaveCount(1);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

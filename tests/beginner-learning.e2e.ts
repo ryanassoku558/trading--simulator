@@ -20,6 +20,7 @@ test("beginner path starts with day trading and continues to ownership without a
     })
     .click();
   await dialog.getByRole("button", { name: "Check answer" }).click();
+  for(let i=1;i<5;i++){await dialog.getByRole("button",{name:"Next question"}).click();await dialog.locator(".quiz-options button").nth(1).click();await dialog.getByRole("button",{name:"Check answer"}).click();}
   await dialog.getByRole("button", {name:"Finish quiz"}).click();
   await dialog.getByRole("button", { name: "Next lesson", exact: true }).click();
   await expect(
@@ -35,6 +36,7 @@ test("beginner path starts with day trading and continues to ownership without a
   await expect(
     dialog.getByRole("button", { name: "Make your first practice trade" }),
   ).toHaveCount(0);
+  for(let i=1;i<5;i++){await dialog.getByRole("button",{name:"Next question"}).click();await dialog.locator(".quiz-options button").nth(1).click();await dialog.getByRole("button",{name:"Check answer"}).click();}
   await dialog.getByRole("button", {name:"Finish quiz"}).click();
   await dialog.getByRole("button", { name: "Next lesson", exact: true }).click();
   await expect(

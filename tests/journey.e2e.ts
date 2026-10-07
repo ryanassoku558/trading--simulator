@@ -36,6 +36,7 @@ test("first-run learning, trade, persistence, portfolio, orders and resets", asy
   await expect(page.getByRole("dialog").getByRole("status")).toContainText(
     "Correct.",
   );
+  for(let i=1;i<5;i++){await page.getByRole("button",{name:"Next question"}).click();await page.locator(".quiz-options button").nth(1).click();await page.getByRole("button",{name:"Check answer"}).click();}
   await page.getByRole("button", {name:"Finish quiz"}).click();
   await page.getByRole("button", {name:"Try the simulator",exact:true}).click();
   await page.goto("/market/AAPL?guided=1");
