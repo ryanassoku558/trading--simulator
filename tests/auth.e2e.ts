@@ -28,7 +28,8 @@ test("sign-up is visible on welcome and explains email confirmation", async ({
     .getByRole("button", { name: "Create account", exact: true })
     .click();
   expect((await signupRequest).postDataJSON().data.first_name).toBe("Taylor");
-  await expect(panel.getByRole("status")).toContainText("Check your email");
+  await expect(panel.getByRole("status")).toContainText("Account created!");
+  await expect(panel.getByRole("status")).toContainText("Spam or Junk");
   await page.getByRole("button", { name: "Try the Simulator" }).click();
   await expect(
     panel.getByRole("button", { name: "Create account", exact: true }),

@@ -41,7 +41,7 @@ export default function AuthPanel({
       setPassword("");
       setMessage(
         signup && !result.data.session
-          ? "Check your email to confirm your account, then return here to sign in. If the confirmation email is in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click the verification link."
+          ? "Account created! Check your inbox and Spam or Junk folder for the verification email. If it’s in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General). Click the verification link, then return here to sign in."
           : "Signed in. Loading your saved progress…",
       );
     } catch (e) {
