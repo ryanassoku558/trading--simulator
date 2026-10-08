@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import PasswordField from "./ui/PasswordField";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
 export default function AuthPanel({
@@ -93,17 +94,13 @@ export default function AuthPanel({
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-          <label>
-            Password
-            <input
-              type="password"
+          <PasswordField label="Password"
               required
               minLength={8}
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </label>
           <label>Referral code <small>Optional · new accounts get $5,000 virtual bonus after email confirmation</small><input aria-label="Signup referral code" maxLength={24} pattern="[A-Za-z0-9_]{3,24}" value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Your friend’s personal code"/></label>
           <div className="auth-actions">
             <button
