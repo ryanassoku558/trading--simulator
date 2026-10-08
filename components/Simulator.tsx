@@ -43,6 +43,7 @@ import ActivityTracker from "./ActivityTracker";
 import LoadingBrand from "./ui/LoadingBrand";
 import Logo from "./ui/Logo";
 import AuthPanel from "./AuthPanel";
+import LogoutButton from "./LogoutButton";
 import ThemeToggle from "./ThemeToggle";
 import MarketTicker from "./MarketTicker";
 import Landing from "./screens/Landing";
@@ -346,9 +347,7 @@ export default function Simulator() {
               <span className="live-dot" />{" "}
               {user ? "Cloud account" : "Demo mode"}
             </span>
-            <a href="#account" className="account-link">
-              {user ? "Account" : "Sign in"}
-            </a>
+            {user ? <><Link href="/profile" className="account-link">Account</Link><LogoutButton /></> : <a href="#account" className="account-link">Sign in</a>}
             <span className="streak">
               <Flame size={17} />
               {state.learning.streak} day streak

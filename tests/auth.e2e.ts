@@ -53,6 +53,7 @@ test("failed sign-in reports the error and keeps guest mode", async ({
   await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill("learner@example.com");
   await panel.getByLabel("Password", { exact: true }).fill("test-password-123");
+  await panel.getByLabel("Signup referral code").fill("?");
   await panel.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(panel.getByRole("status")).toContainText(
     "Invalid login credentials",
@@ -138,6 +139,7 @@ test("signed-in state survives reload and sign-out restores separate guest state
   await panel.getByLabel("Password", { exact: true }).fill("test-password-123");
   await panel.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByText("Cloud account", { exact: true })).toBeVisible();
+  await page.goto("/dashboard");
   await expect(
     page.getByText("Welcome back, Taylor. Your next small step starts here."),
   ).toBeVisible();
@@ -151,13 +153,15 @@ test("signed-in state survives reload and sign-out restores separate guest state
   await page.getByRole("button",{name:"Update account"}).click();
   expect((await changed).postDataJSON().password).toBe("a-new-password-123");
   await expect(page.getByText("Your password was updated.")).toBeVisible();
-  await page.getByRole("button", { name: "Sign out", exact: true }).click();
+  await page.goto("/learn");
+  await page.getByRole("button", { name: "Log out", exact: true }).click();
+  await expect(page.getByText("Demo mode", { exact: true })).toBeVisible();
   await page.goto("/");
   await expect(
     panel.getByRole("button", { name: "Create account", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Try the Simulator" }),
+    page.getByRole("link", { name: "Try the simulator" }),
   ).toBeVisible();
 });
 

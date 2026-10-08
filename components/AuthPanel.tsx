@@ -22,6 +22,10 @@ export default function AuthPanel({
       setMessage("Enter your first name to create your account.");
       return;
     }
+    if (signup && referralCode.trim() && !/^[A-Za-z0-9_]{3,24}$/.test(referralCode.trim())) {
+      setMessage("Use 3–24 letters, numbers, or underscores for a referral code, or leave it blank.");
+      return;
+    }
     setBusy(true);
     setMessage("");
     try {
@@ -37,7 +41,7 @@ export default function AuthPanel({
       setPassword("");
       setMessage(
         signup && !result.data.session
-          ? "Check your email to confirm your account, then return here to sign in."
+          ? "Check your email to confirm your account, then return here to sign in. If it’s not in your inbox, check your spam or junk folder and mark it as not spam."
           : "Signed in. Loading your saved progress…",
       );
     } catch (e) {
@@ -101,7 +105,8 @@ export default function AuthPanel({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          <label>Referral code <small>Optional · new accounts get $5,000 virtual bonus after email confirmation</small><input aria-label="Signup referral code" maxLength={24} pattern="[A-Za-z0-9_]{3,24}" value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Your friend’s personal code"/></label>
+          <label>Referral code (optional)<small>Leave blank to create an account without a code. Codes are only used for new accounts, never for signing in. A valid code gives new accounts $5,000 in virtual bonus cash after email confirmation.</small><input aria-label="Signup referral code" maxLength={24} value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Optional · your friend’s code"/></label>
+          <p className="small">Creating an account? We’ll email you a verification link. It may land in your spam or junk folder—check there if it’s missing from your inbox.</p>
           <div className="auth-actions">
             <button
               className="primary"
