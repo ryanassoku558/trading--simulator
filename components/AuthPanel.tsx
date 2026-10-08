@@ -40,7 +40,10 @@ export default function AuthPanel({
           : "Signed in. Loading your saved progress…",
       );
     } catch (e) {
-      setMessage((e as Error).message);
+      const error=e as Error & {code?:string};
+      setMessage(error.code==='over_email_send_rate_limit'||/email.*rate limit/i.test(error.message)
+        ? 'Email rate limit exceeded. Sprout’s confirmation-email service is temporarily limited. If you already received a confirmation email, use its link. Otherwise, try again later or contact sprouttradinghelp@gmail.com. Guest practice is still available.'
+        : error.message);
     } finally {
       setBusy(false);
     }

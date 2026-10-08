@@ -160,3 +160,5 @@ test("signed-in state survives reload and sign-out restores separate guest state
     page.getByRole("button", { name: "Try the Simulator" }),
   ).toBeVisible();
 });
+
+test('email confirmation rate limits give actionable help without reporting signup success',async({page})=>{await page.route('**/auth/v1/signup**',r=>r.fulfill({status:429,contentType:'application/json',body:JSON.stringify({code:'over_email_send_rate_limit',msg:'email rate limit exceeded'})}));await page.goto('/');const panel=page.getByRole('region',{name:'Account sign-in'});await panel.getByLabel('First name',{exact:true}).fill('Taylor');await panel.getByLabel('Email',{exact:true}).fill('learner@example.com');await panel.getByLabel('Password',{exact:true}).fill('test-password-123');await panel.getByRole('button',{name:'Create account',exact:true}).click();await expect(panel.getByRole('status')).toContainText('confirmation-email service is temporarily limited');await expect(panel.getByRole('status')).toContainText('sprouttradinghelp@gmail.com');await expect(panel.getByRole('button',{name:'Create account',exact:true})).toBeEnabled();});
