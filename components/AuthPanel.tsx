@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
 export default function AuthPanel({
@@ -124,6 +125,7 @@ export default function AuthPanel({
               Create account
             </button>
           </div>
+          <p className="small">By creating an account, you agree to our <Link href="/terms">Terms of use</Link>. Read our <Link href="/privacy">Privacy notice</Link>.</p>
         </form>
       )}
       <p role="status" aria-live="polite">

@@ -59,6 +59,7 @@ import {canLearn} from "@/lib/billing/access";
 import VisualTools from "./VisualTools";
 import {PsychologyVisuals} from "./PracticeVisuals";
 import About from "./screens/About";
+import Policies,{policyPages,PolicyLinks} from "./screens/Policies";
 import Practice from "./screens/Practice";
 import TradeHistory from "./screens/TradeHistory";
 
@@ -414,6 +415,7 @@ export default function Simulator() {
           {page === "community" && <Community state={state} user={user}/>}
           {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></>}
           {page === "about" && <About/>}
+          {policyPages.includes(page)&&<Policies page={page}/>}
           {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
           {page === "history" && (
@@ -434,6 +436,7 @@ export default function Simulator() {
             />
           )}
           {![
+            ...policyPages,
             "pricing",
             "about",
             "dashboard",
@@ -457,7 +460,7 @@ export default function Simulator() {
           )}
 
           {page==="profile"&&<ReferralCard/>}
-          {!user&&<div id="account">
+          {!user&&!policyPages.includes(page)&&<div id="account">
             <AuthPanel user={user} pending={pending} />
           </div>}
           <footer className="app-footer">
@@ -469,6 +472,7 @@ export default function Simulator() {
             <span>
               Built for your next small step <Sprout size={14} />
             </span>
+            <PolicyLinks/>
           </footer>
         </main>
       </div>
