@@ -1,4 +1,12 @@
 @import "tailwindcss";
+.auth-card .verification-notice {grid-column:1 / -1;display:flex;align-items:flex-start;gap:16px;padding:24px;margin:8px 0 24px;background:var(--surface-tint);color:var(--ink);border:2px solid var(--green);border-radius:16px;box-shadow:0 8px 24px #14744818;}
+.auth-card .verification-notice > svg {flex-shrink:0;color:var(--green);}
+.auth-card .verification-notice h3 {font-size:22px;line-height:1.3;margin:0 0 12px;color:var(--ink);}
+.auth-card .verification-notice p,.auth-card .verification-notice li {font-size:16px;line-height:1.6;color:var(--ink);overflow-wrap:anywhere;}
+.auth-card .verification-notice ol {list-style:decimal;padding-left:22px;margin-top:12px;}
+.auth-card .verification-notice li + li {margin-top:8px;}
+.auth-card .verification-notice:focus-visible {outline:3px solid var(--green);outline-offset:4px;}
+@media(max-width:600px){.auth-card .verification-notice{padding:18px;gap:12px;flex-direction:column;}.auth-card .verification-notice h3{font-size:20px;}}
 :root {
   --surface: #ffffff;
   --surface-raised: #f7f9fb;

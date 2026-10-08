@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MailCheck } from "lucide-react";
 import Link from "next/link";
 import PasswordField from "./ui/PasswordField";
 import type { User } from "@supabase/supabase-js";
@@ -12,12 +13,21 @@ export default function AuthPanel({
   pending: boolean;
 }) {
   const [referralCode,setReferralCode]=useState("");
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const verificationNotice = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (verificationEmail) {
+      verificationNotice.current?.focus({ preventScroll: true });
+      verificationNotice.current?.scrollIntoView({ block: "center" });
+    }
+  }, [verificationEmail]);
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
   async function authenticate(signup: boolean) {
+    setVerificationEmail("");
     if (signup && !firstName.trim()) {
       setMessage("Enter your first name to create your account.");
       return;
@@ -39,6 +49,7 @@ export default function AuthPanel({
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
       setPassword("");
+      if (signup && !result.data.session) setVerificationEmail(email);
       setMessage(
         signup && !result.data.session
           ? "Account created! Check your inbox and Spam or Junk folder for the verification email. If it’s in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General). Click the verification link, then return here to sign in."
@@ -64,6 +75,13 @@ export default function AuthPanel({
             : "Save your portfolio and learning across devices. Sign in or create your account to continue."}
         </p>
       </div>
+      {verificationEmail && <div ref={verificationNotice} tabIndex={-1} role="status" className="verification-notice">
+        <MailCheck size={32} aria-hidden="true" />
+        <div><h3>Account created! Verify your email to sign in.</h3>
+          <p>Check <strong>{verificationEmail}</strong> for your Sprout verification email.</p>
+          <ol><li>Check your main inbox (Primary/General).</li><li>If it’s missing, check <strong>Spam or Junk</strong>. Mark it as not spam and move it to your main inbox.</li><li>Click the verification link, then return to Sprout and sign in.</li></ol>
+        </div>
+      </div>}
       {user ? (
         <button
           className="secondary"
@@ -133,9 +151,9 @@ export default function AuthPanel({
           <p className="small">By creating an account, you agree to our <Link href="/terms">Terms of use</Link>. Read our <Link href="/privacy">Privacy notice</Link>.</p>
         </form>
       )}
-      <p role="status" aria-live="polite">
+      {!verificationEmail && <p role="status" aria-live="polite">
         {pending ? "Saving or loading your progress…" : message}
-      </p>
+      </p>}
     </section>
   );
 }
