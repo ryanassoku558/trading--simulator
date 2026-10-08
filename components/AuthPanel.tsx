@@ -41,13 +41,13 @@ export default function AuthPanel({
       setPassword("");
       setMessage(
         signup && !result.data.session
-          ? "Check your email to confirm your account, then return here to sign in. If it’s not in your inbox, check your spam or junk folder and mark it as not spam."
+          ? "Check your email to confirm your account, then return here to sign in. If the confirmation email is in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click the verification link."
           : "Signed in. Loading your saved progress…",
       );
     } catch (e) {
       const error=e as Error & {code?:string};
       setMessage(error.code==='over_email_send_rate_limit'||/email.*rate limit/i.test(error.message)
-        ? 'Email rate limit exceeded. Sprout’s confirmation-email service is temporarily limited. If you already received a confirmation email, use its link. Otherwise, try again later or contact sprouttradinghelp@gmail.com. Guest practice is still available.'
+        ? 'Email rate limit exceeded. Sprout’s confirmation-email service is temporarily limited. If you already received a confirmation email in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click its verification link. If no email arrived, try again later or contact sprouttradinghelp@gmail.com. Guest practice is still available.'
         : error.message);
     } finally {
       setBusy(false);
@@ -106,7 +106,7 @@ export default function AuthPanel({
               onChange={(e) => setPassword(e.target.value)}
             />
           <label>Referral code (optional)<small>Leave blank to create an account without a code. Codes are only used for new accounts, never for signing in. A valid code gives new accounts $5,000 in virtual bonus cash after email confirmation.</small><input aria-label="Signup referral code" maxLength={24} value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Optional · your friend’s code"/></label>
-          <p className="small">Creating an account? We’ll email you a verification link. It may land in your spam or junk folder—check there if it’s missing from your inbox.</p>
+          <p className="small">Creating an account? We’ll email you a verification link. If it arrives in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click the link to confirm your account.</p>
           <div className="auth-actions">
             <button
               className="primary"
