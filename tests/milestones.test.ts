@@ -1,0 +1,10 @@
+import {describe,it,expect} from 'vitest';
+import {initialState} from '@/lib/trading';
+import {achievements,earned} from '@/lib/education';
+import {growthMilestones,milestoneProgress} from '@/lib/education/milestones';
+import {canEarnAchievement} from '@/lib/billing/achievements';
+describe('medium and long-term milestones',()=>{
+ it('keeps new achievements Pro-only and uses distinct lesson completions',()=>{const s=initialState();s.learning.completed=Array(25).fill(1);expect(earned(s,'growth-lessons-25')).toBe(false);s.learning.completed=Array.from({length:25},(_,i)=>i+1);expect(earned(s,'growth-lessons-25')).toBe(true);expect(growthMilestones).toHaveLength(12);for(const m of growthMilestones){expect(achievements.some(a=>a.id===m.id)).toBe(true);expect(canEarnAchievement(m.id,false)).toBe(false);expect(canEarnAchievement(m.id,true)).toBe(true);}});
+ it('counts separate study days without requiring a streak',()=>{const s=initialState();s.learning.attempts=Array.from({length:20},(_,i)=>({lessonId:1,correct:true,date:`2026-09-${String(i+1).padStart(2,'0')}T12:00:00Z`}));s.learning.attempts.push(s.learning.attempts[0]);expect(milestoneProgress(s,'growth-days-20')?.value).toBe(20);expect(earned(s,'growth-days-20')).toBe(true);s.learning.streak=29;expect(earned(s,'growth-streak-30')).toBe(false);s.learning.streak=30;expect(earned(s,'growth-streak-30')).toBe(true);});
+ it('requires actual distinct trades and documented risk for planning rewards',()=>{const s=initialState();s.trades=Array.from({length:5},(_,i)=>({id:String(i),date:'2026-10-08',ticker:'AAPL',side:'buy',shares:1,price:100,total:100,realized:0,portfolioValue:10000}));s.journal=s.trades.map(t=>({tradeId:t.id,note:'I reviewed the entry and my risk before deciding.',emotion:'Calm',initialRisk:10}));s.journal.push(s.journal[0],{tradeId:'missing',note:'This must not count as a real trade reflection.',emotion:'Calm',initialRisk:10});expect(milestoneProgress(s,'growth-risk-5')?.value).toBe(5);s.journal[1].initialRisk=0;expect(earned(s,'growth-risk-5')).toBe(false);});
+});

@@ -1,3 +1,4 @@
+import {growthMilestones,milestoneProgress} from './milestones';
 import type { Achievement, Lesson, State } from "@/types";
 import { expandedModules, expandedLessons } from "./expanded";
 import { beginnerLearningOrder as coreLearningOrder } from "./dayTrading";
@@ -409,8 +410,10 @@ export const achievements: Achievement[] = [
   {id:"fifty",title:"50 Lessons Completed",description:"Build understanding across fifty lessons"},
   {id:"hundred",title:"100 Lessons Completed",description:"Complete one hundred knowledge checks"},
   {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the current trading and personal finance curriculum"},
+  ...growthMilestones,
 ];
 export function earned(s: State, id: string): boolean {
+  const milestone=milestoneProgress(s,id);if(milestone)return milestone.earned;
   if(id.startsWith("module-")){const level=Number(id.slice(7));const group=lessons.filter(l=>l.level===level);return group.length>0&&group.every(l=>s.learning.completed.includes(l.id));}
   if(id==="fifty")return s.learning.completed.length>=50;
   if(id==="hundred")return s.learning.completed.length>=100;
