@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Sprout,
   LayoutDashboard,
+  Library,
   BookOpen,
   ChartNoAxesCombined,
   Trophy,
@@ -18,7 +19,6 @@ import {
   Menu,
   Check,
   Search,
-  Calculator,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { useMarketClock } from "@/lib/market/useMarketClock";
@@ -63,15 +63,15 @@ import Dialog from "./Dialog";
 import Learning from "./Learning";
 import { ExplainTrade } from "./Trading";
 const navigation = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/learn?view=Lessons", label: "Lessons", icon: BookOpen },
-  { href: "/learn?view=Modules", label: "Modules", icon: BookOpen },
+  { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { href: "/learn", label: "Learn", icon: BookOpen },
+  { href: "/learn?view=Modules", label: "Modules", icon: Library },
   { href: "/learn?view=Glossary", label: "Glossary", icon: Search },
-  { href: "/tools", label: "Tools", icon: Calculator },
   { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
+ {href:"/tools",label:"Tools"},
  {href:"/about",label:"About Sprout"},{href:"/learn?view=Videos",label:"Video tutorials"},
  {href:"/practice",label:"Practice Lab"},{href:"/portfolio",label:"Portfolio"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
@@ -142,6 +142,12 @@ export default function Simulator() {
   const stock = ticker ? stocks.find((s) => s.ticker === ticker) : null;
   const current = stock ? quote(stock.ticker, state.tick) : null;
   const page = path.split("/")[1] || "dashboard";
+  function navActive(href:string){
+    if(href==="/dashboard")return path==="/"||path==="/dashboard";
+    if(href==="/learn")return path==="/learn"&&!["Modules","Glossary"].includes(searchParams.get("view")||"");
+    if(href.includes("?"))return path==="/learn"&&searchParams.get("view")===new URLSearchParams(href.split("?")[1]).get("view");
+    return path.startsWith(href);
+  }
   function firstTrade() {
     router.push("/market/AAPL?guided=1");
   }
@@ -220,11 +226,8 @@ export default function Simulator() {
               onClick={() => setMobile(false)}
               href={n.href}
               key={n.href}
-              className={
-                ((n.href === "/dashboard" && path === "/") || (n.href.includes("?") ? path === "/learn" && searchParams.get("view") === new URLSearchParams(n.href.split("?")[1]).get("view") : path.startsWith(n.href)))
-                  ? "active"
-                  : ""
-              }
+              className={navActive(n.href)?"active":""}
+              aria-current={navActive(n.href)?"page":undefined}
             >
               <n.icon size={19} />
               {n.label}
@@ -246,7 +249,7 @@ export default function Simulator() {
             Keep learning <ArrowRight size={15} />
           </Link>
         </div>
-        <div className="sidebar-bottom">
+        <details className="sidebar-bottom sidebar-account-menu"><summary>Account & settings</summary>
           <span className="nav-group-label">Account</span>
           <Link href="/profile">
             <UserRound size={19} />
@@ -257,8 +260,9 @@ export default function Simulator() {
             Settings
           </Link>
 
-        </div>
+        </details>
       </aside>
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
       <div className={`main-area ${["learn","dashboard","achievements","tools"].includes(page)?"compact-workspace":""}`}>
         <header className="topbar">
           <div className="breadcrumb">

@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { State } from "@/types";
 import { lessons } from "@/lib/education";
 import { learningModules } from "@/lib/billing/curriculum";
+import LearningRetention from "../LearningRetention";
+import { Panel } from "../ui/LearningUI";
 import Achievements from "./Achievements";
 export default function Progress({ state }: { state: State }) {
   const [view, setView] = useState("Overview"),
@@ -29,16 +31,17 @@ export default function Progress({ state }: { state: State }) {
         role="group"
         aria-label="Progress sections"
       >
-        {["Overview", "Achievements"].map((v) => (
+        {["Overview", "Achievements", "Habits & goals"].map((v) => (
           <button key={v} aria-pressed={view === v} onClick={() => setView(v)}>
             {v}
           </button>
         ))}
       </div>
-      {view === "Overview" ? (
+      {view === "Habits & goals" ? (
+        <LearningRetention state={state} />
+      ) : view === "Overview" ? (
         <>
-          <section className="card">
-            <h2>Your learning growth</h2>
+          <Panel title="Your learning growth">
             <progress
               aria-label="Full curriculum progress"
               value={count}
@@ -49,7 +52,7 @@ export default function Progress({ state }: { state: State }) {
               {count} of {lessons.length} lessons completed across{" "}
               {learningModules.length} modules.
             </p>
-          </section>
+          </Panel>
           <div className="compact-quick">
             {[
               {

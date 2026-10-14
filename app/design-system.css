@@ -1,0 +1,331 @@
+/* Shared Sprout tokens and reusable learning patterns. */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-display: clamp(26px, 3vw, 36px);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 2px 8px #00000006;
+  --shadow-focus: 0 0 0 3px var(--surface-tint);
+  --color-action: var(--green);
+  --color-text: var(--ink);
+  --color-secondary: var(--muted);
+  --color-border: var(--line);
+  --color-panel: var(--surface);
+  --color-highlight: var(--surface-tint);
+}
+.app-shell .card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-border);
+}
+.app-shell button,
+.app-shell input,
+.app-shell select {
+  font-family: inherit;
+}
+.app-shell .primary,
+.app-shell .secondary {
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  min-height: 40px;
+  gap: var(--space-2);
+}
+.app-shell :is(button, a, input, select, summary):focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 3px;
+}
+.ds-panel {
+  padding: var(--space-5);
+  background: var(--color-panel);
+  color: var(--color-text);
+}
+.ds-panel h2 {
+  font-size: var(--text-lg);
+  margin: 0 0 var(--space-3);
+}
+.ds-description {
+  color: var(--color-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  margin: var(--space-2) 0 var(--space-4);
+}
+.ds-progress > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-secondary);
+}
+.ds-progress progress {
+  display: block;
+  width: 100%;
+  height: 6px;
+  accent-color: var(--color-action);
+  margin: var(--space-2) 0 var(--space-4);
+}
+.ds-path-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+}
+.ds-path-steps a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+}
+.ds-path-steps a > span {
+  border-radius: 50%;
+  background: var(--color-highlight);
+  color: var(--color-action);
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.ds-path-steps strong {
+  font-weight: 500;
+}
+.ds-path-steps a > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.ds-path-steps .current {
+  border-color: var(--color-action);
+  color: var(--color-text);
+}
+.ds-path-steps .done > span {
+  background: var(--color-action);
+  color: var(--color-panel);
+}
+.ds-learning-signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+  margin: var(--space-3) 0;
+}
+.ds-learning-signals span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.ds-learning-signals svg {
+  color: var(--color-action);
+}
+.ds-study-block {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin: var(--space-3) 0;
+  background: var(--color-panel);
+}
+.ds-study-block h4 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+.ds-study-block small {
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+}
+.ds-extra {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  margin: var(--space-3) 0;
+}
+.ds-extra summary {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--color-action);
+}
+.ds-extra > p {
+  font-size: var(--text-sm);
+}
+.inline-term {
+  display: inline;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dotted var(--color-action);
+  color: var(--color-action);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.term-dialog {
+  max-width: 520px;
+}
+.ds-lesson-study .learning-sections {
+  margin: var(--space-3) 0;
+}
+.ds-lesson-study .lesson-copy {
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+.ds-lesson-study .example {
+  margin: 0;
+}
+.ds-lesson-study .presentation-reflection textarea {
+  min-height: 64px;
+}
+.ds-retention-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.ds-retention-grid .ds-panel:last-child {
+  grid-column: 1/-1;
+}
+.ds-retention-grid input[type="time"] {
+  display: block;
+  margin: var(--space-2) 0 var(--space-4);
+  max-width: 240px;
+}
+.ds-badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+}
+.ds-badge-list span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: var(--color-highlight);
+  color: var(--color-action);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+}
+.ds-goal-list {
+  display: grid;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  margin: var(--space-4) 0;
+}
+.ds-goal-list > span {
+  display: flex;
+  gap: var(--space-2);
+}
+.ds-simulator-context {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+}
+.ds-simulator-context > summary {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--color-action);
+}
+.ds-simulator-context .card {
+  margin-top: var(--space-3);
+}
+.sidebar-account-menu summary {
+  cursor: pointer;
+  color: var(--color-secondary);
+  font-size: var(--text-xs);
+  padding: var(--space-3);
+}
+.sidebar-account-menu > a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+.mobile-bottom-nav {
+  display: none;
+}
+@media (max-width: 700px) {
+  .mobile-bottom-nav {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 50;
+    background: var(--color-panel);
+    border-top: 1px solid var(--color-border);
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+  }
+  .mobile-bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--color-secondary);
+    font-size: 10px;
+    min-height: 44px;
+  }
+  .mobile-bottom-nav a:focus-visible {
+    outline-offset: -2px;
+  }
+  .main-area {
+    padding-bottom: 78px;
+  }
+  .sprouty-help {
+    bottom: 84px !important;
+  }
+  .sprouty-help-panel {
+    bottom: 142px !important;
+    height: min(560px, calc(100dvh - 200px)) !important;
+  }
+  .ds-path-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ds-path-steps a {
+    padding: var(--space-2);
+  }
+  .ds-retention-grid {
+    grid-template-columns: 1fr;
+  }
+  .ds-retention-grid .ds-panel:last-child {
+    grid-column: auto;
+  }
+  .ds-lesson-study .learning-sections button {
+    font-size: var(--text-xs);
+    padding: var(--space-2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-shell * {
+    scroll-behavior: auto !important;
+  }
+}
+.compact-home .ds-learning-signals {
+  margin: 8px 0;
+}
+.compact-home .ds-learning-signals span:last-child {
+  display: none;
+}
+.compact-home .ds-path-steps {
+  margin: 8px 0;
+}
+.mobile-bottom-nav a[aria-current="page"] {
+  color: var(--color-action);
+  font-weight: 700;
+}
+.app-shell .page-heading h1{font-size:var(--text-display);line-height:1.2;letter-spacing:-.6px}.app-shell .page-heading p{font-size:var(--text-sm);line-height:1.6;max-width:65ch}.app-shell .card{padding:var(--space-5)}.app-shell .compact-learning .card{padding:var(--space-4)}.app-shell .card h2{font-size:var(--text-lg);line-height:1.35}.app-shell .card h3{font-size:var(--text-base);line-height:1.4}
+.app-shell .lesson-dialog button.inline-term{color:var(--color-action);font:inherit;font-weight:600;padding:0;min-height:0;border-radius:0;}

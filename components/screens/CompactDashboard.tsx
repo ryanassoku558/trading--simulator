@@ -13,6 +13,8 @@ import { lessons, beginnerLearningOrder } from "@/lib/education";
 import { learningModules } from "@/lib/billing/curriculum";
 import { starterLessonIds } from "@/lib/billing/access";
 import { useSubscription } from "../Subscription";
+import LearningPathSteps from "../LearningPathSteps";
+import { LearningSignals } from "../LearningRetention";
 import type { State } from "@/types";
 export default function CompactDashboard({ state }: { state: State }) {
   const { pro } = useSubscription(),
@@ -91,42 +93,12 @@ export default function CompactDashboard({ state }: { state: State }) {
           {completed.size ? "Resume" : "Begin lesson"} →
         </Link>
       </section>
-      {!completed.size && (
-        <>
-          <div className="compact-section-heading">
-            <h2>Start here</h2>
-            <span className="small">No experience needed</span>
-          </div>
-          <div className="compact-module-grid">
-            {[
-              {
-                title: "Lesson 1: Basics of Trading",
-                text: "Understand what a stock is.",
-                href: "/learn?lesson=1",
-                action: "Open lesson",
-              },
-              {
-                title: "Module 1: Foundations",
-                text: "Build your market basics.",
-                href: "/learn?view=Modules",
-                action: "View module",
-              },
-              {
-                title: "Glossary: Key Terms",
-                text: "Learn the language, one term at a time.",
-                href: "/learn?view=Glossary",
-                action: "Explore terms",
-              },
-            ].map((x) => (
-              <article className="card home-start" key={x.title}>
-                <h3>{x.title}</h3>
-                <p>{x.text}</p>
-                <Link href={x.href}>{x.action} →</Link>
-              </article>
-            ))}
-          </div>
-        </>
-      )}
+      <LearningSignals state={state} />
+      <div className="compact-section-heading">
+        <h2>{completed.size ? "Your next steps" : "Start here"}</h2>
+        <span className="small">Four steps, at your pace</span>
+      </div>
+      <LearningPathSteps state={state} />
       <div className="compact-section-heading">
         <h2>Practice & tools</h2>
       </div>

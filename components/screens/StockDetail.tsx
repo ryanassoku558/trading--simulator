@@ -113,7 +113,7 @@ export default function StockDetail({
               Prices move automatically 24/7. All practice prices and chart history are simulated.
             </p>
           </section>
-          <section className="card about-company">
+          <details className="card about-company ds-extra"><summary>Asset research & key facts</summary>
             <h2>{current.assetType==="Crypto"?"About this digital asset":current.assetType==="ETF"?"About this fund":"What does this company actually do?"}</h2>
             <p>{current.description}</p>
             <div className="tip">
@@ -145,7 +145,7 @@ export default function StockDetail({
                 )}
               </div>
             </div>
-          </section>
+          </details>
         </div>
         <div>
           <TradePanel

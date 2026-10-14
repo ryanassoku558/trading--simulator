@@ -2,6 +2,7 @@
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import LearningPathSteps from "./LearningPathSteps";
 import LearningDiscovery from "./LearningDiscovery";
 import { useSubscription } from "./Subscription";
 import { learningModules } from "@/lib/billing/curriculum";
@@ -171,6 +172,7 @@ export default function Learning({
       </div>
       {currentSection === "Overview" && (
         <>
+          <LearningPathSteps state={state}/>
           <section className="card compact-next">
             <div>
               <span className="eyebrow">
@@ -284,7 +286,7 @@ export default function Learning({
               />
             </label>
             <select
-              aria-label="Curriculum topic"
+              aria-label="Learning path"
               value={topic}
               onChange={(e) => {
                 setTopic(e.target.value);

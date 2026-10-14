@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./design-system.css";
 import SubscriptionProvider from "@/components/Subscription";
 import SproutyHelp from "@/components/SproutyHelp";
 export const metadata: Metadata = {
