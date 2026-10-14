@@ -8,7 +8,7 @@ import { useSubscription } from "./Subscription";
 import { learningModules } from "@/lib/billing/curriculum";
 import { canLearn, starterLessonIds } from "@/lib/billing/access";
 
-import TutorialLibrary from "./TutorialLibrary";
+import TutorialHub from "./TutorialHub";
 import LessonPresentation from "./LessonPresentation";
 import { BookOpen, Check, ArrowRight, Search, Lock } from "lucide-react";
 import { lessons, levels, beginnerLearningOrder } from "@/lib/education";
@@ -33,26 +33,32 @@ export default function Learning({
   );
   const router = useRouter();
   const params = useSearchParams();
-  const requestedView = params.get("view") || "Overview";
+  const requestedView =
+    params.get("view") === "Videos"
+      ? "Tutorials"
+      : params.get("view") || "Overview";
   const section = [
     "Overview",
     "Lessons",
     "Modules",
     "Glossary",
-    "Videos",
+    "Tutorials",
   ].includes(requestedView)
     ? requestedView
     : "Overview";
   const currentSection =
     hash === "#tutorials"
-      ? "Videos"
+      ? "Tutorials"
       : ["#glossary", "#beginner-mistakes"].includes(hash)
         ? "Glossary"
         : hash === "#curriculum"
           ? "Modules"
           : section;
   function selectSection(value: string) {
-    router.push(`/learn?view=${encodeURIComponent(value)}`, { scroll: false });
+    router.push(
+      `/learn?view=${encodeURIComponent(value)}${value === "Lessons" ? "&lesson=1" : ""}`,
+      { scroll: false },
+    );
     setLibraryPage(0);
   }
   const [libraryPage, setLibraryPage] = useState(0);
@@ -134,7 +140,7 @@ export default function Learning({
     ),
   );
   return (
-    <div className="compact-learning">
+    <div className="compact-learning motion-surface" key={currentSection}>
       <div className="page-heading">
         <div>
           <span className="eyebrow">YOUR LEARNING WORKSPACE</span>
@@ -157,7 +163,7 @@ export default function Learning({
         role="group"
         aria-label="Learning sections"
       >
-        {["Overview", "Lessons", "Modules", "Glossary", "Videos"].map(
+        {["Overview", "Lessons", "Modules", "Glossary", "Tutorials"].map(
           (value) => (
             <button
               key={value}
@@ -172,7 +178,7 @@ export default function Learning({
       </div>
       {currentSection === "Overview" && (
         <>
-          <LearningPathSteps state={state}/>
+          <LearningPathSteps state={state} />
           <section className="card compact-next">
             <div>
               <span className="eyebrow">
@@ -259,7 +265,7 @@ export default function Learning({
           </div>
         </>
       )}
-      {currentSection === "Videos" && <TutorialLibrary />}
+      {currentSection === "Tutorials" && <TutorialHub />}
       {currentSection === "Glossary" && <LearningDiscovery />}
       {requestedLesson > 0 && !canLearn(requestedLesson, pro) && (
         <section className="card pro-lock">

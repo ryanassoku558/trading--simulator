@@ -7,9 +7,10 @@ import {spawnSync} from 'node:child_process';
 import chromium from '@sparticuz/chromium';
 import {chromium as playwright} from '@playwright/test';
 const requested=process.argv.slice(2);
-const tutorials=JSON.parse(readFileSync('lib/education/tutorials.json','utf8')).filter(t=>!requested.length||requested.includes(t.slug));
+const cataloguePath=process.env.TUTORIAL_CATALOGUE_PATH||'lib/education/tutorials.json';
+const tutorials=JSON.parse(readFileSync(cataloguePath,'utf8')).filter(t=>!requested.length||requested.includes(t.slug));
 const narrationDir=process.env.TUTORIAL_NARRATION_DIR||'/tmp/sprout-narration';
-const catalogue=JSON.parse(readFileSync('lib/education/tutorials.json','utf8'));
+const catalogue=JSON.parse(readFileSync(cataloguePath,'utf8'));
 const temp=mkdtempSync(join(tmpdir(),'sprout-tutorials-'));
 mkdirSync('public/tutorials',{recursive:true});
 const browser=await playwright.launch({executablePath:await chromium.executablePath(),args:chromium.args.filter(a=>a!=='--single-process'),headless:true});
@@ -18,6 +19,11 @@ const escape=t=>t.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>',
 function diagram(kind){
  const candle=(x,color,open,close)=>`<line x1="${x}" y1="95" x2="${x}" y2="310" stroke="${color}" stroke-width="7"/><rect x="${x-26}" y="${Math.min(open,close)}" width="52" height="${Math.abs(close-open)}" fill="${color}" rx="4"/>`;
  let art='';
+ if(kind.startsWith('nav-')){
+  const labels=kind==='nav-chart'?['SEARCH A SYMBOL','READ THE CHART','DEFINE YOUR RISK']:kind==='nav-quiz'?['5 QUESTIONS','4 CORRECT TO PASS','REVIEW & RETRY']:kind==='nav-order'?['QUANTITY','REVIEW ORDER','CONFIRM VIRTUAL TRADE']:kind==='nav-calendar'?['CHOOSE A TIME','IMPORT CALENDAR FILE','EDIT ANYTIME']:kind==='nav-progress'?['LESSONS COMPLETED','LEARNING STREAK','NEXT SMALL STEP']:kind==='nav-badges'?['LEARN','REFLECT','EARN A MILESTONE']:['HOME & LEARN','MODULES & GLOSSARY','SIMULATOR & PROGRESS'];
+  art=`<rect x="15" y="45" width="370" height="330" rx="26" fill="#142d38" stroke="#64efbe" stroke-width="2"/>${labels.map((label,i)=>`<rect x="35" y="${75+i*95}" width="330" height="68" rx="15" fill="#21493f"/><circle cx="65" cy="${109+i*95}" r="15" fill="#64efbe"/><text x="60" y="${115+i*95}" style="fill:#113c2b;font-size:17px">${i+1}</text><text x="92" y="${115+i*95}" style="font-size:16px">${label}</text>`).join('')}`;
+ }
+ else
  if(kind==='risk-budget')art=`<rect x="35" y="80" width="330" height="225" rx="24" fill="#19483e"/><text x="65" y="130">ACCOUNT: $1,000</text><text x="65" y="185">1% RISK = $10</text><text x="65" y="240">$10 ÷ $2 = 5 SHARES</text><text x="65" y="350">PLAN LOSS BEFORE ENTRY</text>`;
  else if(kind==='levels')art=`<path d="M25 280L80 150L140 260L200 140L255 255L320 130L370 220" stroke="#64efbe" stroke-width="7" fill="none"/><path d="M20 140H380M20 280H380" stroke="#c1adff" stroke-width="3" stroke-dasharray="8 8"/><text x="30" y="110">RESISTANCE AREA</text><text x="30" y="335">SUPPORT AREA</text>`;
  else if(kind==='basket')art=`<rect x="25" y="70" width="350" height="250" rx="24" fill="#19483e" stroke="#64efbe" stroke-width="2"/>${['A','B','C','D'].map((t,i)=>`<circle cx="${100+i%2*180}" cy="${140+Math.floor(i/2)*110}" r="32" fill="#335b58"/><text x="${92+i%2*180}" y="${147+Math.floor(i/2)*110}">${t}</text>`).join('')}<text x="70" y="370">CHECK FUND HOLDINGS</text>`;
@@ -41,7 +47,7 @@ for(const video of tutorials){
  const narration=JSON.parse(readFileSync(join(narrationDir,`${video.slug}-${i}.json`),'utf8'));
  if(i===0)catalogue.find(t=>t.slug===video.slug).narrationVersion=narration.voice||'legacy';
  const duration=narration.duration,wav=join(narrationDir,`${video.slug}-${i}.wav`);
- await page.setContent(`<style>*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% 30%,#25544d 0%,#0b1926 58%);font-family:Arial;color:white}.frame{padding:48px 66px;height:720px;display:flex;flex-direction:column}.brand{color:#64efbe;font-weight:700;font-size:27px;letter-spacing:1px}.topic{color:#b7c8d7;font-size:20px;margin-top:14px}.body{display:grid;grid-template-columns:1.5fr 1fr;align-items:center;gap:55px;flex:1}h1{font-size:49px;line-height:1.12;letter-spacing:-1.4px;margin:0 0 27px}p{font-size:29px;line-height:1.45;color:#d4e3e7;margin:0}svg{width:100%}.footer{display:flex;justify-content:space-between;font-size:18px;color:#b9cad6}.progress{display:flex;gap:8px;margin-bottom:22px}.progress b{height:5px;flex:1;border-radius:5px;background:#294452}.progress b.done{background:#64efbe}</style><div class="frame"><div class="brand">sprout. <span style="color:white;font-size:16px">TRADING</span></div><div class="topic">NARRATED STARTER · ${escape(video.title)}</div><div class="body"><div><h1>${escape(scene.title)}</h1><p>${escape(scene.caption)}</p></div>${diagram(scene.visual)}</div><div class="progress">${video.scenes.map((_,j)=>`<b class="${j<=i?'done':''}"></b>`).join('')}</div><div class="footer"><span>Learn. Practice. Grow.</span><span>${i+1} / 5 · EDUCATIONAL EXAMPLES</span></div></div>`);
+ await page.setContent(`<style>*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% 30%,#25544d 0%,#0b1926 58%);font-family:Arial;color:white}.frame{padding:48px 66px;height:720px;display:flex;flex-direction:column}.brand{color:#64efbe;font-weight:700;font-size:27px;letter-spacing:1px}.topic{color:#b7c8d7;font-size:20px;margin-top:14px}.body{display:grid;grid-template-columns:1.5fr 1fr;align-items:center;gap:55px;flex:1}h1{font-size:49px;line-height:1.12;letter-spacing:-1.4px;margin:0 0 27px}p{font-size:29px;line-height:1.45;color:#d4e3e7;margin:0}svg{width:100%}.footer{display:flex;justify-content:space-between;font-size:18px;color:#b9cad6}.progress{display:flex;gap:8px;margin-bottom:22px}.progress b{height:5px;flex:1;border-radius:5px;background:#294452}.progress b.done{background:#64efbe}</style><div class="frame"><div class="brand">sprout. <span style="color:white;font-size:16px">TRADING</span></div><div class="topic">NARRATED STARTER · ${escape(video.title)}</div><div class="body"><div><h1>${escape(scene.title)}</h1><p>${escape(scene.caption)}</p></div>${diagram(scene.visual)}</div><div class="progress">${video.scenes.map((_,j)=>`<b class="${j<=i?'done':''}"></b>`).join('')}</div><div class="footer"><span>Learn. Practice. Grow.</span><span>${i+1} / ${video.scenes.length} · LEARN AT YOUR PACE</span></div></div>`);
  const png=join(temp,`${video.slug}-${i}.png`),clip=join(temp,`${video.slug}-${i}.mp4`);
  await page.screenshot({path:png});
  if(i===0)ffmpeg(["-i",png,"-frames:v","1","-c:v","libwebp",`public/tutorials/${video.slug}.webp`]);
@@ -57,5 +63,5 @@ for(const video of tutorials){
  catalogue.find(t=>t.slug===video.slug).duration=Math.round(offset);
  console.log(`Created ${video.slug}: ${Math.round(offset)} seconds with narration`);
 }
-writeFileSync('lib/education/tutorials.json',JSON.stringify(catalogue,null,2)+'\n');
+writeFileSync(cataloguePath,JSON.stringify(catalogue,null,2)+'\n');
 await browser.close();

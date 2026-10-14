@@ -72,7 +72,7 @@ const navigation = [
 ];
 const moreNavigation = [
  {href:"/tools",label:"Tools"},
- {href:"/about",label:"About Sprout"},{href:"/learn?view=Videos",label:"Video tutorials"},
+ {href:"/about",label:"About Sprout"},{href:"/learn?view=Tutorials",label:"Tutorials"},
  {href:"/practice",label:"Practice Lab"},{href:"/portfolio",label:"Portfolio"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
 ];
@@ -327,7 +327,7 @@ export default function Simulator() {
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
         {!["learn","dashboard","achievements","tools"].includes(page)&&!(page==="market"&&!ticker)&&<MarketTicker tick={state.tick} />}
-        <main className="content">
+        <main className="content"><div className="motion-surface" key={`${path}-${searchParams.get("view")||"default"}`}>
           {error && (
             <div className="error" role="alert">
               {error}
@@ -424,7 +424,7 @@ export default function Simulator() {
             <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/support">Contact</Link><a href="https://github.com/ryanassoku558/trading--simulator" target="_blank" rel="noopener noreferrer">GitHub</a><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
             <small>Educational simulation only · Virtual money · Not financial advice.</small>
           </footer>
-        </main>
+        </div></main>
       </div>
       {pending && (
         <div className="sync-overlay"><LoadingBrand compact message="Saving your progress…" /></div>

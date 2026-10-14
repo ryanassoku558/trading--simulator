@@ -7,7 +7,7 @@ import numpy as np
 import onnxruntime as ort
 from piper import PiperVoice
 from piper.config import PiperConfig,SynthesisConfig
-parser=argparse.ArgumentParser();parser.add_argument('output');parser.add_argument('--model',required=True);args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('output');parser.add_argument('--model',required=True);parser.add_argument('--catalogue',default='lib/education/tutorials.json');args=parser.parse_args()
 config_path=pathlib.Path(__file__).parent/'voices/en_US-joe-medium.json'
 options=ort.SessionOptions();options.intra_op_num_threads=2;options.inter_op_num_threads=1
 voice=PiperVoice(config=PiperConfig.from_dict(json.loads(config_path.read_text())),session=ort.InferenceSession(args.model,sess_options=options,providers=['CPUExecutionProvider']))
@@ -21,7 +21,7 @@ def spoken(text):
     text=text.replace('×',' times ').replace('÷',' divided by ').replace('→',' to ').replace('—',', ').replace('–',' to ')
     text=re.sub(r'\$(\d[\d,]*(?:\.\d+)?)',r'\1 dollars',text)
     return text.replace('%',' percent').replace('24/7','twenty-four hours a day, seven days a week')
-for video in json.loads(pathlib.Path('lib/education/tutorials.json').read_text()):
+for video in json.loads(pathlib.Path(args.catalogue).read_text()):
     for index,scene in enumerate(video['scenes']):
         title=scene['title']+('' if scene['title'].endswith(('.', '?','!')) else '.')
         parts=[title]+sentences(scene['caption']);pcm=[];cues=[];offset=0

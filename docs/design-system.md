@@ -21,3 +21,9 @@ Show subtle factual streak/XP indicators on Home. Progress groups achievements s
 ## Layout checks
 
 At 1440×900 and 390×844, hero, quick access, and next lesson should be available near the top. Navigation stays visible while scrolling. Avoid horizontal overflow; use two-column collapsible paths on mobile and reserve space for its bottom navigation. Larger resources, charts, and lesson details may scroll inside their own contextual workflow rather than stacking on the homepage.
+
+## Motion and onboarding video
+
+`app/motion.css` uses 140ms control transitions and 160–220ms page entrances. Nested content fades instead of stacking slide distances. Card lifts apply only to fine-pointer hover, and the current path cue runs twice rather than looping. Respect `prefers-reduced-motion` for all added entrances, scaling, pulses and hover motion. Animations must not delay navigation or quiz interactions.
+
+Platform onboarding is a separate five-video catalogue at `lib/education/onboarding-tutorials.json`. These free guides do not change the existing Starter/Pro curriculum-video entitlement. `OnboardingVideo` renders local MP4, English captions, and transcript; `VideoHelp` opens optional contextual guidance. Never autoplay narration. See the voice README for regeneration commands.

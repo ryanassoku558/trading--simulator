@@ -12,3 +12,12 @@ node scripts/generate-tutorials.mjs
 The voice package is published at https://www.npmjs.com/package/vowel-lab-voices-float. Voice configuration provenance: https://github.com/Caelirhythmus/vowel-toy-game/blob/main/public/vendor/piper/en_US-joe-medium.onnx.json.
 
 Each sentence is synthesized separately with a short pause. Caption start and end times derive from the generated audio duration, and video scenes adapt to the narration length. Numeric expressions are expanded for speech while the original text remains visible in captions and transcripts.
+
+For the five free platform guides, use the separate catalogue:
+
+```sh
+python scripts/narrate-tutorials.py /tmp/sprout-onboarding-audio --model /path/to/float.onnx --catalogue lib/education/onboarding-tutorials.json
+TUTORIAL_CATALOGUE_PATH=lib/education/onboarding-tutorials.json TUTORIAL_NARRATION_DIR=/tmp/sprout-onboarding-audio node scripts/generate-tutorials.mjs
+```
+
+The platform guides use the same CC0 neural voice and audio-aligned captions. Generation was verified with piper-tts 1.8.0. Voice generation tools and model weights are build-time assets, not production dependencies.

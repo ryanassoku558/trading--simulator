@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {VideoHelp} from "../OnboardingTutorials";
 import { useState } from "react";
 import type { State, Trade, Stock } from "@/types";
 import { money, history } from "@/lib/market";
@@ -55,7 +56,7 @@ export default function StockDetail({
         </div>
       </div>
       <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
-      <div className="detail-grid">
+      <div className="simulator-video-help"><VideoHelp slug="simulator-guide" label="Watch the simulator guide"/></div><div className="detail-grid">
         <div>
           <section className="card">
             <div className="stock-detail-price">{money(current.price)}</div>

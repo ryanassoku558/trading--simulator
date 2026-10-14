@@ -1,0 +1,188 @@
+:root {
+  --motion-fast: 140ms;
+  --motion-page: 220ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes sprout-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sprout-dialog {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes sprout-cue {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 5px
+      color-mix(in srgb, var(--color-action) 12%, transparent);
+  }
+}
+.motion-surface {
+  animation: sprout-enter var(--motion-page) var(--motion-ease) both;
+  min-width: 0;
+}
+.motion-surface .motion-surface {
+  animation-duration: 180ms;
+}
+.dialog[open] {
+  animation: sprout-dialog 180ms var(--motion-ease) both;
+}
+.app-shell :is(.primary, .secondary, .card, nav a, .learning-sections button) {
+  transition:
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) var(--motion-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .app-shell
+    :is(a.card, button.card, .tutorial-card, .onboarding-video-card):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px #0000000b;
+    border-color: var(--color-action);
+  }
+  .app-shell :is(.primary, .secondary):hover {
+    transform: translateY(-1px);
+  }
+  .app-shell nav a:hover {
+    background: var(--color-highlight);
+  }
+}
+.app-shell :is(.primary, .secondary):active {
+  transform: scale(0.985);
+}
+.ds-path-steps .current > span {
+  animation: sprout-cue 1.6s ease-in-out 2;
+}
+progress::-webkit-progress-value {
+  transition: width 240ms var(--motion-ease);
+}
+.onboarding-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.app-shell .onboarding-video-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 18px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.onboarding-video-card small {
+  display: block;
+  font-size: 10px;
+  color: var(--color-secondary);
+  margin-bottom: 6px;
+}
+.onboarding-video-card strong {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.onboarding-play {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-highlight);
+  color: var(--color-action);
+  flex-shrink: 0;
+}
+.video-help {
+  margin: 4px 0 8px;
+}
+.simulator-video-help {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+.tutorial-player video {
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  background: #10212d;
+}
+.onboarding-library .compact-section-heading {
+  margin-top: 10px;
+}
+.compact-home-hero {
+  box-shadow:
+    inset 0 1px 0 #ffffff33,
+    0 8px 30px #113c2b04;
+}
+@media (max-width: 700px) {
+  .onboarding-video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .app-shell .onboarding-video-card {
+    padding: 12px;
+    gap: 8px;
+  }
+  .onboarding-play {
+    width: 30px;
+    height: 30px;
+  }
+  .onboarding-video-card strong {
+    font-size: 12px;
+  }
+  .motion-surface {
+    animation-duration: 160ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-surface,
+  .dialog[open],
+  .ds-path-steps .current > span {
+    animation: none !important;
+  }
+  .app-shell
+    :is(.primary, .secondary, .card, nav a, .learning-sections button) {
+    transition: none !important;
+  }
+  .app-shell
+    :is(.primary, .secondary, a.card, button.card, .tutorial-card):hover,
+  .app-shell :is(.primary, .secondary):active {
+    transform: none !important;
+  }
+  progress::-webkit-progress-value {
+    transition: none;
+  }
+}
+@keyframes sprout-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.motion-surface .motion-surface {
+  animation-name: sprout-fade;
+}
+.compact-home-hero .primary {
+  animation: sprout-cue 1.4s ease-in-out 250ms 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .compact-home-hero .primary {
+    animation: none !important;
+  }
+}

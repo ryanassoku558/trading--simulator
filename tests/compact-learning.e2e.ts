@@ -40,6 +40,7 @@ test("compact home and learning keep core actions in view", async ({
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await page.getByRole("button", { name: "Lessons", exact: true }).click();
+  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await expect(page.locator(".compact-lesson-grid > button")).toHaveCount(8);
   await page.getByLabel("Search lessons").fill("zzzzzzzz");
   await expect(
@@ -51,7 +52,11 @@ test("compact home and learning keep core actions in view", async ({
   await expect(
     page.getByRole("region", { name: "Glossary practice" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Videos", exact: true }).click();
+  await page.getByRole("button", { name: "Tutorials", exact: true }).click();
+  await expect(page.locator(".onboarding-video-grid > button")).toHaveCount(5);
+  await page
+    .getByRole("button", { name: "Trading & finance", exact: true })
+    .click();
   await expect(page.locator(".tutorial-grid > button")).toHaveCount(4);
   await page.goto("/achievements");
   await expect(

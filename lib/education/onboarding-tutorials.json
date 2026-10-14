@@ -1,0 +1,127 @@
+[
+  {
+    "slug": "navigate-sprout",
+    "title": "Find your way around Sprout",
+    "lessonIds": [],
+    "duration": 29,
+    "narrationVersion": "joe-neural-v1",
+    "scenes": [
+      {
+        "title": "Your learning home",
+        "caption": "Home shows your next lesson, quick links, and a four-step path. Start with one small step.",
+        "visual": "nav-home"
+      },
+      {
+        "title": "Six clear destinations",
+        "caption": "Use Home, Learn, Modules, Glossary, Simulator, and Progress. On a phone, these actions stay in the bottom navigation.",
+        "visual": "nav-menu"
+      },
+      {
+        "title": "Help when you need it",
+        "caption": "Open underlined terms for definitions. More resources contains tools, videos, and practice labs. Account settings stay in their own menu.",
+        "visual": "nav-help"
+      }
+    ]
+  },
+  {
+    "slug": "lesson-flow",
+    "title": "How lessons work",
+    "lessonIds": [],
+    "duration": 27,
+    "narrationVersion": "joe-neural-v1",
+    "scenes": [
+      {
+        "title": "Understand one idea",
+        "caption": "Begin with key concepts. Underlined words open plain-language definitions without losing your place.",
+        "visual": "nav-lesson"
+      },
+      {
+        "title": "See it and practice",
+        "caption": "Move to a worked example, then consider the practice prompt and summary. Optional videos and reliable sources are available when helpful.",
+        "visual": "nav-practice"
+      },
+      {
+        "title": "Check your understanding",
+        "caption": "Each quiz has five questions. Get at least four correct to pass. If you miss the threshold, review and try again.",
+        "visual": "nav-quiz"
+      }
+    ]
+  },
+  {
+    "slug": "module-flow",
+    "title": "Build your learning path",
+    "lessonIds": [],
+    "duration": 29,
+    "narrationVersion": "joe-neural-v1",
+    "scenes": [
+      {
+        "title": "One module at a time",
+        "caption": "Modules group related lessons. Choose a learning path, expand a module card, and see the lessons inside.",
+        "visual": "nav-modules"
+      },
+      {
+        "title": "Complete a small chunk",
+        "caption": "Open a lesson or the module presentation. Module presentations let you explore concepts, examples, and practice before the quiz.",
+        "visual": "nav-lesson"
+      },
+      {
+        "title": "See your progress grow",
+        "caption": "Passed quizzes update your learning progress. Starter content is unlocked first; locked Pro modules remain visible for later.",
+        "visual": "nav-progress"
+      }
+    ]
+  },
+  {
+    "slug": "simulator-guide",
+    "title": "Your first simulator trade",
+    "lessonIds": [],
+    "duration": 37,
+    "narrationVersion": "joe-neural-v1",
+    "scenes": [
+      {
+        "title": "Practice without real money",
+        "caption": "Simulator prices and cash are generated for education. This is a place to practice a process, not predict actual returns.",
+        "visual": "nav-chart"
+      },
+      {
+        "title": "Read before you act",
+        "caption": "Search a symbol, examine its candlestick chart, and use Sprouty’s chart tour to understand the controls. Define what you might lose.",
+        "visual": "nav-chart"
+      },
+      {
+        "title": "Review your order",
+        "caption": "Choose an affordable quantity and review the order before confirming. The first-trade walkthrough explains each step.",
+        "visual": "nav-order"
+      },
+      {
+        "title": "Reflect after practice",
+        "caption": "Review the completed trade and write a short journal note. Focus on the quality of your reasoning rather than a profit target.",
+        "visual": "nav-progress"
+      }
+    ]
+  },
+  {
+    "slug": "progress-guide",
+    "title": "Track your growth",
+    "lessonIds": [],
+    "duration": 29,
+    "narrationVersion": "joe-neural-v1",
+    "scenes": [
+      {
+        "title": "Learning is measurable",
+        "caption": "Progress shows lessons, modules, experience points, and your learning streak. These reflect your saved learning activity.",
+        "visual": "nav-progress"
+      },
+      {
+        "title": "Celebrate the process",
+        "caption": "Browse earned and locked achievements. Habits and goals focus on practice, reflection, and consistency, not guaranteed trading profits.",
+        "visual": "nav-badges"
+      },
+      {
+        "title": "Choose a reminder",
+        "caption": "You can download a daily calendar reminder. Import it into your calendar to activate it, and change or remove it there anytime.",
+        "visual": "nav-calendar"
+      }
+    ]
+  }
+]

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import type { Lesson } from "@/types";
 import { StudyBlock } from "./ui/LearningUI";
+import { VideoHelp } from "./OnboardingTutorials";
 import InlineGlossary from "./InlineGlossary";
 import BeginnerExercise from "./BeginnerExercise";
 import CandleLessonExample from "./CandleLessonExample";
@@ -25,7 +26,7 @@ export default function LessonStudy({
   const view = moduleMode ? tab : stage;
   const video = tutorials.find((t) => t.lessonIds.includes(lesson.id));
   return (
-    <div className="ds-lesson-study">
+    <div className="ds-lesson-study motion-surface" key={view}>
       <p className="ds-description">{lesson.why}</p>
       {moduleMode && (
         <div
@@ -42,6 +43,7 @@ export default function LessonStudy({
       )}
       {view === 0 && (
         <>
+          <VideoHelp slug="lesson-flow" label="How to use this lesson" />
           <StudyBlock title="Key concepts">
             <div className="lesson-copy">
               <InlineGlossary text={lesson.explanation} />

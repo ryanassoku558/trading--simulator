@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { State } from "@/types";
 import { lessons } from "@/lib/education";
 import { learningModules } from "@/lib/billing/curriculum";
+import {VideoHelp} from "../OnboardingTutorials";
 import LearningRetention from "../LearningRetention";
 import { Panel } from "../ui/LearningUI";
 import Achievements from "./Achievements";
@@ -42,6 +43,7 @@ export default function Progress({ state }: { state: State }) {
       ) : view === "Overview" ? (
         <>
           <Panel title="Your learning growth">
+            <VideoHelp slug="progress-guide" label="How progress works"/>
             <progress
               aria-label="Full curriculum progress"
               value={count}

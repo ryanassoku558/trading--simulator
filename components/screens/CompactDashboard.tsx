@@ -30,7 +30,7 @@ export default function CompactDashboard({ state }: { state: State }) {
     completed.has(id),
   ).length;
   const quick = [
-    { label: "Lessons", href: "/learn?view=Lessons", icon: BookOpen },
+    { label: "Lessons", href: "/learn?view=Lessons&lesson=1", icon: BookOpen },
     { label: "Modules", href: "/learn?view=Modules", icon: Library },
     { label: "Glossary", href: "/learn?view=Glossary", icon: Search },
     { label: "Tools", href: "/tools", icon: Calculator },
@@ -96,7 +96,7 @@ export default function CompactDashboard({ state }: { state: State }) {
       <LearningSignals state={state} />
       <div className="compact-section-heading">
         <h2>{completed.size ? "Your next steps" : "Start here"}</h2>
-        <span className="small">Four steps, at your pace</span>
+        <Link href="/learn?view=Tutorials" className="text-link">Watch a quick tour →</Link>
       </div>
       <LearningPathSteps state={state} />
       <div className="compact-section-heading">
