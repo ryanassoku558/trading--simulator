@@ -68,19 +68,44 @@ export function VideoHelp({
   );
 }
 export default function OnboardingTutorials() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(null),
+    [category, setCategory] = useState("All sections"),
+    [page, setPage] = useState(0);
+  const matching = tutorials.filter(
+      (t) => category === "All sections" || t.category === category,
+    ),
+    shown = matching.slice(page * 6, page * 6 + 6);
   return (
     <section className="onboarding-library">
       <div className="compact-section-heading">
         <div>
-          <h2>A quick tour, at your pace</h2>
+          <h2>Watch real clicks. Follow along.</h2>
           <p className="ds-description">
-            Five short guides to using Sprout. Free for everyone.
+            {tutorials.length} recorded interface walkthroughs with narration
+            and captions. All guides are free; Pro features shown still require
+            Pro to use.
           </p>
         </div>
       </div>
+      <label className="walkthrough-filter">
+        Section
+        <select
+          aria-label="Walkthrough section"
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(0);
+          }}
+        >
+          {["All sections", ...new Set(tutorials.map((t) => t.category))].map(
+            (c) => (
+              <option key={c}>{c}</option>
+            ),
+          )}
+        </select>
+      </label>
       <div className="onboarding-video-grid">
-        {tutorials.map((t, i) => (
+        {shown.map((t) => (
           <button
             className="card onboarding-video-card"
             key={t.slug}
@@ -91,13 +116,32 @@ export default function OnboardingTutorials() {
             </span>
             <span>
               <small>
-                GUIDE {i + 1} · {t.duration}s
+                {t.category.toUpperCase()} · {t.duration}s · SCREEN RECORDING
               </small>
               <strong>{t.title}</strong>
             </span>
           </button>
         ))}
       </div>
+      <nav className="compact-pagination" aria-label="Walkthrough pages">
+        <button
+          className="secondary"
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >
+          Previous
+        </button>
+        <span>
+          Page {page + 1} of {Math.max(1, Math.ceil(matching.length / 6))}
+        </span>
+        <button
+          className="secondary"
+          disabled={(page + 1) * 6 >= matching.length}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
+      </nav>
       {selected && (
         <Dialog
           title={tutorials.find((t) => t.slug === selected)!.title}

@@ -421,7 +421,7 @@ export default function Simulator() {
 
           {page==="profile"&&<ReferralCard/>}
           <footer className="app-footer compact-footer">
-            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/support">Contact</Link><a href="https://github.com/ryanassoku558/trading--simulator" target="_blank" rel="noopener noreferrer">GitHub</a><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
+            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
             <small>Educational simulation only · Virtual money · Not financial advice.</small>
           </footer>
         </div></main>

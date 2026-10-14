@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Lesson, State } from "@/types";
 import { lessons, levels, accountRulesMetadata } from "@/lib/education";
@@ -9,6 +9,8 @@ import {
   recordPresentationAttempts,
 } from "@/lib/education/presentation";
 import Dialog from "./Dialog";
+import LessonIntro from "./LessonIntro";
+import { learningModules } from "@/lib/billing/curriculum";
 import Sprouty from "./Sprouty";
 import ModuleCelebration from "./ModuleCelebration";
 import LessonStudy from "./LessonStudy";
@@ -30,6 +32,11 @@ export default function LessonPresentation({
   onContinue: (module: boolean) => void;
 }) {
   const router = useRouter();
+  const [intro, setIntro] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setIntro(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
   const [slide, setSlide] = useState(0),
     [phase, setPhase] = useState<
       "presentation" | "quiz" | "complete" | "results"
@@ -76,7 +83,11 @@ export default function LessonPresentation({
         setModuleDone(
           (moduleMode
             ? group
-            : lessons.filter((l) => l.level === group[0].level)
+            : lessons.filter((l) =>
+                learningModules
+                  .find((m) => m.ids.includes(group[0].id))
+                  ?.ids.includes(l.id),
+              )
           ).every((l) => next.learning.completed.includes(l.id)),
         );
         setPhase("complete");
@@ -101,317 +112,337 @@ export default function LessonPresentation({
       onClose={onClose}
       className={`lesson-dialog phase-${phase}`}
     >
-      <div className="presentation-progress">
-        <span className="eyebrow">5 questions · 80% to pass</span>
-        <span>
-          {phase === "presentation"
-            ? `Presentation · ${slide + 1} / ${slides}`
-            : phase === "quiz"
-              ? `Quiz · Question ${index + 1} / ${questions.length}`
-              : phase === "results"
-                ? "Quiz results"
-                : "Completed"}
-        </span>
-        <progress
-          value={
-            phase === "presentation"
-              ? slide + 1
-              : phase === "quiz"
-                ? index + 1
-                : 1
+      {intro ? (
+        <LessonIntro
+          title={moduleMode ? title || group[0].title : group[0].title}
+          label={
+            moduleMode
+              ? `MODULE ${learningModules.findIndex((m) => m.ids.includes(group[0].id)) + 1}`
+              : `LESSON ${group[0].id}`
           }
-          max={
-            phase === "presentation"
-              ? slides
-              : phase === "quiz"
-                ? questions.length
-                : 1
-          }
+          onContinue={() => setIntro(false)}
         />
-      </div>
-      <div className="lesson-content">
-        {phase === "presentation" && (
-          <>
-            <span className="eyebrow">
-              {moduleMode ? "MODULE OVERVIEW" : "LEARN FIRST"} ·{" "}
-              {questions.length} quiz question
-              {questions.length === 1 ? "" : "s"}
+      ) : (
+        <>
+          <div className="presentation-progress">
+            <span className="eyebrow">5 questions · 80% to pass</span>
+            <span>
+              {phase === "presentation"
+                ? `Presentation · ${slide + 1} / ${slides}`
+                : phase === "quiz"
+                  ? `Quiz · Question ${index + 1} / ${questions.length}`
+                  : phase === "results"
+                    ? "Quiz results"
+                    : "Completed"}
             </span>
-            <h3>
-              {moduleMode
-                ? lesson.title
-                : slide === 0
-                  ? "Understand the idea"
-                  : slide === 1
-                    ? "Explore the example"
-                    : "Apply what you learned"}
-            </h3>
-            <LessonStudy
-              key={lesson.id}
-              lesson={lesson}
-              stage={slide}
-              moduleMode={moduleMode}
+            <progress
+              value={
+                phase === "presentation"
+                  ? slide + 1
+                  : phase === "quiz"
+                    ? index + 1
+                    : 1
+              }
+              max={
+                phase === "presentation"
+                  ? slides
+                  : phase === "quiz"
+                    ? questions.length
+                    : 1
+              }
             />
-            <details className="ds-extra">
-              <summary>Explore reliable sources</summary>
-              {[32, 39, 40, 48].includes(lesson.id) ? (
-                <>
-                  <p>{accountRulesMetadata.scope}</p>
-                  {accountRulesMetadata.sources.map((s) => (
+          </div>
+          <div className="lesson-content">
+            {phase === "presentation" && (
+              <>
+                <span className="eyebrow">
+                  {moduleMode ? "MODULE OVERVIEW" : "LEARN FIRST"} ·{" "}
+                  {questions.length} quiz question
+                  {questions.length === 1 ? "" : "s"}
+                </span>
+                <h3>
+                  {moduleMode
+                    ? lesson.title
+                    : slide === 0
+                      ? "Understand the idea"
+                      : slide === 1
+                        ? "Explore the example"
+                        : "Apply what you learned"}
+                </h3>
+                <LessonStudy
+                  key={lesson.id}
+                  lesson={lesson}
+                  stage={slide}
+                  moduleMode={moduleMode}
+                />
+                <details className="ds-extra">
+                  <summary>Explore reliable sources</summary>
+                  {[32, 39, 40, 48].includes(lesson.id) ? (
+                    <>
+                      <p>{accountRulesMetadata.scope}</p>
+                      {accountRulesMetadata.sources.map((s) => (
+                        <a
+                          key={s.url}
+                          href={s.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {s.label} ↗{" "}
+                        </a>
+                      ))}
+                    </>
+                  ) : (
                     <a
-                      key={s.url}
-                      href={s.url}
+                      href={
+                        lesson.level === 19 || lesson.level === 20
+                          ? "https://www.irs.gov/"
+                          : lesson.level === 35
+                            ? "https://www.sec.gov/edgar/search/"
+                            : "https://www.investor.gov/"
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {s.label} ↗{" "}
+                      {lesson.level === 35
+                        ? "SEC EDGAR public filings"
+                        : lesson.level === 19 || lesson.level === 20
+                          ? "IRS tax and retirement guidance"
+                          : "Investor.gov education"}{" "}
+                      ↗
                     </a>
+                  )}
+                </details>
+              </>
+            )}
+            {phase === "quiz" && (
+              <>
+                <div className="quiz-question-region">
+                  <p className="small">
+                    Pass mark: 80%. Each answer is final for this attempt.
+                  </p>
+                  <h3>{q.question}</h3>
+                  {q.visual && (
+                    <figure className="scenario-chart">
+                      <svg
+                        viewBox="0 0 420 180"
+                        role="img"
+                        aria-label="Illustrative rising price chart approaching resistance at 110 dollars"
+                      >
+                        <path
+                          d="M30 145L80 130L125 135L170 100L215 115L260 75L305 60L360 45"
+                          fill="none"
+                          stroke="var(--primary, #128875)"
+                          strokeWidth="4"
+                        />
+                        <path
+                          d="M25 40H395"
+                          stroke="#d49236"
+                          strokeWidth="2"
+                          strokeDasharray="6 5"
+                        />
+                        <text x="28" y="28" fill="currentColor">
+                          Resistance $110
+                        </text>
+                        <text x="28" y="170" fill="currentColor">
+                          Earlier → Now · illustrative prices
+                        </text>
+                      </svg>
+                      <figcaption>
+                        A rising price can reverse. No outcome is certain.
+                      </figcaption>
+                    </figure>
+                  )}
+                </div>
+                <div className="quiz-options">
+                  {q.options.map((o, i) => (
+                    <button
+                      key={o}
+                      className={answer === i ? "chosen" : ""}
+                      disabled={checked || saving}
+                      onClick={() => {
+                        setAnswer(i);
+                        setChecked(false);
+                      }}
+                    >
+                      <span>{String.fromCharCode(65 + i)}</span>
+                      {o}
+                    </button>
                   ))}
-                </>
-              ) : (
-                <a
-                  href={
-                    lesson.level === 19 || lesson.level === 20
-                      ? "https://www.irs.gov/"
-                      : lesson.level === 35
-                        ? "https://www.sec.gov/edgar/search/"
-                        : "https://www.investor.gov/"
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {lesson.level === 35
-                    ? "SEC EDGAR public filings"
-                    : lesson.level === 19 || lesson.level === 20
-                      ? "IRS tax and retirement guidance"
-                      : "Investor.gov education"}{" "}
-                  ↗
-                </a>
-              )}
-            </details>
-          </>
-        )}
-        {phase === "quiz" && (
-          <>
-            <div className="quiz-question-region">
-              <p className="small">
-                Pass mark: 80%. Each answer is final for this attempt.
-              </p>
-              <h3>{q.question}</h3>
-              {q.visual && (
-                <figure className="scenario-chart">
-                  <svg
-                    viewBox="0 0 420 180"
-                    role="img"
-                    aria-label="Illustrative rising price chart approaching resistance at 110 dollars"
-                  >
-                    <path
-                      d="M30 145L80 130L125 135L170 100L215 115L260 75L305 60L360 45"
-                      fill="none"
-                      stroke="var(--primary, #128875)"
-                      strokeWidth="4"
+                </div>
+                {checked && (
+                  <div className="quiz-feedback">
+                    <Sprouty
+                      compact
+                      completed={state.learning.completed.length}
+                      title={
+                        correct
+                          ? "Nice work. You’ve understood this idea."
+                          : "Let’s break this down together."
+                      }
+                      message={q.explanation}
                     />
-                    <path
-                      d="M25 40H395"
-                      stroke="#d49236"
-                      strokeWidth="2"
-                      strokeDasharray="6 5"
-                    />
-                    <text x="28" y="28" fill="currentColor">
-                      Resistance $110
-                    </text>
-                    <text x="28" y="170" fill="currentColor">
-                      Earlier → Now · illustrative prices
-                    </text>
-                  </svg>
-                  <figcaption>
-                    A rising price can reverse. No outcome is certain.
-                  </figcaption>
-                </figure>
-              )}
-            </div>
-            <div className="quiz-options">
-              {q.options.map((o, i) => (
-                <button
-                  key={o}
-                  className={answer === i ? "chosen" : ""}
-                  disabled={checked || saving}
-                  onClick={() => {
-                    setAnswer(i);
-                    setChecked(false);
-                  }}
-                >
-                  <span>{String.fromCharCode(65 + i)}</span>
-                  {o}
-                </button>
-              ))}
-            </div>
-            {checked && (
-              <div className="quiz-feedback">
+                    <p role="status" className={correct ? "success" : "error"}>
+                      {correct
+                        ? "Correct."
+                        : "Not quite. Review the explanation before the next question."}
+                    </p>
+                  </div>
+                )}
+                {error && (
+                  <p role="alert" className="error">
+                    {error}
+                  </p>
+                )}
+              </>
+            )}
+            {phase === "results" && (
+              <section className="presentation-complete">
+                <h3>Quiz score: {score}%</h3>
                 <Sprouty
                   compact
-                  completed={state.learning.completed.length}
-                  title={
-                    correct
-                      ? "Nice work. You’ve understood this idea."
-                      : "Let’s break this down together."
-                  }
-                  message={q.explanation}
+                  title="Let’s review this together."
+                  message="You need at least 80% to complete this topic. Take a look at the examples, then try again. Your earlier progress stays saved."
                 />
-                <p role="status" className={correct ? "success" : "error"}>
-                  {correct
-                    ? "Correct."
-                    : "Not quite. Review the explanation before the next question."}
+                <div className="presentation-actions">
+                  <button
+                    className="primary"
+                    onClick={() => {
+                      setPhase("presentation");
+                      setSlide(0);
+                      setIndex(0);
+                      setAnswers([]);
+                      setAnswer(null);
+                      setChecked(false);
+                    }}
+                  >
+                    Review & retry
+                  </button>
+                  <button
+                    className="secondary"
+                    onClick={() => move("/dashboard")}
+                  >
+                    Return to dashboard
+                  </button>
+                </div>
+              </section>
+            )}
+            {phase === "complete" && (
+              <section className="presentation-complete">
+                <span className="eyebrow">PROGRESS SAVED</span>
+                <h3>{moduleDone ? "Module complete!" : "Lesson complete!"}</h3>
+                <p>Quiz score: {score}% · Passed (80% required)</p>
+                <p>
+                  {moduleDone
+                    ? `${title || levels[group[0].level - 1]} is complete.`
+                    : `You completed ${group[0].title}.`}
+                  {earned > 0
+                    ? ` You earned ${earned} XP.`
+                    : " You’ve reviewed this topic; completion rewards are awarded once."}
                 </p>
-              </div>
+                {moduleDone ? (
+                  <ModuleCelebration
+                    completed={state.learning.completed.length}
+                    earned={earned}
+                  />
+                ) : (
+                  <Sprouty
+                    compact
+                    completed={state.learning.completed.length}
+                    title="You’re improving. Keep going."
+                    message="You took time to understand the idea and practice the decision. Bring that same care to your next step."
+                  />
+                )}
+                <div className="presentation-actions">
+                  <button
+                    className="primary"
+                    onClick={() => onContinue(moduleDone || moduleMode)}
+                  >
+                    {moduleDone || moduleMode ? "Next module" : "Next lesson"}
+                  </button>
+                  <button className="secondary" onClick={() => move("/market")}>
+                    Try the simulator
+                  </button>
+                  <button
+                    className="secondary"
+                    onClick={() => move("/dashboard")}
+                  >
+                    Return to dashboard
+                  </button>
+                </div>
+              </section>
             )}
-            {error && (
-              <p role="alert" className="error">
-                {error}
-              </p>
-            )}
-          </>
-        )}
-        {phase === "results" && (
-          <section className="presentation-complete">
-            <h3>Quiz score: {score}%</h3>
-            <Sprouty
-              compact
-              title="Let’s review this together."
-              message="You need at least 80% to complete this topic. Take a look at the examples, then try again. Your earlier progress stays saved."
-            />
-            <div className="presentation-actions">
-              <button
-                className="primary"
-                onClick={() => {
-                  setPhase("presentation");
-                  setSlide(0);
-                  setIndex(0);
-                  setAnswers([]);
-                  setAnswer(null);
-                  setChecked(false);
-                }}
-              >
-                Review & retry
-              </button>
-              <button className="secondary" onClick={() => move("/dashboard")}>
-                Return to dashboard
-              </button>
-            </div>
-          </section>
-        )}
-        {phase === "complete" && (
-          <section className="presentation-complete">
-            <span className="eyebrow">PROGRESS SAVED</span>
-            <h3>{moduleDone ? "Module complete!" : "Lesson complete!"}</h3>
-            <p>Quiz score: {score}% · Passed (80% required)</p>
-            <p>
-              {moduleDone
-                ? `${title || levels[group[0].level - 1]} is complete.`
-                : `You completed ${group[0].title}.`}
-              {earned > 0
-                ? ` You earned ${earned} XP.`
-                : " You’ve reviewed this topic; completion rewards are awarded once."}
-            </p>
-            {moduleDone ? (
-              <ModuleCelebration
-                completed={state.learning.completed.length}
-                earned={earned}
-              />
-            ) : (
-              <Sprouty
-                compact
-                completed={state.learning.completed.length}
-                title="You’re improving. Keep going."
-                message="You took time to understand the idea and practice the decision. Bring that same care to your next step."
-              />
-            )}
-            <div className="presentation-actions">
-              <button
-                className="primary"
-                onClick={() => onContinue(moduleDone || moduleMode)}
-              >
-                {moduleDone || moduleMode ? "Next module" : "Next lesson"}
-              </button>
-              <button className="secondary" onClick={() => move("/market")}>
-                Try the simulator
-              </button>
-              <button className="secondary" onClick={() => move("/dashboard")}>
-                Return to dashboard
-              </button>
-            </div>
-          </section>
-        )}
-      </div>
-      {phase === "presentation" && (
-        <footer className="lesson-footer">
-          {" "}
-          <div className="presentation-actions">
-            <button
-              className="secondary"
-              disabled={slide === 0}
-              onClick={() => setSlide(slide - 1)}
-            >
-              Previous slide
-            </button>
-            <button
-              className="primary"
-              onClick={() =>
-                slide + 1 < slides ? setSlide(slide + 1) : setPhase("quiz")
-              }
-            >
-              {slide + 1 < slides ? "Next slide" : "Start quiz"}
-            </button>
           </div>
-        </footer>
-      )}
-      {phase === "quiz" && (
-        <footer className="lesson-footer">
-          {" "}
-          <div className="presentation-actions">
-            <button
-              className="secondary"
-              disabled={saving}
-              onClick={() => {
-                setPhase("presentation");
-                setSlide(0);
-              }}
-            >
-              Review presentation
-            </button>
-            {checked ? (
-              <button
-                className="primary"
-                disabled={saving}
-                onClick={() => {
-                  if (index + 1 === questions.length) void finish();
-                  else {
-                    setIndex(index + 1);
-                    setAnswer(null);
-                    setChecked(false);
+          {phase === "presentation" && (
+            <footer className="lesson-footer">
+              {" "}
+              <div className="presentation-actions">
+                <button
+                  className="secondary"
+                  disabled={slide === 0}
+                  onClick={() => setSlide(slide - 1)}
+                >
+                  Previous slide
+                </button>
+                <button
+                  className="primary"
+                  onClick={() =>
+                    slide + 1 < slides ? setSlide(slide + 1) : setPhase("quiz")
                   }
-                }}
-              >
-                {saving
-                  ? "Saving progress…"
-                  : index + 1 === questions.length
-                    ? "Finish quiz"
-                    : "Next question"}
-              </button>
-            ) : (
-              <button
-                className="primary"
-                disabled={answer === null}
-                onClick={() => {
-                  setAnswers([...answers.slice(0, index), correct]);
-                  setChecked(true);
-                }}
-              >
-                Check answer
-              </button>
-            )}
-          </div>
-        </footer>
+                >
+                  {slide + 1 < slides ? "Next slide" : "Start quiz"}
+                </button>
+              </div>
+            </footer>
+          )}
+          {phase === "quiz" && (
+            <footer className="lesson-footer">
+              {" "}
+              <div className="presentation-actions">
+                <button
+                  className="secondary"
+                  disabled={saving}
+                  onClick={() => {
+                    setPhase("presentation");
+                    setSlide(0);
+                  }}
+                >
+                  Review presentation
+                </button>
+                {checked ? (
+                  <button
+                    className="primary"
+                    disabled={saving}
+                    onClick={() => {
+                      if (index + 1 === questions.length) void finish();
+                      else {
+                        setIndex(index + 1);
+                        setAnswer(null);
+                        setChecked(false);
+                      }
+                    }}
+                  >
+                    {saving
+                      ? "Saving progress…"
+                      : index + 1 === questions.length
+                        ? "Finish quiz"
+                        : "Next question"}
+                  </button>
+                ) : (
+                  <button
+                    className="primary"
+                    disabled={answer === null}
+                    onClick={() => {
+                      setAnswers([...answers.slice(0, index), correct]);
+                      setChecked(true);
+                    }}
+                  >
+                    Check answer
+                  </button>
+                )}
+              </div>
+            </footer>
+          )}
+        </>
       )}
     </Dialog>
   );

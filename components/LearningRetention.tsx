@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Flame, Trophy, Check } from "lucide-react";
 import type { State } from "@/types";
-import { achievements, earned } from "@/lib/education";
+import { achievements, earned, lessons } from "@/lib/education";
 import { canEarnAchievement } from "@/lib/billing/achievements";
 import { useSubscription } from "./Subscription";
 import { Panel, ProgressMeter } from "./ui/LearningUI";
@@ -20,7 +20,7 @@ export function LearningSignals({ state }: { state: State }) {
       </span>
       <span>
         <Check size={15} />
-        {state.learning.completed.length} lessons completed
+        {state.learning.completed.filter(id=>lessons.some(l=>l.id===id)).length} lessons completed
       </span>
     </div>
   );
@@ -121,7 +121,7 @@ export default function LearningRetention({ state }: { state: State }) {
       <Panel title="Small steps add up">
         <LearningSignals state={state} />
         <ProgressMeter
-          value={Math.min(5, state.learning.completed.length)}
+          value={Math.min(5, state.learning.completed.filter(id=>lessons.some(l=>l.id===id)).length)}
           max={5}
           label="First five lessons"
         />

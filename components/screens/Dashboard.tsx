@@ -165,7 +165,7 @@ export default function Dashboard({
           <div className="progress-label">
             <span>Your learning progress</span>
             <strong>
-              {state.learning.completed.length}/{lessons.length}
+              {lessons.filter(l=>state.learning.completed.includes(l.id)).length}/{lessons.length}
             </strong>
           </div>
           <div className="progress-track">

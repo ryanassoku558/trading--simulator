@@ -31,7 +31,7 @@ test("compact home and learning keep core actions in view", async ({
     page.locator(".compact-module-lessons").first().getByRole("button"),
   ).toHaveCount(4);
   await page.getByRole("button", { name: "Next", exact: true }).click();
-  await expect(page.getByText("Page 2 of 8")).toBeVisible();
+  await expect(page.getByText("Page 2 of 7")).toBeVisible();
   await page.locator(".compact-module-grid summary").first().click();
   await page
     .getByRole("button", { name: "Unlock with Pro", exact: true })
@@ -53,9 +53,9 @@ test("compact home and learning keep core actions in view", async ({
     page.getByRole("region", { name: "Glossary practice" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Tutorials", exact: true }).click();
-  await expect(page.locator(".onboarding-video-grid > button")).toHaveCount(5);
+  await expect(page.locator(".onboarding-video-grid > button")).toHaveCount(6);
   await page
-    .getByRole("button", { name: "Trading & finance", exact: true })
+    .getByRole("button", { name: "Trading & investing", exact: true })
     .click();
   await expect(page.locator(".tutorial-grid > button")).toHaveCount(4);
   await page.goto("/achievements");

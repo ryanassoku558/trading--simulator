@@ -8,7 +8,7 @@ export const aiLessonCount=learningModules.filter(m=>m.title==='Trading with AI 
 export const proBenefits=[
  `${learningModules.length} modules · ${lessons.length} lessons`,
  `${tutorials.length} narrated video tutorials with captions`,
- '4 financial tools · position sizing, risk, P/L & volatility',
+ '4 trading tools · position sizing, risk, P/L & volatility',
  '3 visual strategy labs · 3 replay scenarios',
  `${psychologyLessonCount} planning & psychology lessons · 5 mood check-in options`,
  `1 AI trading module · ${aiLessonCount} lessons on research, testing & verification`,

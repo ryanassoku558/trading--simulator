@@ -18,7 +18,7 @@ import { LearningSignals } from "../LearningRetention";
 import type { State } from "@/types";
 export default function CompactDashboard({ state }: { state: State }) {
   const { pro } = useSubscription(),
-    completed = new Set(state.learning.completed),
+    completed = new Set(state.learning.completed.filter(id=>lessons.some(l=>l.id===id))),
     ids = pro ? beginnerLearningOrder : starterLessonIds;
   const next =
     lessons.find(
@@ -48,7 +48,7 @@ export default function CompactDashboard({ state }: { state: State }) {
         <h1>Learn Trading the Simple Way.</h1>
         <p>
           Beginner-friendly lessons, hands-on practice, and a guided path to
-          financial confidence.
+          trading confidence.
         </p>
         <div className="presentation-actions">
           <Link className="primary" href={`/learn?lesson=${next.id}`}>

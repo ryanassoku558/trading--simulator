@@ -67,11 +67,10 @@ export default function Learning({
     [search, setSearch] = useState("");
   const matches = (lesson: Lesson) =>
     (topic === "All topics" ||
-      (topic === "Personal finance" &&
-        lesson.level >= 13 &&
-        lesson.level <= 22) ||
+      (topic === "Long-term investing" &&
+        [17,18,41,42].includes(lesson.level)) ||
       (topic === "Trading" && lesson.level <= 12) ||
-      (topic === "Advanced trading" && lesson.level >= 23)) &&
+      (topic === "Advanced trading" && lesson.level >= 23 && ![41,42].includes(lesson.level))) &&
     `${levels[lesson.level - 1]} ${lesson.title} ${lesson.explanation} ${lesson.example}`
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "")
@@ -130,7 +129,7 @@ export default function Learning({
         l.id ===
         (ids.find((id) => !state.learning.completed.includes(id)) ?? ids[0]),
     ) || lessons[0];
-  const completed = new Set(state.learning.completed);
+  const completed = new Set(state.learning.completed.filter(id=>lessons.some(l=>l.id===id)));
   const pageCount = Math.max(
     1,
     Math.ceil(
@@ -301,7 +300,7 @@ export default function Learning({
             >
               {[
                 "All topics",
-                "Personal finance",
+                "Long-term investing",
                 "Trading",
                 "Advanced trading",
               ].map((t) => (

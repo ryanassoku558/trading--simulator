@@ -11,7 +11,7 @@ export default function TutorialHub() {
         role="group"
         aria-label="Tutorial categories"
       >
-        {["Getting started", "Trading & finance"].map((s) => (
+        {["Getting started", "Trading & investing"].map((s) => (
           <button
             key={s}
             aria-pressed={section === s}

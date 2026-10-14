@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import HandsOnTrading from "../HandsOnTrading";
 import {VideoHelp} from "../OnboardingTutorials";
 import { useState } from "react";
 import type { State, Trade, Stock } from "@/types";
@@ -56,7 +57,7 @@ export default function StockDetail({
         </div>
       </div>
       <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
-      <div className="simulator-video-help"><VideoHelp slug="simulator-guide" label="Watch the simulator guide"/></div><div className="detail-grid">
+      <HandsOnTrading key={`hands-on-${ticker}`} state={state} ticker={ticker} start={guided}/><div className="simulator-video-help"><VideoHelp slug="simulator-guide" label="Watch the simulator guide"/></div><div className="detail-grid">
         <div>
           <section className="card">
             <div className="stock-detail-price">{money(current.price)}</div>
@@ -154,7 +155,7 @@ export default function StockDetail({
             state={state}
             ticker={ticker}
             update={update}
-            onTrade={onTrade}
+            onTrade={trade=>{onTrade(trade);window.dispatchEvent(new CustomEvent("sprout-trade-executed",{detail:trade}));}}
             guided={guided}
           />
           {state.profile.beginner && (

@@ -1,7 +1,7 @@
 import type {Achievement,State} from '@/types';
 type GrowthMilestone=Achievement & {term:'Medium-term'|'Long-term';target:number;reward:string};
 const milestoneTracks: {kind:string;label:string;verb:string;targets:number[];names:string[]}[]=[
- {kind:'lessons',label:'Knowledge',verb:'Complete {n} different lessons.',targets:[10,15,40,60,75,90,120,160],names:['Curious Learner','Building Blocks','Growing Understanding','Knowledge Explorer','Broad Perspective','Flourishing Mind','Deep Understanding','Curriculum Trailblazer']},
+ {kind:'lessons',label:'Knowledge',verb:'Complete {n} different lessons.',targets:[10,15,40,60,75,90,120,140],names:['Curious Learner','Building Blocks','Growing Understanding','Knowledge Explorer','Broad Perspective','Flourishing Mind','Deep Understanding','Curriculum Trailblazer']},
  {kind:'days',label:'Commitment',verb:'Study on {n} different days. Breaks do not erase your progress.',targets:[7,14,30,45,90,120,180,270,365,730],names:['Showing Up','Finding Your Rhythm','Monthly Learner','Steady Roots','Quarter of Growth','Committed Learner','Half-Year Journey','Enduring Focus','Year of Learning','Two-Year Legacy']},
  {kind:'streak',label:'Consistency',verb:'Pass knowledge checks on {n} consecutive days.',targets:[7,10,21,45,60,120,180,365],names:['Seven-Day Spark','Ten-Day Focus','Three-Week Rhythm','Consistent Growth','Two-Month Focus','Seasoned Routine','Half-Year Rhythm','Year of Consistency']},
  {kind:'journal',label:'Reflection',verb:'Write meaningful reflections for {n} different practice trades. Take your time; there is no deadline.',targets:[3,5,15,20,30,75,100,150],names:['First Reflections','Learning From Decisions','Reflective Roots','Thoughtful Habits','Reflection Routine','Journal Scholar','Century of Reflection','Reflective Legacy']},
@@ -16,7 +16,7 @@ export const growthMilestones: GrowthMilestone[]=[
  {id:'growth-journal-10',title:'Thoughtful Reviewer',description:'Write meaningful journal reflections for 10 different trades.',term:'Medium-term',target:10,reward:'Silver reflection badge'},
  {id:'growth-risk-5',title:'Risk-Aware Planner',description:'Record a positive initial risk and a meaningful reflection for 5 different trades.',term:'Medium-term',target:5,reward:'Risk-Aware Planner title'},
  {id:'growth-mood-14',title:'Mindful Practice',description:'Check in with your mood on 14 different days.',term:'Medium-term',target:14,reward:'Silver self-awareness badge'},
- {id:'growth-lessons-150',title:'Deep Roots',description:'Complete 150 different lessons.',term:'Long-term',target:150,reward:'Gold knowledge badge'},
+ {id:'growth-lessons-150',title:'Deep Roots',description:'Complete 125 different lessons.',term:'Long-term',target:125,reward:'Gold knowledge badge'},
  {id:'growth-streak-30',title:'Month of Momentum',description:'Pass knowledge checks on 30 consecutive days.',term:'Long-term',target:30,reward:'Gold consistency badge'},
  {id:'growth-streak-90',title:'Season of Learning',description:'Pass knowledge checks on 90 consecutive days.',term:'Long-term',target:90,reward:'Season of Learning title'},
  {id:'growth-days-60',title:'Lasting Commitment',description:'Study on 60 different days. Breaks do not erase this milestone.',term:'Long-term',target:60,reward:'Lasting Commitment title'},

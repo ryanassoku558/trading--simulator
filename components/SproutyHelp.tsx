@@ -8,7 +8,7 @@ import {useSubscription} from "./Subscription";
 import {performance} from "@/lib/trading/analytics";
 import {answerHelp,type HelpLink} from '@/lib/support/answers';
 interface Message {role:'user'|'assistant';text:string;links?:HelpLink[];}
-const welcome:Message={role:'assistant',text:'Let’s break this down together. I can help with Sprout, trading concepts, and personal finance. What would you like to understand?'};
+const welcome:Message={role:'assistant',text:'Let’s break this down together. I can help with Sprout, trading concepts, and long-term investing. What would you like to understand?'};
 export default function SproutyHelp(){
  const [open,setOpen]=useState(false),[question,setQuestion]=useState(''),[messages,setMessages]=useState<Message[]>([welcome]),[busy,setBusy]=useState(false),[mode,setMode]=useState('library');
  const input=useRef<HTMLInputElement>(null),launcher=useRef<HTMLButtonElement>(null),log=useRef<HTMLDivElement>(null);

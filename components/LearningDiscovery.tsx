@@ -136,7 +136,7 @@ export default function LearningDiscovery() {
           <h2>Trading glossary</h2>
           <p>
             Simple definitions and worked examples for trading, markets, and
-            personal finance. Search a term or open a definition to explore it.
+            long-term investing. Search a term or open a definition to explore it.
           </p>
           <label className="curriculum-search">
             Search terms

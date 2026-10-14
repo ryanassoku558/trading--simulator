@@ -5,9 +5,9 @@ import "./motion.css";
 import SubscriptionProvider from "@/components/Subscription";
 import SproutyHelp from "@/components/SproutyHelp";
 export const metadata: Metadata = {
-  title: "Sprout Trading | Trading & Personal Finance Education",
+  title: "Sprout Trading | Trading & Long-Term Investing Education",
   description:
-    "Learn trading and personal finance with clear lessons, visual practice, and $10,000 in virtual cash. Start learning now; no real deposit required.",
+    "Learn trading and long-term investing with clear lessons, visual practice, and $10,000 in virtual cash. Start learning now; no real deposit required.",
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

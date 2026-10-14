@@ -154,7 +154,7 @@ test("signed-in state survives reload and sign-out restores separate guest state
   await page.route("**/api/billing/status",r=>r.fulfill({contentType:"application/json",body:JSON.stringify({pro:true,ready:false})}));
   await page.goto("/tools");
   await page.reload();
-  const tools=page.getByRole("group",{name:"Financial tools"});
+  const tools=page.getByRole("group",{name:"Trading tools"});
   await expect(tools).toBeVisible();
   await expect(page.getByLabel("Calculator practice budget")).toBeVisible();
   await tools.getByRole("button",{name:"Risk",exact:true}).click();

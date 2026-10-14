@@ -14,6 +14,6 @@ it('finds educational answers instead of making personalized trade calls',()=>{
  expect(answerHelp('Should I buy AAPL now?').text).toContain('cannot decide');
  expect(answerHelp('asdfqwerty xyzzy').text).toContain('don’t have a reliable answer');
  expect(answerHelp('Can I speak to a human agent?').text).toContain('cannot');
- expect(answerHelp('Give me an example',69).links[0].href).toBe('/learn?lesson=69');
+ expect(answerHelp('Give me an example',173).links[0].href).toBe('/learn?lesson=173');
  expect(answerHelp('Show latest insider transactions').text).toContain('does not provide a current');
 });

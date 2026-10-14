@@ -20,7 +20,7 @@ export const levels = [
   "Real-World Trading Context",
   "Beginner Practice Lab",
   "Indicators Explained",
-  ...expandedModules.map(m=>m.title),
+  ...Array.from({length:Math.max(...expandedModules.map(m=>m.level))-12},(_,i)=>expandedModules.find(m=>m.level===i+13)?.title||"Archived curriculum"),
 ];
 const content = [
   [
@@ -406,10 +406,10 @@ export const achievements: Achievement[] = [
     title: "Quiz Master",
     description: "Answer 10 knowledge checks correctly",
   },
-  ...expandedModules.map((m,i)=>({id:`module-${i+13}`,title:m.reward,description:`Complete all lessons in ${m.title}`})),
+  ...expandedModules.map(m=>({id:`module-${m.level}`,title:m.reward,description:`Complete all lessons in ${m.title}`})),
   {id:"fifty",title:"50 Lessons Completed",description:"Build understanding across fifty lessons"},
   {id:"hundred",title:"100 Lessons Completed",description:"Complete one hundred knowledge checks"},
-  {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the current trading and personal finance curriculum"},
+  {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the current trading and investing curriculum"},
   ...growthMilestones,
 ];
 export function earned(s: State, id: string): boolean {

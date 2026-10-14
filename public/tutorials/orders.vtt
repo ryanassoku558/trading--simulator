@@ -2,61 +2,41 @@ WEBVTT
 
 1
 00:00:00.000 --> 00:00:01.463
-Two ways to place an order.
+Open the lesson.
 
 2
-00:00:01.583 --> 00:00:04.346
-A market order prioritizes execution.
+00:00:01.583 --> 00:00:05.356
+Open Learn, select Lessons, and choose Market orders.
 
 3
-00:00:04.466 --> 00:00:06.707
-A limit order sets a price condition.
+00:00:05.476 --> 00:00:08.309
+A market order trades at the available price.
 
 4
-00:00:07.227 --> 00:00:08.678
-Market: trade now.
+00:00:13.168 --> 00:00:14.782
+Explore the example.
 
 5
-00:00:08.798 --> 00:00:11.294
-Sprout fills at its displayed simulated quote.
+00:00:14.902 --> 00:00:17.317
+Click Next slide to open the worked example.
 
 6
-00:00:11.414 --> 00:00:14.340
-Real market orders may fill at a different price.
+00:00:17.437 --> 00:00:21.953
+Read the numbers and explore the visual or interactive example where available.
 
 7
-00:00:14.860 --> 00:00:16.462
-Buy limit: at or below.
+00:00:23.001 --> 00:00:24.231
+Practice and review.
 
 8
-00:00:16.582 --> 00:00:21.725
-With a $100 buy limit, the purchase can fill at $100 or less.
+00:00:24.351 --> 00:00:27.277
+Click Next slide to see the practice prompt and summary.
 
 9
-00:00:21.845 --> 00:00:24.214
-It cannot fill above $100.
+00:00:27.397 --> 00:00:30.764
+Expand Show the reasoning, then choose Start quiz when ready.
 
 10
-00:00:24.735 --> 00:00:26.221
-A limit may never fill.
-
-11
-00:00:26.341 --> 00:00:30.265
-If the price stays above $100, that buy limit waits.
-
-12
-00:00:30.385 --> 00:00:32.974
-A chosen price is not a guaranteed trade.
-
-13
-00:00:33.494 --> 00:00:34.551
-Practice both.
-
-14
-00:00:34.671 --> 00:00:37.387
-Sprout checks pending limits while the app is open.
-
-15
-00:00:37.507 --> 00:00:41.095
-Real trading has spreads, slippage, and other costs.
+00:00:30.884 --> 00:00:34.379
+At least four of five correct answers are required to pass.
 

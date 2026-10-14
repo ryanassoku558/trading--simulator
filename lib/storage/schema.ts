@@ -16,8 +16,14 @@ const positive = (v: unknown): v is number => number(v) && v > 0;
 const ticker = (v: unknown) => stocks.some((s) => s.ticker === v);
 const date = (v: unknown) => text(v) && Number.isFinite(Date.parse(v));
 const side = (v: unknown) => v === "buy" || v === "sell";
+// Retired household-finance IDs remain valid in saved accounts. They are not
+// offered in the current curriculum, but historical progress must still load.
+const archivedLessonIds = new Set([
+  ...Array.from({length:16}, (_,i)=>60+i),
+  ...Array.from({length:16}, (_,i)=>84+i),
+]);
 const lesson = (v: unknown) =>
-  integer(v) && lessons.some((item) => item.id === v);
+  integer(v) && (archivedLessonIds.has(v as number) || lessons.some((item) => item.id === v));
 const every = (
   v: unknown,
   validate: (item: unknown) => boolean,

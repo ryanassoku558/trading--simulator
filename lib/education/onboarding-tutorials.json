@@ -1,126 +1,526 @@
 [
   {
     "slug": "navigate-sprout",
-    "title": "Find your way around Sprout",
+    "title": "Navigate Home and the dashboard",
+    "category": "Start here",
     "lessonIds": [],
-    "duration": 29,
-    "narrationVersion": "joe-neural-v1",
+    "duration": 30,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
     "scenes": [
       {
-        "title": "Your learning home",
-        "caption": "Home shows your next lesson, quick links, and a four-step path. Start with one small step.",
-        "visual": "nav-home"
+        "title": "Follow the main navigation",
+        "caption": "Click Learn in the sidebar, then return Home. The six core destinations stay available without scrolling.",
+        "action": "home-nav"
       },
       {
-        "title": "Six clear destinations",
-        "caption": "Use Home, Learn, Modules, Glossary, Simulator, and Progress. On a phone, these actions stay in the bottom navigation.",
-        "visual": "nav-menu"
+        "title": "Use your learning path",
+        "caption": "Click Modules to inspect the next part of the learning path, then return Home. Progress bars reflect completed lessons.",
+        "action": "home-path"
       },
       {
-        "title": "Help when you need it",
-        "caption": "Open underlined terms for definitions. More resources contains tools, videos, and practice labs. Account settings stay in their own menu.",
-        "visual": "nav-help"
+        "title": "Find secondary sections",
+        "caption": "Open More resources and choose Tools. The separate account menu contains profile and settings. Pro tools are shown in this demonstration account.",
+        "action": "home-tools"
       }
     ]
   },
   {
     "slug": "lesson-flow",
-    "title": "How lessons work",
+    "title": "Complete a lesson and quiz",
+    "category": "Learning",
     "lessonIds": [],
-    "duration": 27,
-    "narrationVersion": "joe-neural-v1",
+    "duration": 47,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
     "scenes": [
       {
-        "title": "Understand one idea",
-        "caption": "Begin with key concepts. Underlined words open plain-language definitions without losing your place.",
-        "visual": "nav-lesson"
+        "title": "Open a lesson",
+        "caption": "Click Learn, choose Lessons, and open the first lesson. The Sprout opening introduces the topic before the concepts appear.",
+        "action": "lesson-open"
       },
       {
-        "title": "See it and practice",
-        "caption": "Move to a worked example, then consider the practice prompt and summary. Optional videos and reliable sources are available when helpful.",
-        "visual": "nav-practice"
+        "title": "Work through the material",
+        "caption": "Click Next slide to see the example, then open the practice prompt and summary. Underlined words open definitions.",
+        "action": "lesson-study"
       },
       {
-        "title": "Check your understanding",
-        "caption": "Each quiz has five questions. Get at least four correct to pass. If you miss the threshold, review and try again.",
-        "visual": "nav-quiz"
+        "title": "Complete the quiz",
+        "caption": "Click Start quiz, choose an answer, and check it. Work through all five questions. At least four correct answers are needed to pass.",
+        "action": "lesson-quiz"
       }
     ]
   },
   {
     "slug": "module-flow",
-    "title": "Build your learning path",
+    "title": "Explore a module and its quiz",
+    "category": "Learning",
     "lessonIds": [],
-    "duration": 29,
-    "narrationVersion": "joe-neural-v1",
+    "duration": 35,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
     "scenes": [
       {
-        "title": "One module at a time",
-        "caption": "Modules group related lessons. Choose a learning path, expand a module card, and see the lessons inside.",
-        "visual": "nav-modules"
+        "title": "Expand a module",
+        "caption": "Click Modules, expand Market Basics, and choose its presentation. The module groups related lessons together.",
+        "action": "module-open"
       },
       {
-        "title": "Complete a small chunk",
-        "caption": "Open a lesson or the module presentation. Module presentations let you explore concepts, examples, and practice before the quiz.",
-        "visual": "nav-lesson"
+        "title": "Explore each part",
+        "caption": "Use Concepts, Examples, and Practice and summary within a module lesson. Next slide moves to the next lesson in the module.",
+        "action": "module-study"
       },
       {
-        "title": "See your progress grow",
-        "caption": "Passed quizzes update your learning progress. Starter content is unlocked first; locked Pro modules remain visible for later.",
-        "visual": "nav-progress"
+        "title": "Review before the quiz",
+        "caption": "Continue through the module presentation, then choose Start quiz. You can review the presentation before submitting answers.",
+        "action": "module-quiz"
       }
     ]
   },
   {
     "slug": "simulator-guide",
-    "title": "Your first simulator trade",
+    "title": "Buy and sell in the simulator",
+    "category": "Simulator",
     "lessonIds": [],
-    "duration": 37,
-    "narrationVersion": "joe-neural-v1",
+    "duration": 43,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
     "scenes": [
       {
-        "title": "Practice without real money",
-        "caption": "Simulator prices and cash are generated for education. This is a place to practice a process, not predict actual returns.",
-        "visual": "nav-chart"
+        "title": "Open the trading screen",
+        "caption": "Click Simulator and select Apple. Read the generated candlestick chart and the current virtual quote before placing an order.",
+        "action": "sim-open"
       },
       {
-        "title": "Read before you act",
-        "caption": "Search a symbol, examine its candlestick chart, and use Sprouty’s chart tour to understand the controls. Define what you might lose.",
-        "visual": "nav-chart"
+        "title": "Review a buy order",
+        "caption": "Enter one share, click Review buy, and inspect the quantity, estimated cost, and remaining virtual cash.",
+        "action": "sim-review"
       },
       {
-        "title": "Review your order",
-        "caption": "Choose an affordable quantity and review the order before confirming. The first-trade walkthrough explains each step.",
-        "visual": "nav-order"
+        "title": "Confirm the purchase",
+        "caption": "Click Confirm buy. Read the trade breakdown, then close it to return to the chart and your position.",
+        "action": "sim-buy"
       },
       {
-        "title": "Reflect after practice",
-        "caption": "Review the completed trade and write a short journal note. Focus on the quality of your reasoning rather than a profit target.",
-        "visual": "nav-progress"
+        "title": "Sell the position",
+        "caption": "Select Sell, enter one share, review the order, and confirm the sale. The breakdown explains the completed virtual trade.",
+        "action": "sim-sell"
       }
     ]
   },
   {
     "slug": "progress-guide",
-    "title": "Track your growth",
+    "title": "Use Progress and achievements",
+    "category": "Learning",
     "lessonIds": [],
-    "duration": 29,
-    "narrationVersion": "joe-neural-v1",
+    "duration": 28,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
     "scenes": [
       {
-        "title": "Learning is measurable",
-        "caption": "Progress shows lessons, modules, experience points, and your learning streak. These reflect your saved learning activity.",
-        "visual": "nav-progress"
+        "title": "Read your progress",
+        "caption": "Click Progress. Review completed lessons, modules, and your learning streak before choosing your next learning step.",
+        "action": "progress-open"
       },
       {
-        "title": "Celebrate the process",
-        "caption": "Browse earned and locked achievements. Habits and goals focus on practice, reflection, and consistency, not guaranteed trading profits.",
-        "visual": "nav-badges"
+        "title": "Browse achievements",
+        "caption": "Click Achievements and move to the next page of badges. Earned and locked rewards remain clearly separated.",
+        "action": "progress-badges"
       },
       {
-        "title": "Choose a reminder",
-        "caption": "You can download a daily calendar reminder. Import it into your calendar to activate it, and change or remove it there anytime.",
-        "visual": "nav-calendar"
+        "title": "Set a learning reminder",
+        "caption": "Open Habits and goals and choose a daily reminder time. Download the calendar file and import it into your own calendar to activate it.",
+        "action": "progress-habits"
+      }
+    ]
+  },
+  {
+    "slug": "glossary-guide",
+    "title": "Search terms and play study games",
+    "category": "Learning",
+    "lessonIds": [],
+    "duration": 25,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Look up a term",
+        "caption": "Click Glossary, search for VWAP, and expand its definition to read the worked example.",
+        "action": "glossary-search"
+      },
+      {
+        "title": "Use flashcards",
+        "caption": "Open Study games. Reveal a flashcard, read the definition, and mark whether you know it.",
+        "action": "glossary-cards"
+      },
+      {
+        "title": "Try matching",
+        "caption": "Select Matching, choose a term, then choose a definition. Correct matches remain marked while you complete the round.",
+        "action": "glossary-match"
+      }
+    ]
+  },
+  {
+    "slug": "position-tool",
+    "title": "Position size calculator: enter a plan",
+    "category": "Tools",
+    "lessonIds": [],
+    "duration": 31,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open the calculator",
+        "caption": "Open More resources, choose Tools, and select Position size. This is a Pro tool; the walkthrough uses a demonstration account.",
+        "action": "tool-position"
+      },
+      {
+        "title": "Enter your inputs",
+        "caption": "Set a practice budget of one thousand dollars, a one percent risk limit, a one hundred dollar entry, and a ninety eight dollar stop.",
+        "action": "tool-position-input"
+      },
+      {
+        "title": "Read the share size",
+        "caption": "Read the resulting five-share estimate and expand the tool guide. The size is a planning calculation and does not place a trade.",
+        "action": "tool-position-guide"
+      }
+    ]
+  },
+  {
+    "slug": "risk-tool",
+    "title": "Risk calculator: adjust the loss limit",
+    "category": "Tools",
+    "lessonIds": [],
+    "duration": 30,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Find the risk tool",
+        "caption": "Open Tools and select Risk. The risk calculator shares its practice budget with the position size calculator.",
+        "action": "tool-risk"
+      },
+      {
+        "title": "Adjust the percentage",
+        "caption": "Move the risk slider from one percent to two percent and watch the dollar risk budget change. This does not guarantee an executed stop price.",
+        "action": "tool-risk-input"
+      },
+      {
+        "title": "Compare position size",
+        "caption": "Return to Position size and read the updated risk setting and share estimate. Revisit the assumptions before a practice order.",
+        "action": "tool-risk-result"
+      }
+    ]
+  },
+  {
+    "slug": "profit-tool",
+    "title": "Profit and loss explorer: compare exits",
+    "category": "Tools",
+    "lessonIds": [],
+    "duration": 28,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open the explorer",
+        "caption": "Open Tools and select Profit and loss. Inputs from Position size define the hypothetical share quantity and entry.",
+        "action": "tool-profit"
+      },
+      {
+        "title": "Change the exit",
+        "caption": "Move the exit slider above the entry price and compare the potential gain with the planned loss at the stop.",
+        "action": "tool-profit-input"
+      },
+      {
+        "title": "Test a losing exit",
+        "caption": "Move the exit below entry and read the negative result. These are planning examples, not predictions or actual orders.",
+        "action": "tool-profit-loss"
+      }
+    ]
+  },
+  {
+    "slug": "volatility-tool",
+    "title": "Volatility meter: read the gauge",
+    "category": "Tools",
+    "lessonIds": [],
+    "duration": 28,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Find the meter",
+        "caption": "Open Tools and choose Volatility. This gauge measures variability in generated SPY price changes.",
+        "action": "tool-volatility"
+      },
+      {
+        "title": "Read the guide",
+        "caption": "Expand How to use this tool and read what the percentage represents. A higher reading is not a buy or sell instruction.",
+        "action": "tool-volatility-guide"
+      },
+      {
+        "title": "Apply the context",
+        "caption": "Return to Position size to consider your planned risk. Volatility is one input in a decision process, not a direction forecast.",
+        "action": "tool-volatility-result"
+      }
+    ]
+  },
+  {
+    "slug": "practice-guide",
+    "title": "Use chart practice and challenges",
+    "category": "Simulator",
+    "lessonIds": [],
+    "duration": 32,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open the Practice Lab",
+        "caption": "Choose Practice Lab from More resources. Open Chart practice to inspect a scenario before making a choice. Pro practice features are shown here.",
+        "action": "practice-open"
+      },
+      {
+        "title": "Choose a response",
+        "caption": "Select one of the scenario responses and read the feedback. The purpose is to explain your reasoning, not guess a guaranteed outcome.",
+        "action": "practice-choice"
+      },
+      {
+        "title": "Choose a challenge",
+        "caption": "Open Challenges and start a three-trade reflection challenge. Progress is based on completing and reviewing practice, not chasing a profit target.",
+        "action": "practice-challenge"
+      }
+    ]
+  },
+  {
+    "slug": "portfolio-guide",
+    "title": "Inspect your virtual portfolio",
+    "category": "Simulator",
+    "lessonIds": [],
+    "duration": 30,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open the portfolio",
+        "caption": "Choose Portfolio from More resources. Read virtual account value, available cash, and total return.",
+        "action": "portfolio-open"
+      },
+      {
+        "title": "Inspect a holding",
+        "caption": "After a practice purchase, open Portfolio again and inspect the holdings row, quantity, current value, and gain or loss.",
+        "action": "portfolio-holding"
+      },
+      {
+        "title": "Return to the chart",
+        "caption": "Open the Apple holding to return to its chart. Check your order and position before making another practice decision.",
+        "action": "portfolio-chart"
+      }
+    ]
+  },
+  {
+    "slug": "history-guide",
+    "title": "Review completed trades",
+    "category": "Simulator",
+    "lessonIds": [],
+    "duration": 35,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open trade history",
+        "caption": "After a virtual buy and sell, choose Trade History from More resources. Both fills appear in the completed-trades table.",
+        "action": "history-open"
+      },
+      {
+        "title": "Inspect the trade",
+        "caption": "Use Explain My Trade to review a completed fill and read its breakdown before returning to the record.",
+        "action": "history-review"
+      },
+      {
+        "title": "Open the journal",
+        "caption": "Use Open trade journal and analytics to reflect on the reasoning behind your trade.",
+        "action": "history-journal"
+      }
+    ]
+  },
+  {
+    "slug": "journal-guide",
+    "title": "Write and save a trade reflection",
+    "category": "Simulator",
+    "lessonIds": [],
+    "duration": 44,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Find a completed trade",
+        "caption": "Open Practice Lab and choose Journal. Select the completed virtual trade you want to review.",
+        "action": "journal-open"
+      },
+      {
+        "title": "Write the reflection",
+        "caption": "Enter why you took the trade, what could invalidate the idea, and what you learned. Choose the emotion that best describes the decision.",
+        "action": "journal-write"
+      },
+      {
+        "title": "Save the note",
+        "caption": "Save the journal entry and review the saved feedback. Keep notes specific enough to improve your next practice decision.",
+        "action": "journal-save"
+      }
+    ]
+  },
+  {
+    "slug": "community-guide",
+    "title": "Browse community and prepare a post",
+    "category": "Account & community",
+    "lessonIds": [],
+    "duration": 31,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open Community",
+        "caption": "Choose Community from More resources. Switch between discussions, strategies, chart competition, and leaderboards.",
+        "action": "community-open"
+      },
+      {
+        "title": "Prepare a discussion",
+        "caption": "Return to Discussions and enter a clear title and explanation. This example prepares a draft without publishing to real users.",
+        "action": "community-draft"
+      },
+      {
+        "title": "Review public sharing",
+        "caption": "Open Leaderboards to inspect the sharing controls. Sharing a portfolio snapshot is optional, and virtual account value is not a measure of trading skill.",
+        "action": "community-board"
+      }
+    ]
+  },
+  {
+    "slug": "profile-guide",
+    "title": "Edit your profile and review insights",
+    "category": "Account & community",
+    "lessonIds": [],
+    "duration": 29,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open your profile",
+        "caption": "Open Account and settings, then choose Profile. Your profile brings identity, learning progress, and simulator insights together.",
+        "action": "profile-open"
+      },
+      {
+        "title": "Update the display name",
+        "caption": "Edit the display name in Profile details and save the profile. The demonstration uses a sample account, not a real customer.",
+        "action": "profile-edit"
+      },
+      {
+        "title": "Review learning growth",
+        "caption": "Scroll to Your learning growth to review completed modules, lessons, and learning habits.",
+        "action": "profile-progress"
+      }
+    ]
+  },
+  {
+    "slug": "settings-guide",
+    "title": "Change display and practice settings",
+    "category": "Account & community",
+    "lessonIds": [],
+    "duration": 30,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Find Settings",
+        "caption": "Open Account and settings, then click Settings. Read the practice preferences before changing them.",
+        "action": "settings-open"
+      },
+      {
+        "title": "Toggle beginner explanations",
+        "caption": "Switch Beginner Mode off and on to control additional order explanations. This does not change the five-question quiz pass requirement.",
+        "action": "settings-beginner"
+      },
+      {
+        "title": "Switch the display theme",
+        "caption": "Use the theme control in the top bar to switch between light and dark. Account security controls remain separate from practice settings.",
+        "action": "settings-theme"
+      }
+    ]
+  },
+  {
+    "slug": "plans-guide",
+    "title": "Compare Starter and Pro access",
+    "category": "Account & community",
+    "lessonIds": [],
+    "duration": 30,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open plan comparison",
+        "caption": "Choose Sprout Pro from More resources. Compare the Starter and Pro feature lists before considering an upgrade.",
+        "action": "plans-open"
+      },
+      {
+        "title": "Read the comparison",
+        "caption": "Review included lessons, tutorials, practice tools, and simulator features. Video walkthroughs do not unlock the Pro tools themselves.",
+        "action": "plans-compare"
+      },
+      {
+        "title": "Review cancellation information",
+        "caption": "Read the cancellation and subscription information. This walkthrough does not enter payment details or start a paid subscription.",
+        "action": "plans-cancel"
+      }
+    ]
+  },
+  {
+    "slug": "tutorials-guide",
+    "title": "Find and use walkthrough videos",
+    "category": "Start here",
+    "lessonIds": [],
+    "duration": 28,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Open Tutorials",
+        "caption": "Open Learn and select Tutorials. Platform walkthroughs and trading lessons have separate categories.",
+        "action": "tutorials-open"
+      },
+      {
+        "title": "Filter walkthroughs",
+        "caption": "Use the section filter to find Tools or Simulator guides. Browse a page of videos without expanding a long list.",
+        "action": "tutorials-filter"
+      },
+      {
+        "title": "Use captions and transcripts",
+        "caption": "Open a guide and use its video controls, English captions, and transcript. Videos play only when you choose to start them.",
+        "action": "tutorials-transcript"
+      }
+    ]
+  },
+  {
+    "slug": "chart-tools-guide",
+    "title": "Use chart indicators and navigation",
+    "category": "Simulator",
+    "lessonIds": [],
+    "duration": 29,
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface",
+    "scenes": [
+      {
+        "title": "Find chart controls",
+        "caption": "Open the simulator chart and change the candle interval. Zoom in to inspect a smaller section of generated price action.",
+        "action": "chart-open"
+      },
+      {
+        "title": "Explore an indicator",
+        "caption": "Open Indicators and select a moving average. Pro chart tools are demonstrated here; availability depends on your plan.",
+        "action": "chart-indicator"
+      },
+      {
+        "title": "Use the chart tour",
+        "caption": "Open Sprouty’s chart tour and advance through a step. The tour explains how the controls relate to reading a chart.",
+        "action": "chart-tour"
       }
     ]
   }
