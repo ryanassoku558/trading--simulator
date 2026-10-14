@@ -8,9 +8,11 @@ import { supabase } from "@/lib/supabase/client";
 export default function AuthPanel({
   user,
   pending,
+  onSignedIn,
 }: {
   user: User | null;
   pending: boolean;
+  onSignedIn?: () => void;
 }) {
   const [referralCode,setReferralCode]=useState("");
   const [verificationEmail, setVerificationEmail] = useState("");
@@ -49,6 +51,7 @@ export default function AuthPanel({
         : await supabase.auth.signInWithPassword({ email, password });
       if (result.error) throw result.error;
       setPassword("");
+      if (result.data.session) onSignedIn?.();
       if (signup && !result.data.session) setVerificationEmail(email);
       setMessage(
         signup && !result.data.session

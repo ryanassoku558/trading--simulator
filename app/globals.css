@@ -3843,3 +3843,608 @@ input[type=range] {width:100%;accent-color:var(--green);cursor:pointer;}
 .glossary-flashcard strong{font-size:clamp(20px,3vw,30px);line-height:1.4}.glossary-flashcard span{line-height:1.6}.glossary-flashcard small{color:var(--muted)}
 .glossary-match{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin:20px 0}.glossary-match>div{display:flex;flex-direction:column;gap:12px}.glossary-match button{white-space:normal;text-align:left;min-height:70px}.glossary-match button[aria-pressed="true"]{outline:3px solid var(--green);outline-offset:2px}.glossary-question{padding:20px;background:var(--surface-tint);border-radius:14px;color:var(--ink)}
 @media(max-width:600px){.glossary-match{grid-template-columns:1fr 1.7fr;gap:10px}.glossary-match button{font-size:13px;padding:12px}.glossary-flashcard{padding:20px}}
+
+/* Compact learning workspace */
+.sidebar {
+  overflow-y: auto;
+  padding-top: 22px;
+}
+.sidebar nav {
+  flex-shrink: 0;
+}
+.sidebar-course {
+  display: none;
+}
+.sidebar-more {
+  margin-top: 12px;
+}
+.sidebar-more summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 12px;
+}
+.sidebar-more a {
+  font-size: 13px !important;
+  min-height: 36px !important;
+}
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 18px;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  background: var(--surface);
+}
+.compact-workspace .content {
+  padding: 24px 28px;
+}
+.compact-learning {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.compact-learning .page-heading {
+  margin-bottom: 18px;
+}
+.compact-learning .page-heading h1 {
+  font-size: clamp(25px, 3vw, 34px);
+  margin: 4px 0 6px;
+}
+.compact-learning .page-heading p {
+  font-size: 14px;
+  max-width: 700px;
+  margin: 0;
+}
+.compact-learning .card {
+  padding: 18px;
+  margin-bottom: 0;
+  border-radius: 16px;
+}
+.compact-tabs {
+  margin: 0 0 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.compact-tabs button {
+  padding: 9px 16px;
+}
+.compact-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  background: var(--surface-tint) !important;
+}
+.compact-next h2 {
+  font-size: 24px;
+  margin: 8px 0;
+}
+.compact-next p {
+  margin: 0;
+  font-size: 14px;
+}
+.compact-next .primary {
+  flex-shrink: 0;
+}
+.compact-quick {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.compact-quick a {
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.compact-quick strong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.compact-quick small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.compact-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 12px;
+}
+.compact-section-heading h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.compact-section-heading a,
+.compact-section-heading button {
+  font-size: 13px;
+  color: var(--green);
+}
+.compact-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.compact-module h3 {
+  font-size: 17px;
+  margin: 9px 0;
+  line-height: 1.3;
+}
+.compact-module p,
+.compact-module small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.compact-module progress {
+  width: 100%;
+  height: 6px;
+  display: block;
+  margin: 12px 0;
+  accent-color: var(--green);
+}
+.compact-module summary {
+  cursor: pointer;
+  list-style: none;
+}
+.compact-module summary::after {
+  content: "Open / close";
+  font-size: 11px;
+  color: var(--green);
+}
+.compact-module-lessons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  gap: 6px;
+}
+.compact-module-lessons button {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+}
+.compact-module-lessons button svg {
+  flex-shrink: 0;
+}
+.compact-library-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.compact-library-controls .curriculum-search {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+}
+.compact-library-controls select {
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 10px;
+}
+.compact-lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.compact-lesson {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+.compact-lesson strong {
+  font-size: 14px;
+}
+.compact-lesson small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.compact-lesson > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.compact-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0;
+  font-size: 13px;
+}
+.compact-stats {
+  display: flex;
+  gap: 24px;
+  margin: 18px 0;
+  color: var(--muted);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.compact-stats span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.compact-stats strong {
+  color: var(--ink);
+}
+.compact-learning .learning-dictionary {
+  margin-top: 12px;
+}
+.compact-learning .glossary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.compact-learning .glossary-grid details {
+  padding: 12px;
+}
+.compact-learning .tutorial-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.compact-learning .tutorial-cover {
+  height: 105px;
+}
+.compact-learning .tutorial-card h3 {
+  font-size: 16px;
+}
+.compact-learning .section-intro {
+  margin: 12px 0;
+}
+.compact-learning .section-intro h2 {
+  font-size: 22px;
+}
+.compact-learning .section-intro p {
+  font-size: 14px;
+}
+.compact-extra {
+  margin-top: 16px;
+}
+.compact-extra summary {
+  cursor: pointer;
+}
+.compact-tools .tools-grid {
+  display: block;
+  max-width: 720px;
+}
+.compact-tools .tools-grid > article {
+  display: none;
+}
+.compact-tools[data-tool="0"] .tools-grid > article:nth-child(1),
+.compact-tools[data-tool="1"] .tools-grid > article:nth-child(2),
+.compact-tools[data-tool="2"] .tools-grid > article:nth-child(3),
+.compact-tools[data-tool="3"] .tools-grid > article:nth-child(4) {
+  display: block;
+}
+.compact-tools .section-intro {
+  margin: 16px 0;
+}
+.compact-tools .visual-tool {
+  padding: 20px;
+}
+@media (max-width: 1100px) {
+  .compact-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .compact-quick {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .compact-workspace .content {
+    padding: 20px;
+  }
+  .topbar {
+    height: auto;
+    min-height: 66px;
+  }
+}
+@media (max-width: 600px) {
+  .compact-workspace .content {
+    padding: 16px;
+  }
+  .compact-next {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .compact-next h2 {
+    font-size: 21px;
+  }
+  .compact-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .compact-module h3 {
+    font-size: 14px;
+  }
+  .compact-learning .card {
+    padding: 14px;
+  }
+  .compact-lesson-grid {
+    grid-template-columns: 1fr;
+  }
+  .compact-learning .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .compact-learning .glossary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .compact-tabs {
+    gap: 5px;
+  }
+  .compact-tabs button {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  .compact-pagination {
+    gap: 10px;
+  }
+  .compact-section-heading {
+    align-items: flex-start;
+  }
+  .compact-stats {
+    gap: 12px;
+  }
+  .compact-learning .tutorial-cover {
+    height: 85px;
+  }
+}
+.compact-home-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(120deg, var(--surface-tint), var(--surface));
+  border: 1px solid var(--line);
+  padding: 22px 26px;
+  border-radius: 20px;
+}
+.compact-home-hero h1 {
+  font-size: clamp(26px, 3vw, 38px);
+  margin: 8px 0;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
+}
+.compact-home-hero p {
+  font-size: 14px;
+  max-width: 650px;
+  margin: 8px 0 16px;
+}
+.compact-home-hero .presentation-actions {
+  margin: 0;
+  gap: 10px;
+}
+.home-leaf {
+  position: absolute;
+  right: 36px;
+  top: 25px;
+  font-size: 100px;
+  opacity: 0.15;
+  z-index: -1;
+}
+.home-quick {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.home-quick a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 13px;
+}
+.home-quick svg {
+  color: var(--green);
+}
+.home-path {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.home-path h2 {
+  font-size: 20px;
+  margin: 7px 0;
+}
+.home-path p {
+  font-size: 12px;
+  margin: 0;
+}
+.home-path-progress {
+  min-width: 180px;
+}
+.home-path-progress progress {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  height: 7px;
+  accent-color: var(--green);
+}
+.home-path-progress small {
+  font-size: 11px;
+  color: var(--muted);
+}
+.home-start h3 {
+  font-size: 14px;
+  margin: 0 0 7px;
+}
+.home-start p {
+  font-size: 12px;
+  margin: 0 0 9px;
+}
+.home-start a,
+.home-practice a {
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 600;
+}
+.home-practice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.home-practice article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.home-practice h3 {
+  font-size: 15px;
+  margin: 0 0 5px;
+}
+.home-practice p {
+  font-size: 12px;
+  margin: 0;
+}
+.home-why {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0 4px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.home-why strong {
+  font-size: 13px;
+  color: var(--green);
+}
+.home-why small {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.compact-footer {
+  margin-top: 20px !important;
+  padding: 14px 0 !important;
+  gap: 12px !important;
+  align-items: center;
+}
+.compact-footer nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.compact-footer a,
+.compact-footer button,
+.compact-footer summary {
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.compact-footer details[open] {
+  display: flex;
+}
+.compact-footer details a {
+  margin-left: 12px;
+}
+.compact-footer small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.compact-learning .achievement-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.compact-learning .achievement {
+  padding: 16px;
+}
+.compact-learning .achievement h2 {
+  font-size: 16px;
+}
+.compact-learning .achievement p {
+  font-size: 12px;
+}
+@media (max-width: 1100px) {
+  .home-quick {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .home-path {
+    flex-wrap: wrap;
+  }
+  .home-practice article {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .compact-home-hero {
+    padding: 20px;
+  }
+  .compact-home-hero p {
+    font-size: 13px;
+  }
+  .home-leaf {
+    font-size: 75px;
+    right: 10px;
+  }
+  .home-quick {
+    gap: 7px;
+  }
+  .home-quick a {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .home-path-progress {
+    width: 100%;
+  }
+  .home-path .secondary {
+    width: 100%;
+  }
+  .home-start h3 {
+    font-size: 13px;
+  }
+  .home-why {
+    gap: 10px;
+  }
+  .compact-home .compact-module-grid {
+    grid-template-columns: 1fr;
+  }
+  .compact-learning .achievement-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.compact-home .compact-section-heading {
+  margin: 12px 0 10px;
+}
+.compact-home .card {
+  padding: 14px 18px;
+}
+.compact-home-hero {
+  padding: 18px 24px;
+}
+.compact-home-hero h1 {
+  font-size: clamp(26px, 3vw, 35px);
+  margin: 6px 0;
+}
+.compact-home-hero p {
+  margin: 6px 0 12px;
+}
+.compact-home .home-why {
+  margin-top: 14px;
+  padding: 12px 0;
+}

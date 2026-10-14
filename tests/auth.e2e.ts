@@ -16,6 +16,7 @@ test("sign-up is visible on welcome and explains email confirmation", async ({
     }),
   );
   await page.goto("/");
+  await page.locator(".topbar").getByRole("button", {name:"Sign in",exact:true}).click();
   const panel = page.getByRole("region", { name: "Account sign-in" });
   await expect(
     panel.getByRole("heading", { name: "Save your progress" }),
@@ -32,10 +33,8 @@ test("sign-up is visible on welcome and explains email confirmation", async ({
   await expect(panel.getByRole("status")).toContainText("Spam or Junk");
   await expect(panel.getByRole("heading", { name: "Account created! Verify your email to sign in." })).toBeVisible();
   await expect(panel.getByRole("status")).toBeFocused();
-  await page.getByRole("link", { name: "Try the simulator" }).click();
-  await expect(
-    panel.getByRole("button", { name: "Create account", exact: true }),
-  ).toBeVisible();
+  await page.getByRole("button",{name:"Close dialog",exact:true}).click();
+  await page.getByRole("link", { name: "Open Simulator",exact:true }).click();
   await expect(page.getByText("Demo mode", { exact: true })).toBeVisible();
 });
 test("failed sign-in reports the error and keeps guest mode", async ({
@@ -52,6 +51,7 @@ test("failed sign-in reports the error and keeps guest mode", async ({
     }),
   );
   await page.goto("/");
+  await page.locator(".topbar").getByRole("button", {name:"Sign in",exact:true}).click();
   const panel = page.getByRole("region", { name: "Account sign-in" });
   await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill("learner@example.com");
@@ -136,6 +136,7 @@ test("signed-in state survives reload and sign-out restores separate guest state
     }),
   );
   await page.goto("/");
+  await page.locator(".topbar").getByRole("button", {name:"Sign in",exact:true}).click();
   const panel = page.getByRole("region", { name: "Account sign-in" });
   await panel.getByLabel("First name", { exact: true }).fill("Taylor");
   await panel.getByLabel("Email", { exact: true }).fill(user.email);
@@ -144,12 +145,23 @@ test("signed-in state survives reload and sign-out restores separate guest state
   await expect(page.getByText("Cloud account", { exact: true })).toBeVisible();
   await page.goto("/dashboard");
   await expect(
-    page.getByText("Welcome back, Taylor. Your next small step starts here."),
+    page.getByText("WELCOME BACK, Taylor",{exact:false}),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByText("Cloud account", { exact: true })).toBeVisible();
   await expect(panel).toHaveCount(0);
   for(const path of ["/learn","/market","/tools","/profile"]){await page.goto(path);await expect(page.getByRole("heading").first()).toBeVisible();await expect(panel).toHaveCount(0);}
+  await page.route("**/api/billing/status",r=>r.fulfill({contentType:"application/json",body:JSON.stringify({pro:true,ready:false})}));
+  await page.goto("/tools");
+  await page.reload();
+  const tools=page.getByRole("group",{name:"Financial tools"});
+  await expect(tools).toBeVisible();
+  await expect(page.getByLabel("Calculator practice budget")).toBeVisible();
+  await tools.getByRole("button",{name:"Risk",exact:true}).click();
+  await expect(page.getByLabel("Calculator practice budget")).not.toBeVisible();
+  await tools.getByRole("button",{name:"Position size",exact:true}).click();
+  await expect(page.getByLabel("Calculator practice budget")).toHaveValue("1000");
+  await page.goto("/profile");
   await page.getByLabel("Current password", {exact:true}).fill("test-password-123");
   await page.getByLabel("New password (optional)", {exact:true}).fill("a-new-password-123");
   const changed=page.waitForRequest(r=>r.url().includes("/auth/v1/user")&&r.method()==="PUT");
@@ -160,12 +172,13 @@ test("signed-in state survives reload and sign-out restores separate guest state
   await page.getByRole("button", { name: "Log out", exact: true }).click();
   await expect(page.getByText("Demo mode", { exact: true })).toBeVisible();
   await page.goto("/");
+  await page.locator(".topbar").getByRole("button", {name:"Sign in",exact:true}).click();
   await expect(
     panel.getByRole("button", { name: "Create account", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Try the simulator" }),
+    page.getByRole("link", { name: "Open Simulator",exact:true }),
   ).toBeVisible();
 });
 
-test('email confirmation rate limits give actionable help without reporting signup success',async({page})=>{await page.route('**/auth/v1/signup**',r=>r.fulfill({status:429,contentType:'application/json',body:JSON.stringify({code:'over_email_send_rate_limit',msg:'email rate limit exceeded'})}));await page.goto('/');const panel=page.getByRole('region',{name:'Account sign-in'});await panel.getByLabel('First name',{exact:true}).fill('Taylor');await panel.getByLabel('Email',{exact:true}).fill('learner@example.com');await panel.getByLabel('Password',{exact:true}).fill('test-password-123');await panel.getByRole('button',{name:'Create account',exact:true}).click();await expect(panel.getByRole('status')).toContainText('confirmation-email service is temporarily limited');await expect(panel.getByRole('status')).toContainText('sprouttradinghelp@gmail.com');await expect(panel.getByRole('button',{name:'Create account',exact:true})).toBeEnabled();});
+test('email confirmation rate limits give actionable help without reporting signup success',async({page})=>{await page.route('**/auth/v1/signup**',r=>r.fulfill({status:429,contentType:'application/json',body:JSON.stringify({code:'over_email_send_rate_limit',msg:'email rate limit exceeded'})}));await page.goto('/');await page.locator('.topbar').getByRole('button',{name:'Sign in',exact:true}).click();const panel=page.getByRole('region',{name:'Account sign-in'});await panel.getByLabel('First name',{exact:true}).fill('Taylor');await panel.getByLabel('Email',{exact:true}).fill('learner@example.com');await panel.getByLabel('Password',{exact:true}).fill('test-password-123');await panel.getByRole('button',{name:'Create account',exact:true}).click();await expect(panel.getByRole('status')).toContainText('confirmation-email service is temporarily limited');await expect(panel.getByRole('status')).toContainText('sprouttradinghelp@gmail.com');await expect(panel.getByRole('button',{name:'Create account',exact:true})).toBeEnabled();});
