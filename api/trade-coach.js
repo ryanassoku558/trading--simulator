@@ -7,11 +7,22 @@ export default async function handler(req,res){
  res.setHeader('Cache-Control','no-store');
  if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
  if(!process.env.OPENAI_API_KEY)return res.status(503).json({error:'AI coach is not configured.'});
+ if(!process.env.UPSTASH_REDIS_REST_URL||!process.env.UPSTASH_REDIS_REST_TOKEN)return res.status(503).json({error:'AI coach rate limiting is not configured.'});
  const token=(req.headers.authorization||'').match(/^Bearer ([A-Za-z0-9._-]+)$/)?.[1];
  if(!token)return res.status(401).json({error:'Sign in to use AI coach.'});
  try{
   const auth=await fetch(supabaseUrl+'/auth/v1/user',{headers:{apikey:publishableKey,Authorization:'Bearer '+token},signal:AbortSignal.timeout(6000)});
   if(!auth.ok)return res.status(401).json({error:'Session expired. Sign in again.'});
+  const identity=await auth.json();
+  if(!identity.id)return res.status(401).json({error:'Invalid session.'});
+  // Atomic fixed-window quota shared across all serverless instances: 10 requests per user per hour.
+  const bucket='sprout:coach:'+identity.id+':'+Math.floor(Date.now()/3600000);
+  const rate=await fetch(process.env.UPSTASH_REDIS_REST_URL+'/pipeline',{method:'POST',headers:{Authorization:'Bearer '+process.env.UPSTASH_REDIS_REST_TOKEN,'Content-Type':'application/json'},body:JSON.stringify([['INCR',bucket],['EXPIRE',bucket,3700]]),signal:AbortSignal.timeout(4000)});
+  if(!rate.ok)throw Error('Rate limiter unavailable');
+  const limits=await rate.json();
+  const used=Number(limits?.[0]?.result);
+  if(!Number.isInteger(used)||used<1)throw Error('Rate limiter unavailable');
+  if(used>10)return res.status(429).json({error:'AI coach limit reached (10 per hour). Try again later.'});
   const input=typeof req.body==='string'?JSON.parse(req.body):req.body;
   const {symbol,side,quantity,price}=input||{};
   if(!tickers.has(symbol)||!['buy','sell'].includes(side)||!Number.isInteger(quantity)||quantity<1||quantity>100000||!Number.isFinite(price)||price<=0||price>1000000)return res.status(400).json({error:'Invalid virtual trade.'});
