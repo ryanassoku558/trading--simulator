@@ -1,5 +1,6 @@
 import {signIn,signUp,signOut,loadAccount,saveAccount} from './supabase.js';
-import {initialAccount,trade} from './trading.js';\nimport {setLearningUser} from './learning.js';
+import {initialAccount,trade} from './trading.js';
+import {setLearningUser} from './learning.js';
 const stocks={AAPL:['Apple Inc.',225],MSFT:['Microsoft Corp.',425],NVDA:['NVIDIA Corp.',135],AMZN:['Amazon.com Inc.',195],GOOGL:['Alphabet Inc.',175],TSLA:['Tesla Inc.',250]};
 let user=null,cloudReady=false,busy=false;
 const key='paperdesk-account-v1';let account=initialAccount(),storage=true;try{const saved=JSON.parse(localStorage.getItem(key));if(saved&&Number.isFinite(saved.cash)&&saved.cash>=0&&saved.positions&&Array.isArray(saved.trades)&&Object.entries(saved.positions).every(([s,p])=>stocks[s]&&Number.isInteger(p.quantity)&&p.quantity>0&&Number.isFinite(p.average)))account=saved;}catch{storage=false;}
