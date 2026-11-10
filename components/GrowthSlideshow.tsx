@@ -1,0 +1,17 @@
+'use client';
+import {useEffect,useState} from 'react';
+import Link from 'next/link';
+import {ArrowUpRight} from 'lucide-react';
+
+const slides=[
+ {title:'Think bigger. Start with knowledge.',from:'$100',to:'$1,000,000',copy:'Ambition is the starting point. Knowledge, discipline and risk management are the work.',path:'M0 135L35 132L70 126L105 130L140 114L175 119L210 92L245 105L280 63L315 77L350 18'},
+ {title:'Build skills. Explore possibilities.',from:'$1,000',to:'$100,000',copy:'Learn to evaluate an opportunity, make your own plan and understand what you could lose.',path:'M0 130L35 116L70 125L105 93L140 106L175 77L210 90L245 59L280 73L315 36L350 28'},
+ {title:'Start learning early. Grow deliberately.',from:'$5,000',to:'$250,000',copy:'Give yourself more time to practice. Start with education today—not a rushed entry into a trade.',path:'M0 140L35 132L70 118L105 127L140 95L175 103L210 74L245 87L280 48L315 61L350 12'},
+];
+export default function GrowthSlideshow(){
+ const [index,setIndex]=useState(0),[reduced,setReduced]=useState(false);
+ useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)');const update=()=>setReduced(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
+ useEffect(()=>{if(reduced)return;const timer=window.setInterval(()=>setIndex(i=>(i+1+Math.floor(Math.random()*(slides.length-1)))%slides.length),3000);return()=>window.clearInterval(timer);},[reduced]);
+ const slide=slides[index];
+ return <><section className="growth-slideshow" aria-label="Trading outcomes explained" aria-roledescription="carousel"><div className="growth-slide" key={index}><div><h2>{slide.title}</h2><p>{slide.copy}</p><Link href="/learn" className="growth-learn">Learn the foundations <ArrowUpRight size={17}/></Link></div><div className="growth-example"><div className="growth-amounts"><span className="growth-start">{slide.from}</span><ArrowUpRight aria-hidden="true"/><strong>{slide.to}</strong></div><svg viewBox="0 0 350 160" role="img" aria-label="Illustrative outcome curve, not historical market data"><defs><linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#62dfb2" stopOpacity=".28"/><stop offset="1" stopColor="#62dfb2" stopOpacity="0"/></linearGradient></defs><path d={`${slide.path}L350 160L0 160Z`} fill="url(#growthFill)"/><path d={slide.path} stroke="#62dfb2" strokeWidth="3" fill="none"/></svg></div></div><div className="growth-controls"><div>{slides.map((s,i)=><button key={s.title} aria-label={`Show example ${i+1}`} aria-pressed={index===i} onClick={()=>setIndex(i)}>{i+1}</button>)}</div><span className="growth-slide-count">0{index+1} / 03</span></div><div className="growth-freedom"><span className="eyebrow">YOUR JOURNEY. YOUR DECISIONS.</span><h3>A flexible way to build market knowledge.</h3><div>{['Learn from anywhere','Make independent decisions','Choose when you study','Set your risk limits','Develop your own strategy'].map((benefit,i)=><span key={benefit}><b>0{i+1}</b>{benefit}</span>)}</div></div></section><p className="growth-disclosure">Example figures, not actual or expected profits.</p></>;
+}

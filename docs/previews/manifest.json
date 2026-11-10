@@ -1,0 +1,134 @@
+{
+  "screenshots": [
+    {
+      "name": "01-landing",
+      "title": "Welcome page"
+    },
+    {
+      "name": "02-onboarding",
+      "title": "Choose your experience level"
+    },
+    {
+      "name": "03-welcome",
+      "title": "Beginner welcome and virtual balance"
+    },
+    {
+      "name": "04-learning",
+      "title": "Five-level learning journey"
+    },
+    {
+      "name": "05-lesson",
+      "title": "What is a stock? lesson"
+    },
+    {
+      "name": "06-quiz-success",
+      "title": "Instant quiz feedback and XP"
+    },
+    {
+      "name": "07-guided-trade",
+      "title": "Guided first Apple trade"
+    },
+    {
+      "name": "08-confirmation",
+      "title": "Review a virtual trade"
+    },
+    {
+      "name": "09-explain-trade",
+      "title": "Understand price moves and position size"
+    },
+    {
+      "name": "10-dashboard",
+      "title": "Dashboard after a first trade"
+    },
+    {
+      "name": "11-portfolio",
+      "title": "Three-stock portfolio, returns, and allocation"
+    },
+    {
+      "name": "12-achievements",
+      "title": "First Lesson, First Trade, and Portfolio Builder"
+    },
+    {
+      "name": "13-sell-explanation",
+      "title": "Sell explanation and realized profit"
+    },
+    {
+      "name": "14-trade-history",
+      "title": "Transaction history with reopened explanations"
+    },
+    {
+      "name": "15-market",
+      "title": "Ten simulated stocks and funds"
+    },
+    {
+      "name": "16-market-search",
+      "title": "Search by company or ticker"
+    },
+    {
+      "name": "17-stock-detail",
+      "title": "Stock details and interactive timeframes"
+    },
+    {
+      "name": "18-limit-order",
+      "title": "Create a pending limit order"
+    },
+    {
+      "name": "19-pending-order",
+      "title": "Pending limit and cancellation controls"
+    },
+    {
+      "name": "20-filled-order",
+      "title": "Limit order filled by simulated market movement"
+    },
+    {
+      "name": "21-mobile-dashboard",
+      "title": "Mobile dashboard"
+    },
+    {
+      "name": "22-mobile-navigation",
+      "title": "Mobile navigation drawer"
+    },
+    {
+      "name": "23-mobile-learning",
+      "title": "Mobile learning journey"
+    },
+    {
+      "name": "24-mobile-market",
+      "title": "Responsive market cards"
+    },
+    {
+      "name": "25-mobile-stock",
+      "title": "Mobile stock details and trade panel"
+    },
+    {
+      "name": "26-mobile-portfolio",
+      "title": "Mobile portfolio and holdings"
+    },
+    {
+      "name": "27-mobile-settings",
+      "title": "Beginner Mode and account settings"
+    },
+    {
+      "name": "28-mobile-reset",
+      "title": "Reset requires confirmation"
+    }
+  ],
+  "videos": [
+    {
+      "name": "01-first-steps",
+      "title": "From welcome to your first lesson and trade"
+    },
+    {
+      "name": "02-portfolio-trading",
+      "title": "Buying, tracking a portfolio, and selling"
+    },
+    {
+      "name": "03-market-limit-orders",
+      "title": "Explore stocks, charts, watchlists, and limit orders"
+    },
+    {
+      "name": "04-mobile-tour",
+      "title": "A complete tour on a phone-sized screen"
+    }
+  ]
+}

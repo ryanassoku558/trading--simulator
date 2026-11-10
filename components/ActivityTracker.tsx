@@ -1,0 +1,4 @@
+"use client";
+import {useEffect} from 'react';
+import {addActivity} from '@/lib/activity';
+export default function ActivityTracker({accountId,page}:{accountId:string;page:string}){useEffect(()=>{if(!['learn','market','practice','portfolio','history'].includes(page))return;let last=Date.now(),interaction=last;const touch=()=>{interaction=Date.now();};const events=['pointerdown','keydown','scroll'];events.forEach(e=>window.addEventListener(e,touch,{passive:true}));const timer=setInterval(()=>{const now=Date.now(),seconds=Math.min(15,(now-last)/1000);last=now;if(document.visibilityState==='visible'&&document.hasFocus()&&now-interaction<60000&&seconds>0)addActivity(accountId,page==='learn'?'learning':'simulator',seconds);},15000);return()=>{clearInterval(timer);events.forEach(e=>window.removeEventListener(e,touch));};},[accountId,page]);return null;}
