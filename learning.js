@@ -48,31 +48,51 @@ modules.push(
 );
 
 const storageKey="sprout-learning-preview-v1";
-let state={completed:{},passed:{},xp:0,activityDays:[]};
-let signedIn=false, cloudEnabled=false, renderLearning=null, saving=Promise.resolve();
-const clean=v=>({completed:v?.completed&&typeof v.completed==="object"?v.completed:{},passed:v?.passed&&typeof v.passed==="object"?v.passed:{},xp:Number.isFinite(v?.xp)&&v.xp>=0?v.xp:0,activityDays:Array.isArray(v?.activityDays)?v.activityDays.filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)).slice(-365):[]});
+let state={completed:{},passed:{},xp:0,activityDays:[],dailyXP:{}};
+let signedIn=false, cloudEnabled=false, renderLearning=null, saving=Promise.resolve(),celebrationTimer,userGeneration=0;
+const clean=v=>({completed:v?.completed&&typeof v.completed==="object"?v.completed:{},passed:v?.passed&&typeof v.passed==="object"?v.passed:{},xp:Number.isFinite(v?.xp)&&v.xp>=0?v.xp:0,activityDays:Array.isArray(v?.activityDays)?v.activityDays.filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)).slice(-365):[],dailyXP:v?.dailyXP&&typeof v.dailyXP==="object"?Object.fromEntries(Object.entries(v.dailyXP).filter(([day,xp])=>/^\d{4}-\d{2}-\d{2}$/.test(day)&&Number.isFinite(xp)&&xp>=0).slice(-365)):{}});
 function status(message){const el=document.getElementById("learn-sync-status");if(el)el.textContent=message;}
 export async function setLearningUser(isSignedIn){
- signedIn=!!isSignedIn;cloudEnabled=false;
+ const generation=++userGeneration;signedIn=!!isSignedIn;cloudEnabled=false;
  if(!signedIn){try{state=clean(JSON.parse(localStorage.getItem(storageKey)));}catch{state=clean(null);}status("Guest progress saved on this device");renderLearning?.();updateDashboard();return;}
- status("Loading your learning progress…");
- try{const cloud=await loadLearningProgress();if(!signedIn)return;state=clean(cloud);cloudEnabled=true;status("Learning progress synced to your account");}
- catch(error){if(!signedIn)return;state=clean(null);status("Learning sync unavailable: "+error.message+". Progress changes are disabled until sync works.");}
+ state=clean(null);renderLearning?.();updateDashboard();status("Loading your learning progress…");
+ try{const cloud=await loadLearningProgress();if(generation!==userGeneration)return;state=clean(cloud);cloudEnabled=true;status("Learning progress synced to your account");}
+ catch(error){if(generation!==userGeneration)return;state=clean(null);status("Learning sync unavailable: "+error.message+". Progress changes are disabled until sync works.");}
  renderLearning?.();updateDashboard();
 }
-try {const saved=JSON.parse(localStorage.getItem(storageKey));if(saved&&typeof saved==="object")state={completed:saved.completed||{},passed:saved.passed||{},xp:Number(saved.xp)||0,activityDays:Array.isArray(saved.activityDays)?saved.activityDays:[]};}catch{}
-const recordActivity=()=>{const day=new Date().toLocaleDateString("en-CA");state.activityDays=Array.isArray(state.activityDays)?state.activityDays:[];if(!state.activityDays.includes(day))state.activityDays.push(day);state.activityDays=state.activityDays.slice(-365);};
+try {state=clean(JSON.parse(localStorage.getItem(storageKey)));}catch{}
+const recordActivity=(xp)=>{const day=new Date().toLocaleDateString("en-CA");state.activityDays=Array.isArray(state.activityDays)?state.activityDays:[];if(!state.activityDays.includes(day))state.activityDays.push(day);state.activityDays=state.activityDays.slice(-365);state.dailyXP=state.dailyXP||{};state.dailyXP[day]=(state.dailyXP[day]||0)+xp;state.dailyXP=Object.fromEntries(Object.entries(state.dailyXP).slice(-365));};
 const streak=()=>{const days=new Set(state.activityDays||[]);let d=new Date();if(!days.has(d.toLocaleDateString("en-CA")))d.setDate(d.getDate()-1);let count=0;while(days.has(d.toLocaleDateString("en-CA"))){count++;d.setDate(d.getDate()-1);}return count;};
-const save=()=>{if(signedIn){if(!cloudEnabled)return;const snapshot=structuredClone(state);saving=saving.catch(()=>{}).then(()=>saveLearningProgress(snapshot)).then(()=>status("Learning progress synced to your account")).catch(error=>{cloudEnabled=false;status("Learning save failed: "+error.message+". Sign in again to retry.");});}else{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{status("Browser storage is unavailable.");}}updateDashboard();};
+const save=()=>{
+ if(signedIn){
+  if(!cloudEnabled)return;const snapshot=structuredClone(state),generation=userGeneration;
+  status("Saving learning progress…");
+  saving=saving.catch(()=>{}).then(()=>{if(generation!==userGeneration||!cloudEnabled)return;return saveLearningProgress(snapshot);}).then(()=>{if(generation===userGeneration&&cloudEnabled)status("Learning progress synced to your account");}).catch(error=>{if(generation!==userGeneration)return;cloudEnabled=false;renderLearning?.();status("Learning save failed: "+error.message+". Sign out and sign in to reload saved progress.");});
+ }else{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{status("Browser storage is unavailable.");}}
+ updateDashboard();
+};
+function celebrate(message){const target=document.getElementById("learning-celebration");if(!target)return;clearTimeout(celebrationTimer);target.textContent=message;target.hidden=false;celebrationTimer=setTimeout(()=>{target.hidden=true;},4500);}
+function longestStreak(){const days=[...new Set(state.activityDays)].sort();let longest=0,current=0,previous;for(const day of days){const date=new Date(day+"T12:00:00");if(previous){previous.setDate(previous.getDate()+1);current=previous.toLocaleDateString("en-CA")===day?current+1:1;}else current=1;longest=Math.max(longest,current);previous=date;}return longest;}
 function updateDashboard(){
  const total=modules.reduce((n,m)=>n+m.lessons.length+1,0);
  const lessons=modules.reduce((n,m,i)=>n+m.lessons.filter((_,j)=>state.completed[i+":"+j]).length,0);
  const passed=modules.filter((_,i)=>state.passed[i]).length;
  const percent=Math.round((lessons+passed)/total*100);
- const stats={"dashboard-streak":streak()+" days","dashboard-achievements":(Number(lessons>=1)+Number(state.xp>=100)+Number(passed>=2)+Number(streak()>=3))+" / 4","dashboard-xp":state.xp,"dashboard-lessons":lessons+" / "+(total-modules.length),"dashboard-modules":passed+" / "+modules.length,"dashboard-progress":percent+"%","journey-percent":percent+"%","journey-level":"Level "+(Math.floor(state.xp/100)+1),"journey-xp":(state.xp%100)+" / 100 XP to next level"};
+ const stats={"dashboard-streak":streak()+" "+(streak()===1?"day":"days"),"dashboard-achievements":(Number(lessons>=1)+Number(state.xp>=100)+Number(passed>=2)+Number(longestStreak()>=3))+" / 4","dashboard-xp":state.xp,"dashboard-lessons":lessons+" / "+(total-modules.length),"dashboard-modules":passed+" / "+modules.length,"dashboard-progress":percent+"%","journey-percent":percent+"%","journey-level":"Level "+(Math.floor(state.xp/100)+1),"journey-xp":(state.xp%100)+" / 100 XP to next level"};
  for(const [id,value] of Object.entries(stats)){const el=document.getElementById(id);if(el)el.textContent=value;}
+ const badges=[["🌱","First sprout","Complete your first lesson",lessons>=1],["✦","On a roll","Earn 100 learning XP",state.xp>=100],["📚","Knowledge builder","Pass two modules",passed>=2],["🔥","Steady grower","Learn three days in a row",longestStreak()>=3]];
+ const grid=document.getElementById("achievement-grid");if(grid){grid.replaceChildren();for(const [icon,title,description,earned] of badges){const card=document.createElement("article");card.className="achievement-card"+(earned?" earned":"");const mark=document.createElement("span");mark.className="achievement-icon";mark.textContent=icon;const heading=document.createElement("h3");heading.textContent=title;const copy=document.createElement("p");copy.textContent=description;const tag=document.createElement("small");tag.textContent=earned?"✓ Earned":"In progress";card.append(mark,heading,copy,tag);grid.append(card);}}
+ const today=new Date().toLocaleDateString("en-CA"),daily=state.dailyXP?.[today]||0;
+ const dailyBar=document.getElementById("daily-goal-bar");if(dailyBar)dailyBar.value=Math.min(daily,20);
+ const dailyLabel=document.getElementById("daily-goal-label");if(dailyLabel)dailyLabel.textContent=daily+" / 20 XP";
+ const dailyCopy=document.getElementById("daily-goal-copy");if(dailyCopy)dailyCopy.textContent=daily>=20?"Daily goal complete! Come back tomorrow for your next step.":"Earn "+(20-daily)+" more XP today. Every short lesson counts.";
  const bar=document.getElementById("journey-bar");if(bar)bar.value=percent;
  const next=modules.findIndex((_,i)=>!state.passed[i]);
+ if(next<0){const xp=document.getElementById("journey-xp");if(xp)xp.textContent=state.xp+" XP earned · Course complete";const level=document.getElementById("journey-level");if(level)level.textContent="Academy graduate";}
+ const dailyTitle=document.getElementById("daily-goal-title");if(dailyTitle)dailyTitle.textContent=next<0?"Your next chapter":"Your daily learning goal";
+ if(dailyBar)dailyBar.hidden=next<0;
+ if(next<0){if(dailyCopy)dailyCopy.textContent="You’ve completed the course. Keep applying your skills in the practice simulator.";if(dailyLabel)dailyLabel.textContent="Learning path complete ✓";}
+
  const prompt=document.getElementById("journey-next");
  if(prompt)prompt.textContent=next<0?"All modules complete! Keep your skills growing in the simulator.":"Up next: "+modules[next].title+" · "+(modules[next].lessons.every((_,j)=>state.completed[next+":"+j])?"5-question knowledge check":"Your next short lesson");
  const cta=document.getElementById("continue-learning");if(cta)cta.textContent=next<0?"Review your learning path":"Continue learning →";
@@ -98,7 +118,7 @@ export function mountLearning(root){
   detail.append(element("p","CHAPTER "+(i+1)+" / "+modules.length,"eyebrow"),element("h3",m.title));
   m.lessons.forEach((lesson,j)=>{
    const complete=!!state.completed[i+":"+j],wrap=element("article",undefined,"learn-lesson");
-   const b=button(complete?"✓ Completed":"Complete lesson · +10 XP",()=>{if(!writable()||state.completed[i+":"+j])return;state.completed[i+":"+j]=true;state.xp+=10;recordActivity();save();showModule(i);});b.disabled=complete||!writable();
+   const b=button(complete?"✓ Completed":"Complete lesson · +10 XP",()=>{if(!writable()||state.completed[i+":"+j])return;state.completed[i+":"+j]=true;state.xp+=10;recordActivity(10);save();showModule(i);celebrate("Lesson complete · +10 XP. Keep growing!");});b.disabled=complete||!writable();
    wrap.append(element("h4",lesson.title),element("p",lesson.body),b);detail.append(wrap);
   });
   if(m.lessons.every((_,j)=>state.completed[i+":"+j])){const b=button(state.passed[i]?"Review 5-question quiz":"Start 5-question quiz →",()=>showQuiz(i),"primary learn-quiz-btn");b.disabled=!writable();detail.append(b);}
@@ -110,8 +130,8 @@ export function mountLearning(root){
   function finish(){
    if(finished||token!==session)return;finished=true;
    const passed=score>=4,first=passed&&!state.passed[i];
-   if(first){state.passed[i]=true;state.xp+=50;recordActivity();save();}render();detail.replaceChildren();
-   detail.append(element("div",passed?"✦":"↻","quiz-medal"),element("p","KNOWLEDGE CHECK COMPLETE","eyebrow"),element("h3",passed?"You’re growing!":"Keep going. You’ve got this."),element("p",score+" / "+questions.length+" correct" ,"quiz-score"),element("p",first?"+50 XP earned · Your progress has been recorded.":passed?"Great practice! Review quizzes don’t award extra XP.":"Get 4 of 5 correct to pass. Review the lessons and try again."));
+   if(first){state.passed[i]=true;state.xp+=50;recordActivity(50);save();celebrate("Chapter complete · +50 XP. A new milestone awaits!");}render();detail.replaceChildren();
+   detail.append(element("div",passed?"✦":"↻","quiz-medal"),element("p","KNOWLEDGE CHECK COMPLETE","eyebrow"),element("h3",passed?"You’re growing!":"Keep going. You’ve got this."),element("p",score+" / "+questions.length+" correct" ,"quiz-score"),element("p",first?"+50 XP earned · Keep growing your financial skills.":passed?"Great practice! Review quizzes don’t award extra XP.":"Get 4 of 5 correct to pass. Review the lessons and try again."));
    if(passed){if(i+1<modules.length)detail.append(button("Continue to next module →",()=>showModule(i+1),"primary learn-quiz-btn"));else{detail.append(element("p","All four modules complete. Put your knowledge into practice!"));const link=element("a","Practice in the simulator →","sprout-cta");link.href="#simulator";detail.append(link);}}
    else detail.append(button("Try 5 questions again",()=>showQuiz(i),"primary learn-quiz-btn"));
    detail.append(button("Review lessons",()=>showModule(i)));
