@@ -434,6 +434,7 @@ export default function Learning({
           title={moduleMode ? activeTitle : undefined}
           group={activeGroup.length ? activeGroup : [active]}
           moduleMode={moduleMode}
+          nextModuleTitle={modules[modules.findIndex(m => m.ids.includes(active.id)) + 1]?.title}
           state={state}
           update={update}
           onClose={() => setActive(null)}
@@ -446,7 +447,10 @@ export default function Learning({
               ? lessons.find((l) => l.id === modules[moduleIndex + 1]?.ids[0])
               : lessons.find((l) => l.id === ids[ids.indexOf(active.id) + 1]);
             if (next) open(next, followingPath, module);
-            else setActive(null);
+            else {
+              setActive(null);
+              if (module) selectSection("Modules");
+            }
           }}
         />
       )}

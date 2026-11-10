@@ -9,8 +9,9 @@ import {
   ChartNoAxesCombined,
   Trophy,
 } from "lucide-react";
-import { lessons, beginnerLearningOrder } from "@/lib/education";
+import { lessons, beginnerLearningOrder, achievements, earned } from "@/lib/education";
 import { learningModules } from "@/lib/billing/curriculum";
+import { canEarnAchievement } from "@/lib/billing/achievements";
 import { starterLessonIds } from "@/lib/billing/access";
 import { useSubscription } from "../Subscription";
 import LearningPathSteps from "../LearningPathSteps";
@@ -20,6 +21,9 @@ export default function CompactDashboard({ state }: { state: State }) {
   const { pro } = useSubscription(),
     completed = new Set(state.learning.completed.filter(id=>lessons.some(l=>l.id===id))),
     ids = pro ? beginnerLearningOrder : starterLessonIds;
+  const pathComplete = ids.every(id => completed.has(id));
+  const earnedMilestones = achievements.filter(a => canEarnAchievement(a.id, pro) && earned(state, a.id));
+  const nextMilestone = achievements.find(a => canEarnAchievement(a.id, pro) && !earned(state, a.id) && (pro || ["lesson", "trade", "five", "builder", "streak", "quiz"].includes(a.id)));
   const next =
     lessons.find(
       (l) => l.id === (ids.find((id) => !completed.has(id)) ?? ids[0]),
@@ -52,7 +56,7 @@ export default function CompactDashboard({ state }: { state: State }) {
         </p>
         <div className="presentation-actions">
           <Link className="primary" href={`/learn?lesson=${next.id}`}>
-            Start Learning <ArrowRight size={16} />
+            {pathComplete ? "Review Learning" : completed.size ? "Continue Learning" : "Start Learning"} <ArrowRight size={16} />
           </Link>
           <Link className="secondary" href="/market">
             Open Simulator
@@ -74,11 +78,18 @@ export default function CompactDashboard({ state }: { state: State }) {
         <div>
           <span className="eyebrow">YOUR LEARNING PATH</span>
           <h2>{next.title}</h2>
-          <p>Next recommended lesson · {currentModule.title}</p>
+          <p>{pathComplete ? "Your available learning path is complete. Review a lesson or keep practicing." : `Next recommended lesson · ${currentModule.title}`}</p>
+          <nav className="home-module-steps" aria-label={`${currentModule.title} lesson steps`}>
+            {currentModule.ids.map((id, index) => {
+              const lesson = lessons.find(l => l.id === id)!;
+              const done = completed.has(id);
+              return <Link key={id} href={`/learn?lesson=${id}`} className={done ? "step-complete" : id === next.id ? "step-current" : ""} aria-current={!pathComplete && id === next.id ? "step" : undefined} aria-label={`${lesson.title}${done ? " — completed" : ""}`} title={lesson.title}>{done ? "✓" : index + 1}</Link>;
+            })}
+          </nav>
         </div>
         <div className="home-path-progress">
           <small>
-            {completeCount}/{currentModule.ids.length} lessons in this module
+            {completeCount}/{currentModule.ids.length} lessons in this module · {Math.round(completeCount / currentModule.ids.length * 100)}%
           </small>
           <progress
             value={completeCount}
@@ -91,10 +102,15 @@ export default function CompactDashboard({ state }: { state: State }) {
           <progress value={completed.size} max={lessons.length} aria-label="Course lessons completed" />
         </div>
         <Link className="secondary" href={`/learn?lesson=${next.id}`}>
-          {completed.size ? "Resume" : "Begin lesson"} →
+          {pathComplete ? "Review" : completed.size ? "Resume" : "Begin lesson"} →
         </Link>
       </section>
       <LearningSignals state={state} />
+      <div className="home-milestone-note" role="status">
+        <Trophy size={16} aria-hidden="true"/>
+        <span><strong>{earnedMilestones.length} milestone{earnedMilestones.length === 1 ? "" : "s"} earned</strong>{nextMilestone ? ` · Next: ${nextMilestone.title} — ${nextMilestone.description}` : " · Keep practicing and exploring your learning path."}</span>
+        <Link href="/achievements" className="text-link">View rewards →</Link>
+      </div>
       <div className="compact-section-heading">
         <h2>{completed.size ? "Your next steps" : "Start here"}</h2>
         <Link href="/learn?view=Tutorials" className="text-link">Watch a quick tour →</Link>

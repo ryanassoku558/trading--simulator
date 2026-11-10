@@ -18,6 +18,7 @@ export default function LessonPresentation({
   title,
   group,
   moduleMode,
+  nextModuleTitle,
   state,
   update,
   onClose,
@@ -26,6 +27,7 @@ export default function LessonPresentation({
   title?: string;
   group: Lesson[];
   moduleMode: boolean;
+  nextModuleTitle?: string;
   state: State;
   update: (s: State) => void | Promise<unknown>;
   onClose: () => void;
@@ -221,6 +223,9 @@ export default function LessonPresentation({
             )}
             {phase === "quiz" && (
               <>
+                <div className="quiz-question-steps" role="group" aria-label="Five-question progress">
+                  {questions.map((_, i) => <span key={i} className={i < index || (i === index && checked) ? answers[i] ? "step-correct" : "step-incorrect" : i === index ? "step-current" : ""} aria-label={`Question ${i + 1}: ${i < index || (i === index && checked) ? answers[i] ? "correct" : "review needed" : i === index ? "current" : "not answered"}`}>{i < index || (i === index && checked) ? answers[i] ? "✓" : "·" : i + 1}</span>)}
+                </div>
                 <div className="quiz-question-region">
                   <p className="small">
                     Pass mark: 80%. Each answer is final for this attempt.
@@ -262,7 +267,8 @@ export default function LessonPresentation({
                   {q.options.map((o, i) => (
                     <button
                       key={o}
-                      className={answer === i ? "chosen" : ""}
+                      className={[answer === i ? "chosen" : "", checked && i === q.answer ? "correct-answer" : "", checked && answer === i && !correct ? "incorrect-answer" : ""].filter(Boolean).join(" ")}
+                      aria-pressed={answer === i}
                       disabled={checked || saving}
                       onClick={() => {
                         setAnswer(i);
@@ -357,12 +363,13 @@ export default function LessonPresentation({
                     message="You took time to understand the idea and practice the decision. Bring that same care to your next step."
                   />
                 )}
+                {(moduleDone || moduleMode) && <p className="quiz-next-module">{nextModuleTitle ? `Up next: ${nextModuleTitle}. Continue when you’re ready.` : "You’ve reached the end of the module path. Review your progress or practice in the simulator."}</p>}
                 <div className="presentation-actions">
                   <button
                     className="primary"
                     onClick={() => onContinue(moduleDone || moduleMode)}
                   >
-                    {moduleDone || moduleMode ? "Continue to next module" : "Next lesson"}
+                    {moduleDone || moduleMode ? nextModuleTitle ? "Continue to next module" : "Back to modules" : "Next lesson"}
                   </button>
                   <button className="secondary" onClick={() => move("/market")}>
                     Try the simulator
@@ -418,6 +425,7 @@ export default function LessonPresentation({
                     className="primary"
                     disabled={saving}
                     onClick={() => {
+                      if (!checked || saving || finishing.current) return;
                       if (index + 1 >= questions.length) void finish();
                       else {
                         setIndex(index + 1);
@@ -437,6 +445,7 @@ export default function LessonPresentation({
                     className="primary"
                     disabled={answer === null}
                     onClick={() => {
+                      if (answer === null || checked || saving) return;
                       setAnswers([...answers.slice(0, index), correct]);
                       setChecked(true);
                     }}
