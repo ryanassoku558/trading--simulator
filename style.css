@@ -58,3 +58,14 @@ header{position:sticky;top:0;z-index:10;box-shadow:0 3px 20px #153c2710}
 .challenge-item strong{font-size:13px}.challenge-item span{font-size:12px;color:#6b8172}
 #personal-ranking{padding:16px;background:#f1f8f2;border-radius:10px;font-size:13px}
 @media(max-width:600px){.challenge-item{align-items:start;flex-direction:column;gap:4px}.market-tools{align-items:stretch;flex-direction:column}.market-tools select{max-width:none}}
+
+/* Sprout 5 opt-in social learning and AI reflection */
+.leaderboard-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-top:16px}
+.leaderboard-controls>label:first-child{width:100%;margin:0}
+.leaderboard-controls input:not([type=checkbox]){max-width:260px}
+.leaderboard-controls .optin{display:flex;align-items:center;gap:8px;margin:0;flex-basis:100%}
+.leaderboard-controls input[type=checkbox]{width:auto}
+.leaderboard-controls p{flex-basis:100%;margin:0}
+#leaderboard-results{padding-left:24px;line-height:2;font-size:13px}
+#ai-explain-trade{margin-top:16px}
+#ai-trade-explanation{padding:12px 0;font-size:13px;line-height:1.6}
