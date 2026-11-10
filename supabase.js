@@ -22,3 +22,8 @@ export async function saveAccount(account){await request('/rest/v1/paper_account
 // Separate learning state: does not touch paper_accounts.
 export async function loadLearningProgress(){const rows=await request('/rest/v1/learning_progress?user_id=eq.'+encodeURIComponent(session.user.id)+'&select=progress',{authenticated:true});return rows[0]?.progress||null;}
 export async function saveLearningProgress(progress){await request('/rest/v1/learning_progress?on_conflict=user_id',{method:'POST',authenticated:true,body:{user_id:session.user.id,progress,updated_at:new Date().toISOString()}});}
+
+export function currentAccessToken(){return session?.access_token||null;}
+export async function getLeaderboardProfile(){const rows=await request('/rest/v1/leaderboard_profiles?user_id=eq.'+encodeURIComponent(session.user.id)+'&select=display_name,opted_in',{authenticated:true});return rows[0]||null;}
+export async function saveLeaderboardProfile(displayName,optedIn){await request('/rest/v1/leaderboard_profiles?on_conflict=user_id',{method:'POST',authenticated:true,body:{user_id:session.user.id,display_name:displayName,opted_in:optedIn,updated_at:new Date().toISOString()}});}
+export async function loadLeaderboard(){return await request('/rest/v1/rpc/sprout_leaderboard',{method:'POST',authenticated:true,body:{}});}
