@@ -1,4 +1,4 @@
-import {signIn,signUp,signOut,loadAccount,saveAccount} from './supabase.js';
+import {signIn,signUp,signOut,loadAccount,saveAccount,getLeaderboardProfile,saveLeaderboardProfile,loadLeaderboard,currentAccessToken} from './supabase.js';
 import {initialAccount,trade} from './trading.js';
 import {setLearningUser} from './learning.js';
 const stocks={AAPL:['Apple Inc.',225],MSFT:['Microsoft Corp.',425],NVDA:['NVIDIA Corp.',135],AMZN:['Amazon.com Inc.',195],GOOGL:['Alphabet Inc.',175],TSLA:['Tesla Inc.',250]};
@@ -29,9 +29,9 @@ function renderAnalytics(){
 $('watchlist').onclick=e=>{const b=e.target.closest('[data-symbol]');if(b){symbol=b.dataset.symbol;$('symbol').value=symbol;render();}};$('symbol').onchange=()=>{symbol=$('symbol').value;render();};$('quantity').oninput=()=>render();for(const s of ['buy','sell'])$(s).onclick=()=>{side=s;$('buy').classList.toggle('active',s==='buy');$('sell').classList.toggle('active',s==='sell');$('submit').textContent=s==='buy'?'Buy shares':'Sell shares';$('message').textContent='';};$('order-form').onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;$('submit').disabled=true;try{const next=trade(account,symbol,side,Number($('quantity').value),prices[symbol]);if(user){if(!cloudReady)throw Error('Your cloud account has not loaded. Sign out to practice as a guest.');await saveAccount(next);}account=next;save();$('message').textContent=storage?'Order filled successfully.':'Order filled. Browser storage is unavailable; progress will not persist.';$('message').className='positive';render();}catch(err){$('message').textContent=err.message;$('message').className='negative';}finally{busy=false;$('submit').disabled=false;}};$('reset').onclick=async()=>{if(busy)return;if(confirm('Reset your cash, positions, and trade history?')){busy=true;try{const next=initialAccount();if(user){if(!cloudReady)throw Error('Your cloud account has not loaded.');await saveAccount(next);}account=next;save();$('message').textContent='Account reset.';render();}catch(err){$('message').textContent=err.message;}finally{busy=false;}}};render();setInterval(()=>{if(priceMode!=='simulation')return;for(const s of Object.keys(stocks)){prices[s]=Math.round(prices[s]*(1+(Math.random()-.5)*.002)*100)/100;history[s].push(prices[s]);history[s].shift();}render();},3000);
 
 function authView(){ $('auth-form').hidden=!!user;$('signout').hidden=!user; }
-async function authenticate(create){if(busy)return;if(!$('auth-form').reportValidity())return;busy=true;$('submit').disabled=true;$('reset').disabled=true;try{const email=$('email').value.trim(),password=$('password').value;user=await (create?signUp(email,password):signIn(email,password));$('password').value='';if(!user){$('auth-message').textContent='Check your email to confirm your account, then return here to sign in.';return;}authView();cloudReady=false;account=initialAccount();render();const saved=await loadAccount();if(saved){if(!Number.isFinite(saved.cash)||saved.cash<0||!saved.positions||!Array.isArray(saved.trades)||!Object.entries(saved.positions).every(([s,p])=>stocks[s]&&Number.isInteger(p.quantity)&&p.quantity>0&&Number.isFinite(p.average)))throw Error('Your saved account is invalid.');account=saved;}else await saveAccount(account);cloudReady=true;render();await setLearningUser(true);$('auth-message').textContent=`Signed in as ${user.email} · Portfolio synced. Keep one tab open for trading.`;}catch(err){$('auth-message').textContent=err.message+' If the paper_accounts table is missing, run supabase/schema.sql in the Supabase SQL Editor.';}finally{busy=false;$('submit').disabled=false;$('reset').disabled=false;}}
+async function authenticate(create){if(busy)return;if(!$('auth-form').reportValidity())return;busy=true;$('submit').disabled=true;$('reset').disabled=true;try{const email=$('email').value.trim(),password=$('password').value;user=await (create?signUp(email,password):signIn(email,password));$('password').value='';if(!user){$('auth-message').textContent='Check your email to confirm your account, then return here to sign in.';return;}authView();cloudReady=false;account=initialAccount();render();const saved=await loadAccount();if(saved){if(!Number.isFinite(saved.cash)||saved.cash<0||!saved.positions||!Array.isArray(saved.trades)||!Object.entries(saved.positions).every(([s,p])=>stocks[s]&&Number.isInteger(p.quantity)&&p.quantity>0&&Number.isFinite(p.average)))throw Error('Your saved account is invalid.');account=saved;}else await saveAccount(account);cloudReady=true;render();await setLearningUser(true);await initLeaderboard();$('auth-message').textContent=`Signed in as ${user.email} · Portfolio synced. Keep one tab open for trading.`;}catch(err){$('auth-message').textContent=err.message+' If the paper_accounts table is missing, run supabase/schema.sql in the Supabase SQL Editor.';}finally{busy=false;$('submit').disabled=false;$('reset').disabled=false;}}
 $('auth-form').onsubmit=e=>{e.preventDefault();authenticate(false);};$('signup').onclick=()=>authenticate(true);
-$('signout').onclick=async()=>{if(busy)return;busy=true;try{await signOut();}catch{}finally{user=null;cloudReady=false;account=initialAccount();try{const guest=JSON.parse(localStorage.getItem(key));if(guest&&Number.isFinite(guest.cash)&&guest.positions&&Array.isArray(guest.trades))account=guest;}catch{}authView();render();await setLearningUser(false);$('auth-message').textContent='Guest mode · Progress saved in this browser';busy=false;}};
+$('signout').onclick=async()=>{if(busy)return;busy=true;try{await signOut();}catch{}finally{user=null;cloudReady=false;account=initialAccount();try{const guest=JSON.parse(localStorage.getItem(key));if(guest&&Number.isFinite(guest.cash)&&guest.positions&&Array.isArray(guest.trades))account=guest;}catch{}authView();render();await setLearningUser(false);$('leaderboard-results').replaceChildren();$('leaderboard-status').textContent='Sign in to participate. Participation is optional.';$('auth-message').textContent='Guest mode · Progress saved in this browser';busy=false;}};
 
 const chartControls=document.querySelector('.chart-controls');
 chartControls?.addEventListener('click',event=>{const button=event.target.closest('[data-window]');if(!button)return;chartWindow=Number(button.dataset.window);chartControls.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===button));render();});
@@ -81,4 +81,31 @@ $('explain-trade').onclick=()=>{
  ];
  for(const insight of insights){const p=document.createElement('p');p.textContent=insight;target.append(p);}
  reviewedTrade=true;renderChallenges();
+};
+
+async function initLeaderboard(){
+ try{const profile=await getLeaderboardProfile();$('leaderboard-name').value=profile?.display_name||'';$('leaderboard-optin').checked=!!profile?.opted_in;$('leaderboard-status').textContent=profile?.opted_in?'You are opted in. Your nickname and XP can appear publicly.':'You are not listed publicly.';}
+ catch{$('leaderboard-status').textContent='Leaderboard is not configured yet. Run the Sprout 5 SQL migration.';}
+}
+$('leaderboard-save').onclick=async()=>{
+ if(!user){$('leaderboard-status').textContent='Sign in first.';return;}
+ const name=$('leaderboard-name').value.trim(),optedIn=$('leaderboard-optin').checked;
+ if(!/^[A-Za-z0-9_ ]{3,24}$/.test(name)){$('leaderboard-status').textContent='Choose 3–24 letters, numbers, underscores or spaces.';return;}
+ try{await saveLeaderboardProfile(name,optedIn);$('leaderboard-status').textContent=optedIn?'Opted in. Your nickname and XP may be visible to other signed-in learners.':'Saved. You are not publicly listed.';}
+ catch(error){$('leaderboard-status').textContent='Could not save preference: '+error.message;}
+};
+$('leaderboard-refresh').onclick=async()=>{
+ const list=$('leaderboard-results');list.replaceChildren();
+ if(!user){$('leaderboard-status').textContent='Sign in to view rankings.';return;}
+ try{const rows=await loadLeaderboard();if(!rows.length){$('leaderboard-status').textContent='No opted-in learners yet.';return;}for(const row of rows){const li=document.createElement('li');li.textContent=row.display_name+' · '+row.xp+' XP';list.append(li);}$('leaderboard-status').textContent='Top opted-in learners (XP is self-reported learning progress).';}
+ catch(error){$('leaderboard-status').textContent='Leaderboard unavailable: '+error.message;}
+};
+$('ai-explain-trade').onclick=async()=>{
+ const output=$('ai-trade-explanation'),last=account.trades[0];
+ if(!last){output.textContent='Make a virtual trade first.';return;}
+ if(!user){output.textContent='Sign in to use the optional AI coach. The built-in coach works for guests.';return;}
+ output.textContent='Asking AI coach…';$('ai-explain-trade').disabled=true;
+ try{const response=await fetch('/api/trade-coach',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+currentAccessToken()},body:JSON.stringify({symbol:last.symbol,side:last.side,quantity:last.quantity,price:last.price})});const data=await response.json();if(!response.ok)throw Error(data.error||'AI unavailable');output.textContent=data.explanation+' Educational only; not financial advice.';}
+ catch(error){output.textContent=error.message+' Use Explain My Trade for the offline educational version.';}
+ finally{$('ai-explain-trade').disabled=false;}
 };
