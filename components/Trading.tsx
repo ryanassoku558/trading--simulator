@@ -69,11 +69,16 @@ export function TradePanel({
           5. Confirm, then explore your trade.
         </p>
       )}
+      <dl className="order-account-context" aria-label="Practice account context">
+        <div><dt>Available cash</dt><dd>{money(state.cash)}</dd></div>
+        <div><dt>Open {ticker} orders</dt><dd>{state.orders.filter(o => o.ticker === ticker && o.status === "pending").length}</dd></div>
+      </dl>
       <div className="segmented">
         {(["buy", "sell"] as const).map((s) => (
           <button
             key={s}
             className={side === s ? "selected" : ""}
+            aria-pressed={side === s}
             onClick={() => {
               setSide(s);
               setError("");
@@ -135,6 +140,9 @@ export function TradePanel({
             onChange={(e) => setShares(e.target.value)}
           />
         </label>
+        <div className="order-quantity-shortcuts" role="group" aria-label="Quick order quantity">
+          {(isCryptoTicker(ticker) ? [0.01, 0.1, 1] : [1, 5, 10]).map(amount => <button key={amount} type="button" className="secondary" aria-pressed={Number(shares) === amount} onClick={() => {setShares(String(amount));setError("");}}>{amount} {isCryptoTicker(ticker) ? ticker.split("-")[0] : amount === 1 ? "share" : "shares"}</button>)}
+        </div>
         <div className="order-summary">
           <div>
             <span>{stock.assetType==="Crypto"?`Price per ${ticker.split("-")[0]}`:"Price per share"}</span>
