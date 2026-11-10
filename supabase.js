@@ -18,3 +18,7 @@ export async function signUp(email,password){const data=await request('/auth/v1/
 export async function signOut(){try{if(session)await request('/auth/v1/logout',{method:'POST',authenticated:true});}finally{session=null;}}
 export async function loadAccount(){const rows=await request(`/rest/v1/paper_accounts?user_id=eq.${encodeURIComponent(session.user.id)}&select=account`,{authenticated:true});return rows[0]?.account||null;}
 export async function saveAccount(account){await request('/rest/v1/paper_accounts?on_conflict=user_id',{method:'POST',authenticated:true,body:{user_id:session.user.id,account,updated_at:new Date().toISOString()}});}
+
+// Separate learning state: does not touch paper_accounts.
+export async function loadLearningProgress(){const rows=await request('/rest/v1/learning_progress?user_id=eq.'+encodeURIComponent(session.user.id)+'&select=progress',{authenticated:true});return rows[0]?.progress||null;}
+export async function saveLearningProgress(progress){await request('/rest/v1/learning_progress?on_conflict=user_id',{method:'POST',authenticated:true,body:{user_id:session.user.id,progress,updated_at:new Date().toISOString()}});}
