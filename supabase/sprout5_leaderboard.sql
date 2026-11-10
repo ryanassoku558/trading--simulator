@@ -13,12 +13,20 @@ drop policy if exists "Own leaderboard profile" on public.leaderboard_profiles;
 create policy "Own leaderboard profile" on public.leaderboard_profiles for all to authenticated
  using ((select auth.uid())=user_id) with check ((select auth.uid())=user_id);
 -- SECURITY DEFINER only returns opted-in name and verified XP from existing learning_progress.
--- No client-controlled XP is read from leaderboard_profiles.
+-- XP is read from learning_progress; because that JSON is client-writable, rankings are not cheat-resistant.
 create or replace function public.sprout_leaderboard()
 returns table(display_name text,xp integer)
 language sql security definer stable set search_path = ''
 as $$
- select p.display_name,least(100000,greatest(0,coalesce((l.progress->>'xp')::integer,0))) as xp
+ select p.display_name,case when (l.progress->>'xp') ~ '^[0-9]{1,6}
+ from public.leaderboard_profiles p
+ join public.learning_progress l on l.user_id=p.user_id
+ where p.opted_in=true and (l.progress->>'xp') ~ '^[0-9]{1,6}$'
+ order by xp desc,p.updated_at asc limit 25
+$$;
+revoke all on function public.sprout_leaderboard() from public,anon;
+grant execute on function public.sprout_leaderboard() to authenticated;
+ then least(100000,(l.progress->>'xp')::integer) else 0 end as xp
  from public.leaderboard_profiles p
  join public.learning_progress l on l.user_id=p.user_id
  where p.opted_in=true and (l.progress->>'xp') ~ '^[0-9]{1,6}$'
