@@ -9,8 +9,8 @@
 ## Required before public release
 1. Apply `supabase/sprout5_leaderboard.sql` in Supabase SQL Editor. It adds a separate table and RPC with RLS.
 2. Test an opted-in and opted-out account, including signing out and checking that no private data appears in the leaderboard.
-3. For AI, set `OPENAI_API_KEY` in Vercel server environment; optionally set `OPENAI_MODEL`. Without a key the endpoint returns 503 and built-in explanation remains available.
-4. Before enabling AI broadly, configure platform rate limits and spending caps; authenticated endpoints can still be abused. Review privacy disclosures for sending trade details to a third-party model.
+3. For AI, set `OPENAI_API_KEY`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` in Vercel server environment; optionally set `OPENAI_MODEL`. Without these values the endpoint returns 503 and built-in explanation remains available. The shared rate limiter caps AI requests to 10 per authenticated user per hour.
+4. Before enabling AI broadly, configure OpenAI spending caps and monitor abuse; authenticated endpoints can still be abused. Upstash rate limiting is required and fails closed. Review privacy disclosures for sending trade details to a third-party model.
 5. Test on Vercel Preview, then promote after successful checks.
 
 ## Known limitations
