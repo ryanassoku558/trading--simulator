@@ -1,0 +1,309 @@
+[
+  {
+    "slug": "stocks",
+    "title": "What is a stock?",
+    "lessonIds": [
+      1,
+      3
+    ],
+    "duration": 40,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose What is a stock?. A stock is a small piece of ownership in a company.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "day-trading",
+    "title": "Day trading: a guided lesson",
+    "lessonIds": [
+      31
+    ],
+    "duration": 40,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose What is day trading?. Day trading means opening and closing a position during the same trading day.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "candlesticks",
+    "title": "Read your first candlestick",
+    "lessonIds": [
+      26,
+      27
+    ],
+    "duration": 39,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Candle bodies and wicks. Each candle summarizes one period.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "orders",
+    "title": "Market orders vs. limit orders",
+    "lessonIds": [
+      11,
+      12,
+      52
+    ],
+    "duration": 35,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Market orders. A market order trades at the available price.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "risk-planning",
+    "title": "Plan your risk and share size",
+    "lessonIds": [
+      13,
+      14,
+      15
+    ],
+    "duration": 34,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Stop-loss basics. A stop order activates when a trigger price is reached.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "support-resistance",
+    "title": "Understand support and resistance",
+    "lessonIds": [
+      20
+    ],
+    "duration": 34,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Support and resistance. Support is an area where buying has previously slowed declines.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "etfs-diversification",
+    "title": "ETFs and diversification",
+    "lessonIds": [
+      21,
+      77,
+      80
+    ],
+    "duration": 36,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Diversification. Diversification spreads investments across different businesses or assets..",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "stock-research",
+    "title": "Research a company before a trade",
+    "lessonIds": [
+      143
+    ],
+    "duration": 38,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Write a research thesis and what would change it. A research thesis states the idea, evidence, valuation assumptions, timeframe, main risks, and what would contradict it.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "trading-emotions",
+    "title": "Recognize FOMO and revenge trading",
+    "lessonIds": [
+      42
+    ],
+    "duration": 34,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Trading emotions: FOMO and revenge trading. FOMO means fear of missing out.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "compound-interest",
+    "title": "Compounding investment returns",
+    "lessonIds": [
+      173
+    ],
+    "duration": 36,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose Compounding investment returns. Compounding means returns can build on earlier returns when capital remains invested.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  },
+  {
+    "slug": "profit-loss",
+    "title": "Read gains, losses, and returns",
+    "lessonIds": [
+      4,
+      5,
+      8
+    ],
+    "duration": 34,
+    "scenes": [
+      {
+        "title": "Open the lesson",
+        "caption": "Open Learn, select Lessons, and choose What does selling mean?. Selling exchanges your shares for cash.",
+        "action": "curriculum-open"
+      },
+      {
+        "title": "Explore the example",
+        "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+        "action": "curriculum-example"
+      },
+      {
+        "title": "Practice and review",
+        "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+        "action": "curriculum-practice"
+      }
+    ],
+    "narrationVersion": "actual-ui-v4",
+    "recordingType": "actual-interface"
+  }
+]

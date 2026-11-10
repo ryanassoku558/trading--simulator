@@ -1,0 +1,260 @@
+"use client";
+import PersonalLearning from "../PersonalLearning";
+import {ProGate} from "../Subscription";
+import {DailyWarmup} from "../LearningDiscovery";
+import {DailySnapshot,PracticeStats} from "../PracticeVisuals";
+import Link from "next/link";
+import type { State, Trade, Lesson } from "@/types";
+import { money } from "@/lib/market";
+import { portfolio } from "@/lib/trading";
+import { StockRows, Delta, Empty } from "../ui/MarketUI";
+import Chart from "../Chart";
+import {
+  Plus,
+  Wallet,
+  TrendingUp,
+  ChartNoAxesCombined,
+  ShieldCheck,
+  GraduationCap,
+  Flame,
+  ArrowRight,
+  ArrowUpRight,
+} from "lucide-react";
+import { levels, lessons } from "@/lib/education";
+export default function Dashboard({
+  state,
+  p,
+  nextLesson,
+  progress,
+  setTrade,
+  firstTrade,
+}: {
+  state: State;
+  p: ReturnType<typeof portfolio>;
+  nextLesson: Lesson;
+  progress: number;
+  setTrade: (t: Trade) => void;
+  firstTrade: () => void;
+}) {
+  return (
+    <>
+      <div className="page-heading">
+        <div>
+          <span className="eyebrow">YOUR PRACTICE ACCOUNT</span>
+          <h1>
+            Account overview<span className="heading-dot">.</span>
+          </h1>
+          <p>
+            Welcome back, {state.profile.name}. Your next small step starts
+            here. This dashboard brings together your learning progress, virtual account performance, and recommended next steps.
+          </p>
+        </div>
+        <Link href="/market" className="primary">
+          <Plus size={17} />
+          Make a trade
+        </Link>
+      </div>
+      <PersonalLearning state={state}/>
+      <ProGate feature="Daily market warm-up"><DailyWarmup/></ProGate>
+      <div className="beginner-banner">
+        <span className="banner-icon">
+          <ShieldCheck size={22} />
+        </span>
+        <div>
+          <strong>Your money is virtual. Your learning is real.</strong>
+          <p>
+            Track your decisions, review your results, and build market
+            knowledge with a virtual account.
+          </p>
+        </div>
+        <span className="badge">PRACTICE ACCOUNT</span>
+      </div>
+      <div className="stat-grid">
+        <section className="card stat featured">
+          <span>
+            Portfolio value <Wallet size={16} />
+          </span>
+          <h2>{money(p.value)}</h2>
+          <small>Your cash + the value of your stocks</small>
+        </section>
+        <section className="card stat">
+          <span>
+            Today’s gain / loss <TrendingUp size={16} />
+          </span>
+          <h2>
+            <Delta value={p.today} />
+          </h2>
+          <small>Based on simulated daily prices</small>
+        </section>
+        <section className="card stat">
+          <span>
+            Available cash <span className="currency-icon">$</span>
+          </span>
+          <h2>{money(state.cash)}</h2>
+          <small>Ready for your next practice trade</small>
+        </section>
+        <section className="card stat">
+          <span>
+            Total return <ChartNoAxesCombined size={16} />
+          </span>
+          <h2>
+            <Delta value={p.gain} />
+          </h2>
+          <small>
+            <Delta value={p.percent} percent /> since you started · deposits excluded
+          </small>
+        </section>
+      </div>
+      <div className="dashboard-grid">
+        <section className="card portfolio-card">
+          <div className="card-heading">
+            <div>
+              <h2>Portfolio performance</h2>
+              <p>Your account value across simulated trades.</p>
+            </div>
+            <span className="chart-key">
+              <span /> Portfolio value
+            </span>
+          </div>
+          <div className="chart-value">
+            {money(p.value)} <span className="badge">ALL TIME</span>
+          </div>
+          <Chart
+            data={
+              state.snapshots.length > 1
+                ? [...state.snapshots.map((s) => ({ date: s.date, price: s.value })), {date:"Now",price:p.value}]
+                : [
+                    { date: "Starting balance", price: 10000 },
+                    { date: "Now", price: p.value },
+                  ]
+            }
+          />
+          {!!(state.referralDeposits||state.simulatorDeposits)&&<p className="small">This equity curve includes virtual practice deposits. Trading returns exclude those deposits.</p>}
+          <div className="portfolio-footer">
+            <span>
+              <i className="legend-dot" />
+              Cash <strong>{money(state.cash)}</strong>
+            </span>
+            <span>
+              <i className="legend-dot invested" />
+              Invested <strong>{money(p.invested)}</strong>
+            </span>
+            <Link href="/portfolio" className="text-link">
+              View portfolio <ArrowUpRight size={15} />
+            </Link>
+          </div>
+        </section>
+        <section className="card learning-card">
+          <div className="card-heading">
+            <h2>Invest in your knowledge</h2>
+            <span className="soft-icon">
+              <GraduationCap size={22} />
+            </span>
+          </div>
+          <p>The best first investment is in yourself.</p>
+          <div className="learning-level">
+            <span className="eyebrow">
+              LEVEL {nextLesson.level} ·{" "}
+              {levels[nextLesson.level - 1].toUpperCase()}
+            </span>
+            <strong>{nextLesson.title}</strong>
+            <span className="small">
+              3-minute lesson · clear examples · one quick quiz
+            </span>
+          </div>
+          <div className="progress-label">
+            <span>Your learning progress</span>
+            <strong>
+              {lessons.filter(l=>state.learning.completed.includes(l.id)).length}/{lessons.length}
+            </strong>
+          </div>
+          <div className="progress-track">
+            <span style={{ width: `${progress}%` }} />
+          </div>
+          <Link
+            href={`/learn?lesson=${nextLesson.id}`}
+            className="primary full"
+          >
+            Continue Learning <ArrowRight size={16} />
+          </Link>
+          <div className="learning-foot">
+            <span>
+              <Flame size={16} /> {state.learning.streak} day streak
+            </span>
+            <span>✦ {state.learning.xp} XP earned</span>
+          </div>
+        </section>
+        <section className="card">
+          <div className="card-heading">
+            <h2>Your watchlist</h2>
+            <Link href="/market" className="text-link">
+              Explore market <ArrowUpRight size={15} />
+            </Link>
+          </div>
+          <p className="card-subtitle">
+            A few companies to get to know. Simulated prices.
+          </p>
+          {state.watchlist.length ? (
+            <StockRows state={state} tickers={state.watchlist} />
+          ) : (
+            <Empty
+              title="Your watchlist is open"
+              text="Save a stock from its detail page."
+              href="/market"
+              label="Explore stocks"
+            />
+          )}
+        </section>
+        <section className="card">
+          <div className="card-heading">
+            <h2>Recent activity</h2>
+            <Link href="/history" className="text-link">
+              View all <ArrowUpRight size={15} />
+            </Link>
+          </div>
+          {state.trades.length ? (
+            <div className="activity-list">
+              {state.trades.slice(0, 4).map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTrade(t)}
+                  className="activity"
+                >
+                  <span className="activity-icon">
+                    <ArrowUpRight size={19} />
+                  </span>
+                  <span>
+                    <strong>
+                      {t.side === "buy" ? "Bought" : "Sold"} {t.ticker}
+                    </strong>
+                    <small>
+                      {t.shares} shares ·{" "}
+                      {new Date(t.date).toLocaleDateString()}
+                    </small>
+                  </span>
+                  <b>{money(t.total)}</b>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <Empty
+              title="Your first trade is a fresh start."
+              text="Practice a small trade and see exactly how it works."
+              href="/market/AAPL"
+              label="Explore your first trade"
+            />
+          )}
+          {!state.trades.length && (
+            <button className="secondary full" onClick={firstTrade}>
+              Guide me through my first trade <ArrowRight size={16} />
+            </button>
+          )}
+        </section>
+      </div>
+      <DailySnapshot tick={state.tick}/>
+      <ProGate feature="Full simulator analytics"><PracticeStats state={state}/></ProGate>
+      <Link className="primary" href="/market">Continue Simulator →</Link>
+      <section className="card quick-tools"><h2>Tools you’ll use today</h2><div className="coach-candidates">{["Position size calculator","Risk calculator","Volatility meter","Profit/loss simulator"].map(tool=><Link className="example" key={tool} href="/tools"><strong>{tool}</strong><p>Explore hypothetical inputs before making a practice decision.</p><span>Open tools →</span></Link>)}</div></section>
+    </>
+  );
+}

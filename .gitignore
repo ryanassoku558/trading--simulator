@@ -1,5 +1,9 @@
-dist/
 node_modules/
-.vercel/
-.env
-.env.*
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+test-results/
+playwright-report/
+next-env.d.ts
+dist/

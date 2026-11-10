@@ -1,0 +1,7 @@
+import {it,expect} from 'vitest';
+import {lessons,levels} from '@/lib/education';
+import {presentationQuestions} from '@/lib/education/presentation';
+import {canLearn} from '@/lib/billing/access';
+it('adds four complete strategy modules with five-question quizzes while preserving older identities',()=>{for(let level=36;level<=39;level++){const group=lessons.filter(l=>l.level===level);expect(group).toHaveLength(4);expect(presentationQuestions(group)).toHaveLength(5);for(const l of group){expect(canLearn(l.id,false)).toBe(false);expect(presentationQuestions([l])).toHaveLength(5);expect(l.example.length).toBeGreaterThan(90);}}expect(levels[35]).toBe('Liquidity & Structure Setups');expect(lessons.find(l=>l.id===151)?.title).toBe('Context, trading plans, and limits of insider signals');});
+it('teaches costs, uncertainty and evidence instead of treating social-media winners as proof',()=>{expect(lessons.find(l=>l.id===165)?.explanation).toContain('subtracts costs');expect(lessons.find(l=>l.id===167)?.explanation).toContain('separate unseen data');expect(lessons.find(l=>l.id===153)?.explanation).toContain('do not reveal');});
+it('includes a Pro-only AI module without activating an AI service',()=>{const group=lessons.filter(l=>l.level===40);expect(group).toHaveLength(4);expect(group.every(l=>!canLearn(l.id,false)&&canLearn(l.id,true))).toBe(true);expect(presentationQuestions(group)).toHaveLength(5);expect(group[3].explanation).toContain('does not activate a paid AI subscription');});

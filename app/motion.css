@@ -1,0 +1,192 @@
+:root {
+  --motion-fast: 140ms;
+  --motion-page: 220ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes sprout-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sprout-dialog {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes sprout-cue {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 5px
+      color-mix(in srgb, var(--color-action) 12%, transparent);
+  }
+}
+.motion-surface {
+  animation: sprout-enter var(--motion-page) var(--motion-ease) both;
+  min-width: 0;
+}
+.motion-surface .motion-surface {
+  animation-duration: 180ms;
+}
+.dialog[open] {
+  animation: sprout-dialog 180ms var(--motion-ease) both;
+}
+.app-shell :is(.primary, .secondary, .card, nav a, .learning-sections button) {
+  transition:
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) var(--motion-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .app-shell
+    :is(a.card, button.card, .tutorial-card, .onboarding-video-card):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px #0000000b;
+    border-color: var(--color-action);
+  }
+  .app-shell :is(.primary, .secondary):hover {
+    transform: translateY(-1px);
+  }
+  .app-shell nav a:hover {
+    background: var(--color-highlight);
+  }
+}
+.app-shell :is(.primary, .secondary):active {
+  transform: scale(0.985);
+}
+.ds-path-steps .current > span {
+  animation: sprout-cue 1.6s ease-in-out 2;
+}
+progress::-webkit-progress-value {
+  transition: width 240ms var(--motion-ease);
+}
+.onboarding-video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.app-shell .onboarding-video-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 18px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.onboarding-video-card small {
+  display: block;
+  font-size: 10px;
+  color: var(--color-secondary);
+  margin-bottom: 6px;
+}
+.onboarding-video-card strong {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.onboarding-play {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-highlight);
+  color: var(--color-action);
+  flex-shrink: 0;
+}
+.video-help {
+  margin: 4px 0 8px;
+}
+.simulator-video-help {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+.tutorial-player video {
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  background: #10212d;
+}
+.onboarding-library .compact-section-heading {
+  margin-top: 10px;
+}
+.compact-home-hero {
+  box-shadow:
+    inset 0 1px 0 #ffffff33,
+    0 8px 30px #113c2b04;
+}
+@media (max-width: 700px) {
+  .onboarding-video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .app-shell .onboarding-video-card {
+    padding: 12px;
+    gap: 8px;
+  }
+  .onboarding-play {
+    width: 30px;
+    height: 30px;
+  }
+  .onboarding-video-card strong {
+    font-size: 12px;
+  }
+  .motion-surface {
+    animation-duration: 160ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-surface,
+  .dialog[open],
+  .ds-path-steps .current > span {
+    animation: none !important;
+  }
+  .app-shell
+    :is(.primary, .secondary, .card, nav a, .learning-sections button) {
+    transition: none !important;
+  }
+  .app-shell
+    :is(.primary, .secondary, a.card, button.card, .tutorial-card):hover,
+  .app-shell :is(.primary, .secondary):active {
+    transform: none !important;
+  }
+  progress::-webkit-progress-value {
+    transition: none;
+  }
+}
+@keyframes sprout-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.motion-surface .motion-surface {
+  animation-name: sprout-fade;
+}
+.compact-home-hero .primary {
+  animation: sprout-cue 1.4s ease-in-out 250ms 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .compact-home-hero .primary {
+    animation: none !important;
+  }
+}
+.lesson-intro{min-height:min(420px,60dvh);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:16px;padding:24px;animation:sprout-enter 240ms ease both}.lesson-intro-mark{display:grid;place-items:center;width:116px;height:116px;border-radius:32px;background:var(--color-highlight);color:var(--color-action);animation:lesson-grow 1200ms cubic-bezier(.2,.7,.2,1) both}.lesson-intro h3{font-size:24px;max-width:500px;margin:0;color:var(--color-text)}.lesson-intro p{font-size:14px;color:var(--color-secondary);margin:0;max-width:420px}@keyframes lesson-grow{0%{opacity:0;transform:scale(.7) translateY(12px)}70%{opacity:1;transform:scale(1.03)}100%{transform:scale(1)}}@media(prefers-reduced-motion:reduce){.lesson-intro,.lesson-intro-mark{animation:none!important}}
+.walkthrough-filter{display:flex;align-items:center;gap:12px;margin:12px 0 18px;font-size:14px;color:var(--muted)}.walkthrough-filter select{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);color:var(--ink)}
+.hands-on-launch{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap}.hands-on-launch small{font-size:12px;color:var(--muted)}.hands-on-coach{position:fixed;right:24px;bottom:96px;z-index:60;width:340px;max-width:calc(100vw - 32px);padding:18px;border:2px solid var(--green);background:var(--surface);color:var(--ink);border-radius:16px;box-shadow:0 12px 40px #0003}.hands-on-heading{display:flex;align-items:center;gap:8px;color:var(--green);font-size:13px}.hands-on-heading button{margin-left:auto;font-size:12px}.hands-on-coach h3{font-size:17px;margin:12px 0 8px;display:flex;gap:8px}.hands-on-coach p{font-size:13px;line-height:1.6;margin:8px 0}.hands-on-coach progress{width:100%;height:5px;margin-top:12px;accent-color:var(--green)}.hands-on-answers{display:grid;gap:8px}.hands-on-target{outline:3px solid var(--green)!important;outline-offset:5px;scroll-margin-top:100px}.hands-on-coach a{font-size:13px;color:var(--green)}@media(max-width:700px){.hands-on-coach{right:12px;bottom:82px;padding:12px;width:310px}.hands-on-coach p{font-size:12px}.hands-on-coach h3{font-size:15px}.hands-on-coach .hands-on-answers button{font-size:12px;min-height:36px}}
+.hands-on-coach{left:246px;right:auto}@media(max-width:700px){.hands-on-coach{left:12px;right:auto}}
