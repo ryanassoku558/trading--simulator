@@ -19,6 +19,7 @@ import {
   Menu,
   Check,
   Search,
+  Gamepad2,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { useMarketClock } from "@/lib/market/useMarketClock";
@@ -33,6 +34,7 @@ import { useAccount } from "@/lib/storage/useAccount";
 import {
   achievements,
   earned,
+  lessons,
 } from "@/lib/education";
 import ActivityTracker from "./ActivityTracker";
 import LoadingBrand from "./ui/LoadingBrand";
@@ -61,6 +63,7 @@ import TradeHistory from "./screens/TradeHistory";
 import { Empty } from "./ui/MarketUI";
 import Dialog from "./Dialog";
 import Learning from "./Learning";
+import EducatorToolkit from "./academy/EducatorToolkit";
 import dynamic from "next/dynamic";
 const PlayAndStudy = dynamic(() => import("./games/PlayAndStudy"), {loading: () => <section className="card"><p>Loading your practice choices…</p></section>});
 import { ExplainTrade } from "./Trading";
@@ -69,12 +72,13 @@ const navigation = [
   { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/learn?view=Modules", label: "Modules", icon: Library },
   { href: "/learn?view=Glossary", label: "Glossary", icon: Search },
+  { href: "/play", label: "Play & study", icon: Gamepad2 },
   { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
- {href:"/play",label:"Play & study"},
  {href:"/tools",label:"Tools"},
+ {href:"/educators",label:"Educator resources"},
  {href:"/about",label:"About Sprout"},{href:"/learn?view=Tutorials",label:"Tutorials"},
  {href:"/practice",label:"Practice Lab"},{href:"/portfolio",label:"Portfolio"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
@@ -141,6 +145,7 @@ export default function Simulator() {
   const guided =
     searchParams.get("guided") === "1" && state.trades.length === 0;
   const p = portfolio(state);
+  const completedLessonCount=state.learning.completed.filter(id=>lessons.some(l=>l.id===id)).length;
   const ticker = path.split("/")[2];
   const stock = ticker ? stocks.find((s) => s.ticker === ticker) : null;
   const current = stock ? quote(stock.ticker, state.tick) : null;
@@ -217,12 +222,12 @@ export default function Simulator() {
       </>
     );
   return (
-    <div className="app-shell">
+    <div className="app-shell academy-shell" data-workspace={page==="market"?"simulator":"learning"}>
       <aside className={`sidebar ${mobile ? "open" : ""}`}>
         <Link href="/" aria-label="Sprout home">
           <Logo />
         </Link>
-        <span className="workspace-label">YOUR SPROUT WORKSPACE</span>
+        <span className="workspace-label">LEARN. PRACTICE. GROW.</span>
         <nav id="workspace-navigation">
           {navigation.map((n) => (
             <Fragment key={n.href}><Link
@@ -243,11 +248,11 @@ export default function Simulator() {
           <span className="course-icon">
             <Sprout size={21} />
           </span>
-          <strong>Grow at your own pace.</strong>
+          <strong>Your learning, in motion.</strong>
           <p>
-            One small lesson today.
-            <br />A little more confidence tomorrow.
+            {completedLessonCount} of {lessons.length} lessons completed · {state.learning.xp} XP
           </p>
+          <progress aria-label="Sidebar course progress" max={lessons.length} value={completedLessonCount}/>
           <Link href="/learn">
             Keep learning <ArrowRight size={15} />
           </Link>
@@ -265,8 +270,8 @@ export default function Simulator() {
 
         </details>
       </aside>
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
-      <div className={`main-area ${["learn","dashboard","achievements","tools","play"].includes(page)?"compact-workspace":""}`}>
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.filter(n=>!["Modules","Glossary"].includes(n.label)).map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
+      <div className={`main-area ${["learn","dashboard","achievements","tools","play","educators"].includes(page)?"compact-workspace":""}`}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
@@ -298,18 +303,18 @@ export default function Simulator() {
             onSubmit={(e) => {
               e.preventDefault();
               router.push(
-                `/market?q=${encodeURIComponent(marketSearch.trim())}`,
+                page==="market" ? `/market?q=${encodeURIComponent(marketSearch.trim())}` : `/learn?view=Lessons&q=${encodeURIComponent(marketSearch.trim())}`,
               );
             }}
           >
             <Search size={16} />
             <input
-              aria-label="Search the market"
-              placeholder="Search stocks & funds"
+              aria-label={page==="market"?"Search the market":"Search the curriculum"}
+              placeholder={page==="market"?"Search stocks & funds":"Search lessons, concepts, and topics"}
               value={marketSearch}
               onChange={(e) => setMarketSearch(e.target.value)}
             />
-            <button type="submit" aria-label="Submit market search">
+            <button type="submit" aria-label={page==="market"?"Submit market search":"Submit curriculum search"}>
               <ArrowRight size={15} />
             </button>
           </form>
@@ -331,7 +336,7 @@ export default function Simulator() {
           </div>
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
-        {!["learn","dashboard","achievements","tools","play"].includes(page)&&!(page==="market"&&!ticker)&&<MarketTicker tick={state.tick} />}
+        {!["learn","dashboard","achievements","tools","play","educators"].includes(page)&&page!=="market"&&<MarketTicker tick={state.tick} />}
         <main className="content"><div className="motion-surface" key={`${path}-${searchParams.get("view")||"default"}`}>
           {error && (
             <div className="error" role="alert">
@@ -339,14 +344,12 @@ export default function Simulator() {
             </div>
           )}
           {page === "pricing" && <Pricing/>}
-          {page === "market" && <div className="simulator-mode-row"><span className="eyebrow">PRACTICE MODES</span><button className="secondary" aria-pressed={!!marketPace?.fast&&subscription.pro} onClick={()=>{if(!subscription.pro){subscription.upgrade("High-Volatility Mode");return;}setMarketPace({base:state.tick,started:liveTick,fast:!marketPace?.fast});}}>{marketPace?.fast&&subscription.pro?"High-volatility · 4× movement speed":"High-Volatility Mode"}</button><button className="secondary" onClick={()=>subscription.pro?router.push("/practice#chart-practice"):subscription.upgrade("Replay Mode")}>Replay Mode</button></div>}
-          {page === "market" && <SimulatorMoney state={state} onReset={()=>setReset("simulator")} onRecharge={async()=>{await billingRequest("simulator",{action:"recharge"});retry();setToast("$5,000 virtual cash added.");}}/>}
           {page === "dashboard" && (
             <CompactDashboard state={state} />
           )}
           {page === "play" && <PlayAndStudy onSignIn={() => setAuthOpen(true)}/> }
           {page === "learn" && (
-            <Learning key={`${subscription.pro}-${searchParams.get("lesson")||searchParams.get("view")||"curriculum"}`} state={state} update={update} firstTrade={firstTrade} />
+            <Learning key={`${subscription.pro}-${searchParams.get("lesson")||`${searchParams.get("view")||"curriculum"}-${searchParams.get("q")||""}`}`} state={state} update={update} firstTrade={firstTrade} />
           )}
           {page === "market" && !ticker && (
             <Market
@@ -378,9 +381,13 @@ export default function Simulator() {
               label="Return to market"
             />
           )}
+          {page === "market" && <details className="academy-account-tools"><summary>Account settings & practice modes</summary><div><MarketTicker tick={state.tick}/>{page === "market" && <div className="simulator-mode-row"><span className="eyebrow">PRACTICE MODES</span><button className="secondary" aria-pressed={!!marketPace?.fast&&subscription.pro} onClick={()=>{if(!subscription.pro){subscription.upgrade("High-Volatility Mode");return;}setMarketPace({base:state.tick,started:liveTick,fast:!marketPace?.fast});}}>{marketPace?.fast&&subscription.pro?"High-volatility · 4× movement speed":"High-Volatility Mode"}</button><button className="secondary" onClick={()=>subscription.pro?router.push("/practice#chart-practice"):subscription.upgrade("Replay Mode")}>Replay Mode</button></div>}
+          {page === "market" && <SimulatorMoney state={state} onReset={()=>setReset("simulator")} onRecharge={async()=>{await billingRequest("simulator",{action:"recharge"});retry();setToast("$5,000 virtual cash added.");}}/>}
+</div></details>}
           {page === "community" && <Community state={state} user={user}/>}
           {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
           {page === "about" && <About/>}
+          {page === "educators" && <EducatorToolkit/>}
           {policyPages.includes(page)&&<Policies page={page}/>}
           {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
@@ -405,6 +412,7 @@ export default function Simulator() {
             ...policyPages,
             "pricing",
             "about",
+            "educators",
             "dashboard",
             "learn",
             "play",
@@ -428,7 +436,7 @@ export default function Simulator() {
 
           {page==="profile"&&<ReferralCard/>}
           <footer className="app-footer compact-footer">
-            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
+            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/educators">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
             <small>Educational simulation only · Virtual money · Not financial advice.</small>
           </footer>
         </div></main>

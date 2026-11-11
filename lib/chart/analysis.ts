@@ -2,7 +2,8 @@ import {candles,marketEpoch} from '@/lib/market';
 export interface Bar {time:number;open:number;high:number;low:number;close:number;volume:number;}
 export const intervals={'30s':15,'1m':30,'5m':150,'15m':450,'1h':1800,'1d':43200};
 export type Interval=keyof typeof intervals;
-export function chartBars(ticker:string,interval:Interval,tick:number):Bar[]{const width=intervals[interval],current=Math.floor(tick/width)*width;return candles(ticker,interval,tick,200).map((c,i)=>({...c,time:(marketEpoch+(current-(199-i)*width)*2000)/1000,volume:Math.round(500+Math.abs(Math.sin((current-(199-i)*width)*.17))*2500+Math.abs(c.close-c.open)/c.open*10000)}));}
+export const chartHorizons:Record<string,{interval:Interval;bars:number}>={'1D':{interval:'15m',bars:96},'1W':{interval:'1h',bars:168},'1M':{interval:'1d',bars:30},'3M':{interval:'1d',bars:90},'1Y':{interval:'1d',bars:365}};
+export function chartBars(ticker:string,interval:Interval,tick:number,count=200):Bar[]{const width=intervals[interval],current=Math.floor(tick/width)*width;return candles(ticker,interval,tick,count).map((c,i)=>({...c,time:(marketEpoch+(current-(count-1-i)*width)*2000)/1000,volume:Math.round(500+Math.abs(Math.sin((current-(count-1-i)*width)*.17))*2500+Math.abs(c.close-c.open)/c.open*10000)}));}
 export const sma=(values:number[],period:number)=>(values.map((_,i)=>i+1<period?null:values.slice(i-period+1,i+1).reduce((a,b)=>a+b,0)/period));
 export function ema(values:number[],period:number){const result:number[]=[];values.forEach((v,i)=>result.push(i?result[i-1]+2/(period+1)*(v-result[i-1]):v));return result;}
 function wilder(values:number[],period:number){const out:number[]=[];values.forEach((v,i)=>out.push(i?out[i-1]+(v-out[i-1])/period:v));return out;}

@@ -1,0 +1,3 @@
+import {BookOpen,ChartNoAxesCombined,Compass,Layers3,Target,Lightbulb} from 'lucide-react';
+const icons=[BookOpen,ChartNoAxesCombined,Compass,Layers3,Target,Lightbulb];
+export default function CurriculumCover({index}:{index:number}){const Icon=icons[index%icons.length];return <div className={`curriculum-cover cover-${index%6}`} aria-hidden="true"><span className="cover-orbit orbit-one"/><span className="cover-orbit orbit-two"/><span className="cover-grid"/><Icon size={42} strokeWidth={1.5}/><span className="cover-number">{String(index+1).padStart(2,'0')}</span><span className="cover-caption">SPROUT LEARNING COLLECTION</span></div>;}

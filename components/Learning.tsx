@@ -2,6 +2,9 @@
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import CurriculumCover from "./academy/CurriculumCover";
+import StudyModes from "./academy/StudyModes";
+import CourseJourney from "./academy/CourseJourney";
 import LearningPathSteps from "./LearningPathSteps";
 import LearningDiscovery from "./LearningDiscovery";
 import { useSubscription } from "./Subscription";
@@ -56,7 +59,7 @@ export default function Learning({
           : section;
   function selectSection(value: string) {
     router.push(
-      `/learn?view=${encodeURIComponent(value)}${value === "Lessons" ? "&lesson=1" : ""}`,
+      `/learn?view=${encodeURIComponent(value)}`,
       { scroll: false },
     );
     setLibraryPage(0);
@@ -64,14 +67,14 @@ export default function Learning({
   const [libraryPage, setLibraryPage] = useState(0);
 
   const [topic, setTopic] = useState("All topics"),
-    [search, setSearch] = useState("");
+    [search, setSearch] = useState(params.get("q")||"");
   const matches = (lesson: Lesson) =>
     (topic === "All topics" ||
       (topic === "Long-term investing" &&
         [17,18,41,42].includes(lesson.level)) ||
       (topic === "Trading" && lesson.level <= 12) ||
       (topic === "Advanced trading" && lesson.level >= 23 && ![41,42].includes(lesson.level))) &&
-    `${levels[lesson.level - 1]} ${lesson.title} ${lesson.explanation} ${lesson.example}`
+    `${modules.find(m=>m.ids.includes(lesson.id))?.title} ${levels[lesson.level - 1]} ${lesson.title} ${lesson.explanation} ${lesson.example}`
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "")
       .includes(
@@ -139,13 +142,13 @@ export default function Learning({
     ),
   );
   return (
-    <div className="compact-learning motion-surface" key={currentSection}>
+    <div className="compact-learning academy-library motion-surface" key={currentSection}>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">YOUR LEARNING WORKSPACE</span>
+          <span className="eyebrow">THE SPROUT LEARNING LIBRARY</span>
           <h1>
             {currentSection === "Overview"
-              ? "Learn, one step at a time"
+              ? "Your next idea starts here"
               : currentSection}
           </h1>
           <p>
@@ -193,6 +196,7 @@ export default function Learning({
               <ArrowRight size={16} />
             </button>
           </section>
+          <div className="academy-section-heading compact-section-heading"><div><span className="eyebrow">LEARN IT. REMEMBER IT. USE IT.</span><h2>A complete study toolkit</h2></div></div><StudyModes/>
           <div className="compact-quick" aria-label="Quick access">
             {[
               {
@@ -224,44 +228,7 @@ export default function Learning({
               </Link>
             ))}
           </div>
-          <div className="compact-section-heading">
-            <h2>Your learning path</h2>
-            <button
-              className="text-link"
-              onClick={() => selectSection("Modules")}
-            >
-              All {modules.length} modules →
-            </button>
-          </div>
-          <div className="compact-module-grid">
-            {modules.slice(0, 3).map((m, i) => (
-              <article className="card compact-module" key={m.title}>
-                <span className="eyebrow">MODULE {i + 1}</span>
-                <h3>{m.title}</h3>
-                <p>
-                  {m.ids.filter((id) => completed.has(id)).length}/
-                  {m.ids.length} lessons complete
-                </p>
-                <progress
-                  value={m.ids.filter((id) => completed.has(id)).length}
-                  max={m.ids.length}
-                  aria-label={`${m.title} progress`}
-                />
-                <button
-                  className="secondary"
-                  onClick={() =>
-                    open(
-                      lessons.find((l) => m.ids.includes(l.id))!,
-                      false,
-                      true,
-                    )
-                  }
-                >
-                  Open module
-                </button>
-              </article>
-            ))}
-          </div>
+          <CourseJourney completed={state.learning.completed}/>
         </>
       )}
       {currentSection === "Tutorials" && <TutorialHub />}
@@ -350,8 +317,8 @@ export default function Learning({
                 const m = modules[i],
                   done = m.ids.filter((id) => completed.has(id)).length;
                 return (
-                  <details className="card compact-module" key={m.title}>
-                    <summary>
+                  <details className="card compact-module academy-curriculum-card" key={m.title}>
+                    <summary><CurriculumCover index={i}/><span className="academy-course-status">{done===m.ids.length?"Completed":done?"In progress":"Ready to explore"}</span>
                       <span className="eyebrow">
                         MODULE {i + 1} ·{" "}
                         {!pro && i >= 5

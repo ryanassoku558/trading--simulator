@@ -7,7 +7,7 @@ import {gameQuestions,beginnerTerms} from '../lib/games/content';
 
 test('beginner home leads into bounded solo quests and guided study',async({page})=>{
  await page.goto('/');await expect(page.getByText('Not sure what to click?',{exact:true})).toBeVisible();await expect(page.getByRole('link',{name:'Open Simulator',exact:true})).toHaveAttribute('href','/market/AAPL?guided=1');
- await page.getByRole('link',{name:/Choose a game/}).click();await expect(page.getByRole('heading',{name:'Play & study',exact:true})).toBeVisible();await expect(page.getByText('This page has not sprouted yet.',{exact:true})).toHaveCount(0);
+ await page.getByRole('link',{name:/Choose a game/}).click();await page.getByRole('button',{name:'Choose',exact:true}).click();await expect(page.getByRole('heading',{name:'Play & study',exact:true})).toBeVisible();await expect(page.getByText('This page has not sprouted yet.',{exact:true})).toHaveCount(0);
  await page.getByRole('button',{name:'Play on my own',exact:false}).click();await page.getByRole('button',{name:'Start five-question quest',exact:true}).click();
  const questions=gameQuestions('0');for(let i=0;i<5;i++){await page.locator('.practice-quest .live-answer').nth(questions[i].answer).click();await page.getByRole('button',{name:i===4?'See quest results':'Next question',exact:true}).click();}
  await expect(page.getByRole('heading',{name:'Quest complete!',exact:true})).toBeVisible();await expect(page.locator('.practice-quest')).toContainText('5/5 correct');

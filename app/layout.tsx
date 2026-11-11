@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./design-system.css";
 import "./motion.css";
+import "./academy.css";
 import SubscriptionProvider from "@/components/Subscription";
 import SproutyHelp from "@/components/SproutyHelp";
 export const metadata: Metadata = {
-  title: "Sprout Trading | Trading & Long-Term Investing Education",
+  title: "Sprout | Financial Education, Study & Trading Practice",
   description:
-    "Learn trading and long-term investing with clear lessons, visual practice, and $10,000 in virtual cash. Start learning now; no real deposit required.",
+    "A guided financial learning journey for individuals, schools and educators. Explore lessons, study cards, live quizzes, classroom session plans and virtual trading practice.",
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

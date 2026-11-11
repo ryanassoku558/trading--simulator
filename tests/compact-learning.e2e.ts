@@ -5,7 +5,7 @@ test("compact home and learning keep core actions in view", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Learn Trading the Simple Way." }),
+    page.getByRole("heading", { name: /Build knowledge/ }),
   ).toBeVisible();
   expect(
     await page
@@ -13,11 +13,8 @@ test("compact home and learning keep core actions in view", async ({
       .evaluate((e) => e.getBoundingClientRect().bottom),
   ).toBeLessThan(900);
   await page.goto("/learn");
-  expect(
-    await page
-      .locator(".compact-module-grid")
-      .evaluate((e) => e.getBoundingClientRect().bottom),
-  ).toBeLessThan(900);
+  await expect(page.getByRole("region", {name:"Guided curriculum journey"})).toBeVisible();
+  await expect(page.getByRole("button", {name:"Start first lesson"})).toBeInViewport();
   await page.getByRole("button", { name: "Start first lesson" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
@@ -40,7 +37,6 @@ test("compact home and learning keep core actions in view", async ({
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await page.getByRole("button", { name: "Lessons", exact: true }).click();
-  await page.getByRole("button", { name: "Close dialog", exact: true }).click();
   await expect(page.locator(".compact-lesson-grid > button")).toHaveCount(8);
   await page.getByLabel("Search lessons").fill("zzzzzzzz");
   await expect(

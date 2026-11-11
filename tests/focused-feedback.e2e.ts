@@ -5,7 +5,7 @@ import {presentationQuestions} from '../lib/education/presentation';
 
 test('existing homepage shows module steps and earned milestone feedback',async({page})=>{
  await page.goto('/');
- await expect(page.getByRole('heading',{name:'Learn Trading the Simple Way.'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:/Build knowledge/})).toBeVisible();
  const steps=page.getByRole('navigation',{name:'Market Basics lesson steps'});
  await expect(steps.getByRole('link')).toHaveCount(4);
  await expect(steps.getByRole('link').first()).toHaveAttribute('aria-current','step');

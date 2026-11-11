@@ -5,7 +5,7 @@ import {presentationQuestions} from '../lib/education/presentation';
 
 test('restores all original modules, lessons and learning resources',async({page})=>{
  await page.goto('/');
- await expect(page.getByRole('heading',{name:'Learn Trading the Simple Way.'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:/Build knowledge/})).toBeVisible();
  await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','159');
  await page.goto('/learn?view=Modules');
  await expect(page.getByText('159 lessons · 41 modules',{exact:true})).toBeVisible();

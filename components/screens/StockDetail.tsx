@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import TradingAccountBar from "../academy/TradingAccountBar";
 import HandsOnTrading from "../HandsOnTrading";
 import {VideoHelp} from "../OnboardingTutorials";
 import { useState } from "react";
@@ -33,8 +34,9 @@ export default function StockDetail({
   const [range, setRange] = useState("LIVE");
   const [chartType, setChartType] = useState<"line" | "candles">("candles");
   return (
-    <>
-      <div className="page-heading">
+    <div className="institutional-simulator">
+      <TradingAccountBar state={state}/>
+      <div className="page-heading simulator-asset-header">
         <div className="stock-detail-heading">
           <StockBadge ticker={ticker} />
           <div>
@@ -56,11 +58,10 @@ export default function StockDetail({
           </button>
         </div>
       </div>
-      <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
-      <HandsOnTrading key={`hands-on-${ticker}`} state={state} ticker={ticker} start={guided}/><div className="simulator-video-help"><VideoHelp slug="simulator-guide" label="Watch the simulator guide"/></div><div className="detail-grid">
+      <details className="simulator-learning-guides" open={guided}><summary>Learning guides · chart and order walkthroughs</summary>      <HandsOnTrading key={`hands-on-${ticker}`} state={state} ticker={ticker} start={guided}/><div className="simulator-video-help"><VideoHelp slug="simulator-guide" label="Watch the simulator guide"/></div></details><div className="detail-grid">
         <div>
-          <section className="card">
-            <div className="stock-detail-price">{money(current.price)}</div>
+          <section className="card simulator-price-card">
+            <div className="simulator-price-header"><div><span className="eyebrow">{ticker} · {current.assetType||'Stock'} · USD</span><div className="stock-detail-price">{money(current.price)}</div></div><span className="simulator-data-badge">Simulated price</span></div>
             <p>
               <Delta value={current.change} percent />{" "}
               <span className="muted">simulated last 24 hours</span>
@@ -115,7 +116,8 @@ export default function StockDetail({
               Prices move automatically 24/7. All practice prices and chart history are simulated.
             </p>
           </section>
-          <details className="card about-company ds-extra"><summary>Asset research & key facts</summary>
+          <details className="card about-company ds-extra"><summary>Asset research & key facts</summary>      <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
+
             <h2>{current.assetType==="Crypto"?"About this digital asset":current.assetType==="ETF"?"About this fund":"What does this company actually do?"}</h2>
             <p>{current.description}</p>
             <div className="tip">
@@ -170,6 +172,6 @@ export default function StockDetail({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

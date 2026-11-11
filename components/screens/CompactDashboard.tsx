@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import StudyModes from "../academy/StudyModes";
+import CurriculumCover from "../academy/CurriculumCover";
 import {
   ArrowRight,
   BookOpen,
@@ -35,7 +37,7 @@ export default function CompactDashboard({ state }: { state: State }) {
   ).length;
   const simulatorHref = state.trades.length === 0 ? "/market/AAPL?guided=1" : "/market";
   const quick = [
-    { label: "Lessons", href: "/learn?view=Lessons&lesson=1", icon: BookOpen },
+    { label: "Lessons", href: "/learn?view=Lessons", icon: BookOpen },
     { label: "Modules", href: "/learn?view=Modules", icon: Library },
     { label: "Glossary", href: "/learn?view=Glossary", icon: Search },
     { label: "Tools", href: "/tools", icon: Calculator },
@@ -44,16 +46,16 @@ export default function CompactDashboard({ state }: { state: State }) {
   ];
   return (
     <div className="compact-learning compact-home">
-      <section className="compact-home-hero">
+      <div className="academy-welcome"><div><span className="eyebrow">YOUR LEARNING DASHBOARD</span><p>{state.profile.name==='Guest'?'Welcome to your next chapter.':`Good to see you, ${state.profile.name}.`}</p></div><Link href="/play?mode=Live%20quiz" className="secondary">Join a live game <ArrowRight size={15}/></Link></div>
+      <section className="compact-home-hero academy-home-hero"><div className="academy-hero-copy">
         <span className="eyebrow">
           {state.profile.name === "Guest"
             ? "SMALL STEPS. LASTING UNDERSTANDING."
             : `WELCOME BACK, ${state.profile.name}`}
         </span>
-        <h1>Learn Trading the Simple Way.</h1>
+        <h1>Build knowledge.<br/><em>Grow your confidence.</em></h1>
         <p>
-          New to trading? Start with one short lesson, try its five-question quiz,
-          then practise with pretend money. No experience needed.
+          A better understanding of the markets starts with one good lesson. Learn a concept, test what you know, and put it into practice—at your own pace.
         </p>
         <div className="presentation-actions">
           <Link className="primary" href={`/learn?lesson=${next.id}`}>
@@ -63,9 +65,8 @@ export default function CompactDashboard({ state }: { state: State }) {
             Open Simulator
           </Link>
         </div>
-        <span className="home-leaf" aria-hidden="true">
-          🌱
-        </span>
+        <div className="academy-hero-proof"><span><BookOpen size={14}/> {learningModules.length} learning modules</span><span><Library size={14}/> {lessons.length} guided lessons</span></div></div>
+        <aside className="academy-session" aria-label="Your next learning session"><div className="academy-session-heading"><span className="academy-live-dot"/> YOUR NEXT SESSION<span className="academy-session-tag">Personal path</span></div><div className="academy-session-graphic" aria-hidden="true"><span className="academy-orbit"/><BookOpen size={48} strokeWidth={1.4}/><span className="academy-floating-note">Learn → Review → Apply</span></div><small>{currentModule.title}</small><h2>{next.title}</h2><div className="academy-session-footer"><span>{completeCount}/{currentModule.ids.length} lessons complete</span><Link href={`/learn?lesson=${next.id}`} aria-label={`Open recommended lesson: ${next.title}`}><ArrowRight size={20}/></Link></div></aside>
       </section>
       <nav className="home-quick" aria-label="Quick access">
         {quick.map((x) => (
@@ -118,39 +119,12 @@ export default function CompactDashboard({ state }: { state: State }) {
         <Link href="/learn?view=Tutorials" className="text-link">Watch a quick tour →</Link>
       </div>
       <LearningPathSteps state={state} />
-      <div className="compact-section-heading">
-        <h2>Practice & tools</h2>
-      </div>
-      <div className="home-practice">
-        {[
-          {
-            title: "Play & study",
-            text: "Solo quests, guided study cards, and live room-code quizzes.",
-            href: "/play",
-            action: "Choose a game",
-          },
-          {
-            title: "Practice Lab",
-            text: "Try focused chart scenarios.",
-            href: "/practice",
-            action: "Open lab",
-          },
-          {
-            title: "Simulator",
-            text: "Practice trades with virtual money.",
-            href: simulatorHref,
-            action: "Practice trading",
-          },
-        ].map((x) => (
-          <article className="card" key={x.title}>
-            <div>
-              <h3>{x.title}</h3>
-              <p>{x.text}</p>
-            </div>
-            <Link href={x.href}>{x.action} →</Link>
-          </article>
-        ))}
-      </div>
+      <div className="compact-section-heading academy-section-heading"><div><span className="eyebrow">MORE THAN MEMORIZING</span><h2>Find your way to learn</h2></div><Link className="text-link" href="/play">Open study hub <ArrowRight size={15}/></Link></div>
+      <StudyModes/>
+      <div className="compact-section-heading academy-section-heading"><div><span className="eyebrow">A CURRICULUM WITH DIRECTION</span><h2>Your foundation starts here</h2></div><Link className="text-link" href="/learn?view=Modules">All {learningModules.length} modules <ArrowRight size={15}/></Link></div>
+      <div className="academy-course-spotlights">{learningModules.slice(0,3).map((module,i)=><Link className="academy-course-card" href={`/learn?view=Modules&q=${encodeURIComponent(module.title)}`} key={module.title}><CurriculumCover index={i}/><div className="academy-course-copy"><span className="eyebrow">FOUNDATION {String(i+1).padStart(2,'0')}</span><h3>{module.title}</h3><p>{module.ids.length} lessons · Guided study & quiz</p><div><span>{module.ids.filter(id=>completed.has(id)).length}/{module.ids.length} completed</span><ArrowRight size={17}/></div></div></Link>)}</div>
+      <section className="academy-lab-banner"><div className="academy-lab-icon"><ChartNoAxesCombined size={32}/></div><div><span className="eyebrow">FROM KNOWLEDGE TO DECISIONS</span><h2>A practice account. A real learning experience.</h2><p>Explore charts, plan an order, and see how your decisions affect a virtual portfolio.</p></div><Link className="secondary" href={simulatorHref}>Open practice workspace <ArrowRight size={16}/></Link></section>
+      <section className="academy-educator-banner"><div><span className="eyebrow">BUILT FOR A GUIDED JOURNEY</span><h2>Teaching a class or learning together?</h2><p>Turn the curriculum into a structured session, with a printable lesson plan, live quiz, and reflection prompts.</p></div><Link href="/educators" className="secondary">Explore educator resources <ArrowRight size={16}/></Link></section>
       <section className="home-why" aria-label="Why Sprout works">
         {[
           { title: "Simple", text: "Trading explained in plain language." },

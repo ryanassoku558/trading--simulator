@@ -16,7 +16,7 @@ import {
   Lightbulb,
   TrendingUp,
   Check,
-  Calculator, UserRound, Users,
+  Calculator, UserRound, Users, GraduationCap,
 } from "lucide-react";
 
 import {LearningRoadmap,PatternPreview,StrategyCards} from "../VisualLearning";
@@ -69,7 +69,7 @@ export default function Landing({
           <a href="#roadmap"><BookOpen size={16}/> Learn</a>
           <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
           <a href="#tools"><Calculator size={16}/> Tools</a>
-          <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <button onClick={()=>enter('/educators')}><GraduationCap size={16}/> For educators</button>
           <a href="#about">About</a>
           <Link href="/pricing">Pricing</Link>
           <a href="#account"><UserRound size={16}/> Account</a>
@@ -87,10 +87,10 @@ export default function Landing({
             MARKETS
           </span>
           <h1>
-            Grow Your Trading Skills<br/><em>With Confidence</em>
+            Learn the markets.<br/><em>Build your confidence.</em>
           </h1>
           <p>
-            A beginner-friendly platform built for real learning. Understand charts, practice decisions, and build trading confidence through clear explanations and $10,000 in virtual practice cash.
+            Your space to learn, study, and put ideas into practice. Explore guided lessons, master concepts with study cards and quizzes, play together, and build experience with $10,000 in virtual cash.
           </p>
           <div className="hero-buttons">
             <button className="primary" onClick={() => setOnboarding(true)}>
@@ -302,7 +302,7 @@ export default function Landing({
           <a href="#roadmap"><BookOpen size={16}/> Learn</a>
           <button onClick={()=>enter('/market')}><ChartNoAxesCombined size={16}/> Simulator</button>
           <a href="#tools"><Calculator size={16}/> Tools</a>
-          <button onClick={()=>enter('/community')}><Users size={16}/> Community</button>
+          <button onClick={()=>enter('/educators')}><GraduationCap size={16}/> For educators</button>
           <a href="#about">About</a>
           <Link href="/pricing">Pricing</Link>
           <a href="#account"><UserRound size={16}/> Account</a>
