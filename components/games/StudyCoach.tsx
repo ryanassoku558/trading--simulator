@@ -1,0 +1,15 @@
+"use client";
+import {useState} from 'react';
+import {beginnerTerms,shuffle} from '@/lib/games/content';
+export default function StudyCoach(){
+ const [deck,setDeck]=useState(()=>beginnerTerms.slice(0,6)),[index,setIndex]=useState(0),[phase,setPhase]=useState<'study'|'check'|'feedback'>('study'),[missed,setMissed]=useState<typeof beginnerTerms>([]),[reviewing,setReviewing]=useState(false),[correct,setCorrect]=useState(0),[chosen,setChosen]=useState<string|null>(null),[options,setOptions]=useState<string[]>([]);
+ const term=deck[index],done=index>=deck.length;
+ function check(){setOptions(shuffle([term,...shuffle(beginnerTerms.filter(t=>t[0]!==term[0])).slice(0,2)]).map(t=>t[1]));setPhase('check');}
+ function restart(){setDeck(shuffle(beginnerTerms).slice(0,6));setIndex(0);setPhase('study');setMissed([]);setReviewing(false);setCorrect(0);setChosen(null);}
+ return <section className="card study-coach" aria-label="Guided study cards"><span className="eyebrow">SEE IT. TRY IT. REMEMBER IT.</span><h2>Learn & review</h2><p>Start with everyday trading words. Read a simple explanation, check your understanding, then review the words you missed.</p>
+ {done?<><h3>{reviewing?'Review complete':'Your first pass is complete'}</h3><p>{correct}/{deck.length} checks correct. {reviewing?'Nice work taking time to revisit the tricky ideas.':'Mistakes show you what to practise next.'}</p>{!reviewing&&missed.length>0?<button className="primary" onClick={()=>{setDeck(missed);setIndex(0);setCorrect(0);setPhase('study');setChosen(null);setReviewing(true);}}>Review {missed.length} tricky word{missed.length===1?'':'s'}</button>:<button className="primary" onClick={restart}>Start a fresh study round</button>}</>:<>
+ <p className="small">{reviewing?'Review':'Card'} {index+1} of {deck.length} · no timer</p><progress value={index} max={deck.length} aria-label="Study cards completed"/>
+ {phase==='study'?<><div className="guided-study-card"><span className="eyebrow">WORD</span><h3>{term[0]}</h3><p>{term[1]}</p><p><strong>For example:</strong> {term[2]}</p></div><button className="primary" onClick={check}>Check my understanding</button></>:<><h3>What does “{term[0]}” mean?</h3><div className="study-options">{options.map(option=><button className={`secondary ${phase==='feedback'&&option===term[1]?'correct-answer':''}`} key={option} disabled={phase==='feedback'} onClick={()=>{if(phase==='feedback')return;setChosen(option);if(option===term[1])setCorrect(correct+1);else if(!reviewing)setMissed([...missed,term]);setPhase('feedback');}}>{option}</button>)}</div>{phase==='feedback'&&<div className="live-reveal" role="status"><strong>{chosen===term[1]?'You’ve got it!':'Here’s the meaning to remember.'}</strong><p>{term[1]}</p><p>Example: {term[2]}</p><button className="primary" onClick={()=>{setIndex(index+1);setPhase('study');setChosen(null);}}>{index===deck.length-1?'See study results':'Next word'}</button></div>}</>}
+ </>}
+ <p className="small">Study rounds don’t change your saved lesson progress. Your full glossary and all original study modes remain available below.</p></section>;
+}

@@ -1,0 +1,58 @@
+import {NextRequest,NextResponse} from 'next/server';
+import {createHash,randomBytes,randomInt} from 'node:crypto';
+import {admin,identify} from '@/lib/billing/server';
+import {gamePacks,gameQuestions} from '@/lib/games/content';
+const cookieName='sprout-live-player';
+const noStore={'Cache-Control':'no-store'};
+function tokenHash(secret:string){return createHash('sha256').update(secret).digest('hex');}
+function codeValue(value:unknown){if(typeof value!=='string'||!/^[A-HJ-NP-Z2-9]{6}$/.test(value))throw Error('Enter the six-character room code.');return value;}
+function errorResponse(error:unknown){const e=error as {message?:string;code?:string};const message=e.code==='23505'?'That nickname is taken. Choose another.':e.message||'Unable to connect to the game.';return NextResponse.json({error:message},{status:e.code==='42501'?403:e.code==='P0002'?404:400,headers:noStore});}
+// The legacy public alias has no server secrets. Its fixed live-game proxy uses
+// the same production rooms while keeping browser requests and cookies same-origin.
+async function legacyProxy(request:NextRequest,body?:string){
+ if(process.env.SUPABASE_SERVICE_ROLE_KEY||request.nextUrl.hostname!=='sprouttrading.vercel.app')return null;
+ const headers=new Headers({'origin':'https://sprout-trading.vercel.app'});
+ for(const name of ['authorization','content-type']){const value=request.headers.get(name);if(value)headers.set(name,value);}
+ const playerCookie=request.cookies.get(cookieName)?.value;if(playerCookie&&/^[a-f0-9]{64}$/.test(playerCookie))headers.set('cookie',cookieName+'='+playerCookie);
+ const upstream=await fetch('https://sprout-trading.vercel.app/api/live'+request.nextUrl.search,{method:request.method,headers,body,cache:'no-store',redirect:'error',signal:AbortSignal.timeout(12000)});
+ const response=new NextResponse(upstream.body,{status:upstream.status,headers:{...noStore,'Content-Type':'application/json'}});
+ const cookie=upstream.headers.get('set-cookie');if(cookie)response.headers.set('set-cookie',cookie);return response;
+}
+async function hostId(request:Request){return request.headers.has('authorization')?(await identify(request)).user.id:null;}
+export async function GET(request:NextRequest){try{
+ const proxied=await legacyProxy(request);if(proxied)return proxied;
+ const code=codeValue(request.nextUrl.searchParams.get('code'));
+ const secret=request.cookies.get(cookieName)?.value||'';
+ const {data,error}=await admin().rpc('sprout_live_snapshot',{p_code:code,p_token:tokenHash(secret),p_host:await hostId(request)});
+ if(error)throw error;return NextResponse.json(data,{headers:noStore});
+}catch(error){return errorResponse(error);}}
+export async function POST(request:NextRequest){try{
+ const origin=request.headers.get('origin');if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:'Open the game on this website to continue.'},{status:403,headers:noStore});
+ if(Number(request.headers.get('content-length')||0)>4096)throw Error('Request is too large.');
+ const text=await request.text();if(Buffer.byteLength(text,'utf8')>4096)throw Error('Request is too large.');
+ const proxied=await legacyProxy(request,text);if(proxied)return proxied;
+ const body=JSON.parse(text);
+ const db=admin();let secret=request.cookies.get(cookieName)?.value;
+ if(!secret||!/^[a-f0-9]{64}$/.test(secret))secret=randomBytes(32).toString('hex');
+ let result:unknown;
+ if(body.action==='create'){
+  if(!request.headers.has('authorization'))throw Object.assign(Error('Sign in to host a game. Anyone with a Sprout account can host.'),{code:'42501'});
+  const {user}=await identify(request);
+  const pack=gamePacks.find(p=>p.id===body.pack);if(!pack)throw Error('Choose a quiz topic.');
+  const seconds=[30,45,60].includes(body.seconds)?body.seconds:45;
+  let code='';for(let attempt=0;attempt<3;attempt++){
+   const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';code=Array.from({length:6},()=>alphabet[randomInt(alphabet.length)]).join('');
+   const {error}=await db.rpc('sprout_live_create',{p_host:user.id,p_code:code,p_title:pack.title,p_questions:gameQuestions(pack.id),p_seconds:seconds});
+   if(!error)break;if(error.code!=='23505'||attempt===2)throw error;
+  }
+  result={code};
+ }else{
+  const code=codeValue(body.code),action=body.action;
+  if(!['join','answer','start','reveal','next','end'].includes(action))throw Error('Unknown game action.');
+  const owner=['start','reveal','next','end'].includes(action)?await hostId(request):null;
+  if(['start','reveal','next','end'].includes(action)&&!owner)throw Object.assign(Error('Sign in to control your hosted game.'),{code:'42501'});
+  const {data,error}=await db.rpc('sprout_live_action',{p_code:code,p_token:tokenHash(secret),p_host:owner,p_action:action,p_index:Number.isInteger(body.index)?body.index:0,p_choice:Number.isInteger(body.choice)?body.choice:null,p_nickname:typeof body.nickname==='string'?body.nickname.trim():null});
+  if(error)throw error;result={...data,code};
+ }
+ const response=NextResponse.json(result,{headers:noStore});response.cookies.set(cookieName,secret,{httpOnly:true,sameSite:'lax',secure:request.nextUrl.protocol==='https:',maxAge:7200,path:'/api/live'});return response;
+}catch(error){return errorResponse(error);}}

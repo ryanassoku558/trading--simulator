@@ -33,12 +33,13 @@ export default function CompactDashboard({ state }: { state: State }) {
   const completeCount = currentModule.ids.filter((id) =>
     completed.has(id),
   ).length;
+  const simulatorHref = state.trades.length === 0 ? "/market/AAPL?guided=1" : "/market";
   const quick = [
     { label: "Lessons", href: "/learn?view=Lessons&lesson=1", icon: BookOpen },
     { label: "Modules", href: "/learn?view=Modules", icon: Library },
     { label: "Glossary", href: "/learn?view=Glossary", icon: Search },
     { label: "Tools", href: "/tools", icon: Calculator },
-    { label: "Simulator", href: "/market", icon: ChartNoAxesCombined },
+    { label: "Simulator", href: simulatorHref, icon: ChartNoAxesCombined },
     { label: "Progress", href: "/achievements", icon: Trophy },
   ];
   return (
@@ -51,14 +52,14 @@ export default function CompactDashboard({ state }: { state: State }) {
         </span>
         <h1>Learn Trading the Simple Way.</h1>
         <p>
-          Beginner-friendly lessons, hands-on practice, and a guided path to
-          trading confidence.
+          New to trading? Start with one short lesson, try its five-question quiz,
+          then practise with pretend money. No experience needed.
         </p>
         <div className="presentation-actions">
           <Link className="primary" href={`/learn?lesson=${next.id}`}>
             {pathComplete ? "Review Learning" : completed.size ? "Continue Learning" : "Start Learning"} <ArrowRight size={16} />
           </Link>
-          <Link className="secondary" href="/market">
+          <Link className="secondary" href={simulatorHref}>
             Open Simulator
           </Link>
         </div>
@@ -111,6 +112,7 @@ export default function CompactDashboard({ state }: { state: State }) {
         <span><strong>{earnedMilestones.length} milestone{earnedMilestones.length === 1 ? "" : "s"} earned</strong>{nextMilestone ? ` · Next: ${nextMilestone.title} — ${nextMilestone.description}` : " · Keep practicing and exploring your learning path."}</span>
         <Link href="/achievements" className="text-link">View rewards →</Link>
       </div>
+      <div className="beginner-next-note"><strong>Not sure what to click?</strong> {completed.size===0 ? 'Choose Start Learning above. We’ll explain what a stock is, show an example, then guide you through five questions.' : state.trades.length===0 ? 'You’ve started learning. When you’re ready, Open Simulator lets you practise with pretend money—nothing is bought with real cash.' : 'Keep learning with Resume, revisit a tricky word in Glossary, or try a friendly practice game.'}</div>
       <div className="compact-section-heading">
         <h2>{completed.size ? "Your next steps" : "Start here"}</h2>
         <Link href="/learn?view=Tutorials" className="text-link">Watch a quick tour →</Link>
@@ -122,6 +124,12 @@ export default function CompactDashboard({ state }: { state: State }) {
       <div className="home-practice">
         {[
           {
+            title: "Play & study",
+            text: "Solo quests, guided study cards, and live room-code quizzes.",
+            href: "/play",
+            action: "Choose a game",
+          },
+          {
             title: "Practice Lab",
             text: "Try focused chart scenarios.",
             href: "/practice",
@@ -130,7 +138,7 @@ export default function CompactDashboard({ state }: { state: State }) {
           {
             title: "Simulator",
             text: "Practice trades with virtual money.",
-            href: "/market",
+            href: simulatorHref,
             action: "Practice trading",
           },
         ].map((x) => (

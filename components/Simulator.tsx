@@ -61,6 +61,8 @@ import TradeHistory from "./screens/TradeHistory";
 import { Empty } from "./ui/MarketUI";
 import Dialog from "./Dialog";
 import Learning from "./Learning";
+import dynamic from "next/dynamic";
+const PlayAndStudy = dynamic(() => import("./games/PlayAndStudy"), {loading: () => <section className="card"><p>Loading your practice choices…</p></section>});
 import { ExplainTrade } from "./Trading";
 const navigation = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
@@ -71,6 +73,7 @@ const navigation = [
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
+ {href:"/play",label:"Play & study"},
  {href:"/tools",label:"Tools"},
  {href:"/about",label:"About Sprout"},{href:"/learn?view=Tutorials",label:"Tutorials"},
  {href:"/practice",label:"Practice Lab"},{href:"/portfolio",label:"Portfolio"},
@@ -263,7 +266,7 @@ export default function Simulator() {
         </details>
       </aside>
       <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
-      <div className={`main-area ${["learn","dashboard","achievements","tools"].includes(page)?"compact-workspace":""}`}>
+      <div className={`main-area ${["learn","dashboard","achievements","tools","play"].includes(page)?"compact-workspace":""}`}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
@@ -282,7 +285,9 @@ export default function Simulator() {
                 ? stock.company
                 : page === "dashboard"
                   ? "Dashboard"
-                  : page === "history"
+                  : page === "play"
+                    ? "Play & study"
+                    : page === "history"
                     ? "Trade History"
                     : page.charAt(0).toUpperCase() + page.slice(1)}
             </strong>
@@ -326,7 +331,7 @@ export default function Simulator() {
           </div>
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
-        {!["learn","dashboard","achievements","tools"].includes(page)&&!(page==="market"&&!ticker)&&<MarketTicker tick={state.tick} />}
+        {!["learn","dashboard","achievements","tools","play"].includes(page)&&!(page==="market"&&!ticker)&&<MarketTicker tick={state.tick} />}
         <main className="content"><div className="motion-surface" key={`${path}-${searchParams.get("view")||"default"}`}>
           {error && (
             <div className="error" role="alert">
@@ -339,6 +344,7 @@ export default function Simulator() {
           {page === "dashboard" && (
             <CompactDashboard state={state} />
           )}
+          {page === "play" && <PlayAndStudy onSignIn={() => setAuthOpen(true)}/> }
           {page === "learn" && (
             <Learning key={`${subscription.pro}-${searchParams.get("lesson")||searchParams.get("view")||"curriculum"}`} state={state} update={update} firstTrade={firstTrade} />
           )}
@@ -401,6 +407,7 @@ export default function Simulator() {
             "about",
             "dashboard",
             "learn",
+            "play",
             "market",
             "portfolio",
             "practice",
