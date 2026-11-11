@@ -65,7 +65,7 @@ export default function CompactDashboard({ state }: { state: State }) {
             Open Simulator
           </Link>
         </div>
-        <div className="academy-hero-proof"><span><BookOpen size={14}/> {learningModules.length} learning modules</span><span><Library size={14}/> {lessons.length} guided lessons</span></div></div>
+        </div>
         <aside className="academy-session" aria-label="Your next learning session"><div className="academy-session-heading"><span className="academy-live-dot"/> YOUR NEXT SESSION<span className="academy-session-tag">Personal path</span></div><div className="academy-session-graphic" aria-hidden="true"><span className="academy-orbit"/><BookOpen size={48} strokeWidth={1.4}/><span className="academy-floating-note">Learn → Review → Apply</span></div><small>{currentModule.title}</small><h2>{next.title}</h2><div className="academy-session-footer"><span>{completeCount}/{currentModule.ids.length} lessons complete</span><Link href={`/learn?lesson=${next.id}`} aria-label={`Open recommended lesson: ${next.title}`}><ArrowRight size={20}/></Link></div></aside>
       </section>
       <nav className="home-quick" aria-label="Quick access">
