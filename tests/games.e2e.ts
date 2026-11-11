@@ -51,3 +51,10 @@ test('a host and two independent guests complete one synchronized five-question 
   await a.setViewportSize({width:390,height:844});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  }finally{await Promise.all(contexts.map(c=>c.close()));await db.close();}
 });
+
+test('an invite stops pre-join polling so account guidance is not overwritten',async({page})=>{
+ let reads=0;await page.route('**/api/live**',async route=>{if(route.request().method()==='GET'){reads++;await route.fulfill({status:403,contentType:'application/json',body:JSON.stringify({error:'Enter your nickname to join this room.'})});}else await route.fulfill({status:403,contentType:'application/json',body:JSON.stringify({error:'Sign in to host a game. Anyone with a Sprout account can host.'})});});
+ await page.goto('/play?room=TEST22');await expect(page.locator('.live-game [role=alert]')).toContainText('Enter your nickname');await page.getByRole('button',{name:'Create a live room',exact:true}).click();await expect(page.locator('.live-game [role=alert]')).toContainText('Sign in to host a game');
+ // Wait through one would-be poll interval to check this observed error-message race.
+ await page.waitForTimeout(2200);expect(reads).toBe(1);await expect(page.locator('.live-game [role=alert]')).toContainText('Sign in to host a game');
+});

@@ -22,7 +22,7 @@ The legacy `sprouttrading.vercel.app` alias has no server secrets. Its live API 
 
 Unit/API/database tests cover host authentication, forged host IDs, guest cookies, origin checks, legacy forwarding, server-role permissions, room isolation, hidden answers/scores, duplicate scoring, timeouts, and the five-question boundary. Browser tests use three independent contexts (host plus two guests) and the real game SQL in PGlite, including joining, reconnecting, all five rounds and the final board. Other browser checks cover beginner navigation, quests, study, mobile overflow and the unchanged 41-module/159-lesson catalog. The live database RPC permissions and scoring were checked in a rollback-only transaction.
 
-Real-account host login is not automated in these tests; its existing Supabase authentication helper is reused and API tests provide the verified-user fixture. Production guest connectivity is checked separately after deployment with a temporary room that is deleted afterward.
+Real-account host login is not automated in these tests; its existing Supabase authentication helper is reused and API tests provide the verified-user fixture. Production guest connectivity is checked separately after deployment with a temporary room that is ended afterward and follows the normal two-hour expiry and host cleanup lifecycle.
 
 The Supabase advisor's RLS-with-no-policy INFO notices on the three private game tables are intentional deny-all browser access: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy. No permissive policy was added to silence them. Pre-existing notices on unrelated functions and auth settings remain outside this change.
 

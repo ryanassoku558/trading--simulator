@@ -8,7 +8,7 @@ interface Room {code:string;title:string;phase:'waiting'|'question'|'reveal'|'fi
 async function liveRequest(body?:object,code?:string):Promise<Room & {code:string}>{
  const {data}=await supabase.auth.getSession();
  const response=await fetch(body?'/api/live':'/api/live?code='+encodeURIComponent(code||''),{method:body?'POST':'GET',headers:{...(body?{'Content-Type':'application/json'}:{}),...(data.session?{Authorization:`Bearer ${data.session.access_token}`}:{})},body:body?JSON.stringify(body):undefined,cache:'no-store'});
- let result;try{result=await response.json();}catch{throw Error('The game service is temporarily unavailable. Please try again.');}if(!response.ok)throw Error(result.error||'Unable to reach the game.');return result;
+ let result;try{result=await response.json();}catch{throw Error('The game service is temporarily unavailable. Please try again.');}if(!response.ok)throw Object.assign(Error(result.error||'Unable to reach the game.'),{status:response.status});return result;
 }
 export default function LiveGame({initialRoom='',onSignIn}:{initialRoom?:string;onSignIn:()=>void}){
  const router=useRouter();const [activeCode,setActiveCode]=useState(initialRoom),[code,setCode]=useState(initialRoom),[nickname,setNickname]=useState(''),[pack,setPack]=useState('0'),[seconds,setSeconds]=useState(45),[room,setRoom]=useState<Room|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[countdown,setCountdown]=useState(0),[copied,setCopied]=useState(false);
@@ -16,7 +16,7 @@ export default function LiveGame({initialRoom='',onSignIn}:{initialRoom?:string;
  const accept=useCallback((next:Room)=>{if(roomRef.current?.code===next.code&&Date.parse(next.serverNow)<Date.parse(roomRef.current.serverNow))return;offset.current=Date.parse(next.serverNow)-Date.now();roomRef.current=next;setRoom(next);},[]);
  useEffect(()=>{
   if(!activeCode)return;let cancelled=false,timer:ReturnType<typeof setTimeout>;
-  const poll=async()=>{try{const next=await liveRequest(undefined,activeCode);if(!cancelled){accept(next);setError('');}}catch(e){if(!cancelled)setError(e instanceof Error?e.message:'Reconnecting…');}finally{if(!cancelled)timer=setTimeout(poll,2000);}};
+  const poll=async()=>{try{const next=await liveRequest(undefined,activeCode);if(!cancelled){accept(next);setError('');}}catch(e){if(!cancelled){if(!actionBusy.current)setError(e instanceof Error?e.message:'Reconnecting…');if(!roomRef.current&&[403,404].includes((e as {status?:number}).status??0))setActiveCode('');}}finally{if(!cancelled)timer=setTimeout(poll,2000);}};
   void poll();return()=>{cancelled=true;clearTimeout(timer);};
  },[activeCode,accept]);
  useEffect(()=>{const tick=()=>{const current=roomRef.current;setCountdown(current?.phase==='question'&&current.endsAt?Math.max(0,Math.ceil((Date.parse(current.endsAt)-Date.now()-offset.current)/1000)):0);};tick();const timer=setInterval(tick,250);return()=>clearInterval(timer);},[]);
