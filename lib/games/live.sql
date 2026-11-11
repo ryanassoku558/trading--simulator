@@ -7,10 +7,10 @@ create table sprout_live.rooms (
  code text unique not null check(code ~ '^[A-HJ-NP-Z2-9]{6}$'),
  host_id uuid not null references auth.users(id) on delete cascade,
  title text not null,
- questions jsonb not null check(jsonb_typeof(questions)='array' and jsonb_array_length(questions) between 1 and 20),
+ questions jsonb not null check(jsonb_typeof(questions)='array' and jsonb_array_length(questions)>0),
  phase text not null default 'waiting' check(phase in ('waiting','question','reveal','finished')),
- question_index integer not null default 0 check(question_index between 0 and 19),
- seconds integer not null default 45 check(seconds in (30,45,60)),
+ question_index integer not null default 0 check(question_index>=0),
+ seconds integer not null default 45 check(seconds in (5,10,15,20,30,45,60,90,120,240)),
  ends_at timestamptz,
  expires_at timestamptz not null default now()+interval '2 hours',
  created_at timestamptz not null default now()
@@ -115,6 +115,7 @@ begin
  ) x;
  select * into a from sprout_live.answers where room_id=r.id and player_id=p.id and question_index=r.question_index;
  return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,
+  'answerDistribution',case when phase_now='reveal' then (select coalesce(jsonb_object_agg(choice,n),'{}'::jsonb) from (select choice,count(*) n from sprout_live.answers where room_id=r.id and question_index=r.question_index group by choice) c) else null end,
   'answeredCount',(select count(*) from sprout_live.answers where room_id=r.id and question_index=r.question_index),
   'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,
   'self',case when p.id is null then null else jsonb_build_object('nickname',p.nickname,'submitted',a.player_id is not null,'choice',a.choice) || case when phase_now in ('reveal','finished') then jsonb_build_object('correct',a.correct,'points',a.points) else '{}'::jsonb end end);

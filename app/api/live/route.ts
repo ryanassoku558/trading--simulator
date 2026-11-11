@@ -29,8 +29,8 @@ export async function GET(request:NextRequest){try{
 }catch(error){return errorResponse(error);}}
 export async function POST(request:NextRequest){try{
  const origin=request.headers.get('origin');if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:'Open the game on this website to continue.'},{status:403,headers:noStore});
- if(Number(request.headers.get('content-length')||0)>32768)throw Error('Request is too large.');
- const text=await request.text();if(Buffer.byteLength(text,'utf8')>32768)throw Error('Request is too large.');
+ if(Number(request.headers.get('content-length')||0)>2097152)throw Error('This quiz exceeds the 2 MB upload size. Shorten some question text and try again.');
+ const text=await request.text();if(Buffer.byteLength(text,'utf8')>2097152)throw Error('This quiz exceeds the 2 MB upload size. Shorten some question text and try again.');
  const proxied=await legacyProxy(request,text);if(proxied)return proxied;
  const body=JSON.parse(text);
  const db=admin();let secret=request.cookies.get(cookieName)?.value;
@@ -40,11 +40,12 @@ export async function POST(request:NextRequest){try{
   if(!request.headers.has('authorization'))throw Object.assign(Error('Sign in to host a game. Anyone with a Sprout account can host.'),{code:'42501'});
   const {user}=await identify(request);
   const pack=gamePacks.find(p=>p.id===body.pack);if(!pack)throw Error('Choose a quiz topic.');
+  const title=typeof body.title==='string'&&body.title.trim()?body.title.trim():pack.title;if(title.length>80)throw Error('Keep the quiz title under 80 characters.');
   const questions=validateQuestions(body.questions??gameQuestions(pack.id));
-  const seconds=[30,45,60].includes(body.seconds)?body.seconds:45;
+  const seconds=[5,10,15,20,30,45,60,90,120,240].includes(body.seconds)?body.seconds:45;
   let code='';for(let attempt=0;attempt<3;attempt++){
    const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';code=Array.from({length:6},()=>alphabet[randomInt(alphabet.length)]).join('');
-   const {error}=await db.rpc('sprout_live_create',{p_host:user.id,p_code:code,p_title:pack.title,p_questions:questions,p_seconds:seconds});
+   const {error}=await db.rpc('sprout_live_create',{p_host:user.id,p_code:code,p_title:title,p_questions:questions,p_seconds:seconds});
    if(!error)break;if(error.code!=='23505'||attempt===2)throw error;
   }
   result={code};

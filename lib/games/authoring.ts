@@ -1,6 +1,6 @@
 export interface LiveQuestion {question:string;options:string[];answer:number;explanation:string}
 export function validateQuestions(value:unknown):LiveQuestion[]{
- if(!Array.isArray(value)||value.length<1||value.length>20)throw Error('Choose between 1 and 20 questions.');
+ if(!Array.isArray(value)||value.length<1)throw Error('Add at least one question.');
  return value.map((item,i)=>{
   const q=item as Partial<LiveQuestion>|null;
   if(!q||typeof q.question!=='string'||!q.question.trim()||q.question.length>300)throw Error(`Question ${i+1} needs a question (up to 300 characters).`);

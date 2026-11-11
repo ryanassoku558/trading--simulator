@@ -30,6 +30,6 @@ it('legacy alias forwards only live-game requests to the fixed primary service w
 
 it('accepts the host’s custom answer key and rejects invalid quizzes before room creation',async()=>{
  const questions=[{question:'Custom question',options:['First','Second','Third','Fourth'],answer:3,explanation:'Fourth is correct.'}];
- const response=await POST(request({action:'create',pack:'0',questions},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.rpc.mock.calls[0][1].p_questions).toEqual(questions);
+ const response=await POST(request({action:'create',pack:'0',title:'My own quiz',seconds:120,questions:Array(25).fill(questions[0])},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.rpc.mock.calls[0][1].p_questions).toEqual(Array(25).fill(questions[0]));expect(mock.rpc.mock.calls[0][1].p_title).toBe('My own quiz');expect(mock.rpc.mock.calls[0][1].p_seconds).toBe(120);
  mock.rpc.mockClear();const invalid=await POST(request({action:'create',pack:'0',questions:[{...questions[0],answer:4}]},{authorization:'Bearer verified-session'}));expect(invalid.status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
 });

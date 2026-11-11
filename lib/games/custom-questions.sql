@@ -1,5 +1,6 @@
-alter table sprout_live.rooms drop constraint rooms_questions_check, add constraint rooms_questions_check check(jsonb_typeof(questions)='array' and jsonb_array_length(questions) between 1 and 20);
-alter table sprout_live.rooms drop constraint rooms_question_index_check, add constraint rooms_question_index_check check(question_index between 0 and 19);
+alter table sprout_live.rooms drop constraint rooms_questions_check, add constraint rooms_questions_check check(jsonb_typeof(questions)='array' and jsonb_array_length(questions)>0);
+alter table sprout_live.rooms drop constraint rooms_question_index_check, add constraint rooms_question_index_check check(question_index>=0);
+alter table sprout_live.rooms drop constraint rooms_seconds_check, add constraint rooms_seconds_check check(seconds in (5,10,15,20,30,45,60,90,120,240));
 create or replace function public.sprout_live_action(p_code text,p_token text,p_host uuid,p_action text,p_index integer default 0,p_choice integer default null,p_nickname text default null)
 returns jsonb language plpgsql security invoker set search_path='' as $$
 declare r sprout_live.rooms; p sprout_live.players; q jsonb; pts integer; right_answer boolean;
@@ -61,6 +62,7 @@ begin
  ) x;
  select * into a from sprout_live.answers where room_id=r.id and player_id=p.id and question_index=r.question_index;
  return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,
+  'answerDistribution',case when phase_now='reveal' then (select coalesce(jsonb_object_agg(choice,n),'{}'::jsonb) from (select choice,count(*) n from sprout_live.answers where room_id=r.id and question_index=r.question_index group by choice) c) else null end,
   'answeredCount',(select count(*) from sprout_live.answers where room_id=r.id and question_index=r.question_index),
   'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,
   'self',case when p.id is null then null else jsonb_build_object('nickname',p.nickname,'submitted',a.player_id is not null,'choice',a.choice) || case when phase_now in ('reveal','finished') then jsonb_build_object('correct',a.correct,'points',a.points) else '{}'::jsonb end end);
