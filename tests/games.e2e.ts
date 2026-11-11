@@ -58,3 +58,29 @@ test('an invite stops pre-join polling so account guidance is not overwritten',a
  // Wait through one would-be poll interval to check this observed error-message race.
  await page.waitForTimeout(2200);expect(reads).toBe(1);await expect(page.locator('.live-game [role=alert]')).toContainText('Sign in to host a game');
 });
+
+test('host drafts survive refresh, keep topic edits, reorder and preview without creating a room',async({page})=>{
+ let requests=0;await page.route('**/api/live**',r=>{requests++;return r.fulfill({status:403,contentType:'application/json',body:JSON.stringify({error:'Sign in to host.'})});});
+ await page.goto('/play');await page.getByRole('button',{name:'Live quiz',exact:true}).click();
+ await page.getByRole('textbox',{name:'Quiz name',exact:true}).fill('My saved quiz');
+ await page.locator('.live-editor summary').first().click();
+ await page.getByRole('textbox',{name:'Question 1',exact:true}).fill('My custom question');
+ await page.getByRole('button',{name:'Duplicate question 1',exact:true}).click();
+ await page.getByRole('button',{name:'Move question 1 down',exact:true}).click();
+ await page.getByRole('textbox',{name:'Question 1',exact:true}).fill('First question after reordering');
+ await page.getByLabel('Quiz topic',{exact:true}).selectOption('1');
+ await expect(page.getByRole('textbox',{name:'Question 1',exact:true})).toHaveValue('First question after reordering');
+ // An unfinished custom question is still a valid saved draft.
+ await page.getByRole('button',{name:'＋ Add question',exact:true}).click();
+ await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sprout-live-draft-v1')||'{}').questions?.length)).toBe(7);
+ await page.reload();await page.getByRole('button',{name:'Live quiz',exact:true}).click();
+ await expect(page.getByRole('textbox',{name:'Quiz name',exact:true})).toHaveValue('My saved quiz');
+ await expect(page.getByRole('spinbutton',{name:'Number of questions',exact:true})).toHaveValue('7');
+ await page.getByRole('button',{name:'Preview quiz',exact:true}).click();await expect(page.locator('.live-quiz-builder [role=alert]')).toContainText('Question 7 needs a question');await expect(page.getByRole('textbox',{name:'Question 7',exact:true})).toBeFocused();
+ await page.getByRole('button',{name:'Remove question 7',exact:true}).click();
+ await page.getByRole('button',{name:'Preview quiz',exact:true}).click();await expect(page.getByRole('heading',{name:'Quiz preview',exact:true})).toBeFocused();
+ const preview=page.getByRole('region',{name:'Quiz preview',exact:true});await expect(preview).toContainText('First question after reordering');
+ await page.getByRole('button',{name:'Show preview answer',exact:true}).click();await expect(preview.locator('.correct-answer')).toHaveCount(1);
+ await page.getByRole('button',{name:'Next preview question',exact:true}).click();await expect(preview).toContainText('My custom question');await expect(preview.locator('.correct-answer')).toHaveCount(0);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(requests).toBe(0);
+});

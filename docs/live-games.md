@@ -35,3 +35,11 @@ Hosts can edit every question, provide 2–4 distinct answer choices, mark the c
 Incremental hosted migration: `lib/games/custom-questions.sql` (`sprout_live_custom_question_counts`). Existing five-question rooms remain valid. The hosted one-question custom answer/reveal/finish flow passed in a rollback-only transaction.
 
 Follow-up migration `sprout_live_open_question_count` removes the count/index ceiling and adds reveal-only answer distributions. Upload size is bounded to 2 MiB; there is no 20-question product limit.
+
+## Host preparation
+
+`QuizBuilder` keeps one versioned draft in this browser's local storage, including unfinished questions, title, topic and timer. Edits save after a 500 ms pause; room creation also saves immediately. This is device-local storage, not account or cloud sync. Unsupported or damaged saved data is preserved until the user explicitly replaces it. Storage failures show a message instead of claiming success.
+
+Hosts can move, duplicate and remove questions. Selecting a topic only changes the source for the “Add 5 from this topic” button, so it cannot silently replace edited questions. The inline preview validates the quiz and shows each question, answer tiles and an optional correct-answer reveal without creating a room or making a live API request. An incomplete question opens automatically when validation fails. Live guests still receive only the current question from the server.
+
+Draft parser tests cover incomplete work, invalid formats, size bounds and more than twenty questions. Browser coverage checks refresh restoration, topic changes, order, duplication, validation focus, preview answer visibility and mobile layout. Leaving a room exits full-screen mode; new-round timers update immediately when a snapshot arrives.
