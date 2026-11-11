@@ -7,9 +7,9 @@ create table sprout_live.rooms (
  code text unique not null check(code ~ '^[A-HJ-NP-Z2-9]{6}$'),
  host_id uuid not null references auth.users(id) on delete cascade,
  title text not null,
- questions jsonb not null check(jsonb_typeof(questions)='array' and jsonb_array_length(questions)=5),
+ questions jsonb not null check(jsonb_typeof(questions)='array' and jsonb_array_length(questions) between 1 and 20),
  phase text not null default 'waiting' check(phase in ('waiting','question','reveal','finished')),
- question_index integer not null default 0 check(question_index between 0 and 4),
+ question_index integer not null default 0 check(question_index between 0 and 19),
  seconds integer not null default 45 check(seconds in (30,45,60)),
  ends_at timestamptz,
  expires_at timestamptz not null default now()+interval '2 hours',
@@ -92,7 +92,7 @@ begin
  elsif p_action='reveal' and r.phase='question' and p_index=r.question_index then
   update sprout_live.rooms set phase='reveal' where id=r.id;
  elsif p_action='next' and p_index=r.question_index and (r.phase='reveal' or (r.phase='question' and r.ends_at<=now())) then
-  if r.question_index=4 then update sprout_live.rooms set phase='finished' where id=r.id;
+  if r.question_index=jsonb_array_length(r.questions)-1 then update sprout_live.rooms set phase='finished' where id=r.id;
   else update sprout_live.rooms set phase='question',question_index=question_index+1,ends_at=now()+make_interval(secs=>r.seconds) where id=r.id; end if;
  else raise exception 'The room has already moved on. Refresh the game.'; end if;
  return jsonb_build_object('ok',true);
@@ -114,7 +114,7 @@ begin
   from sprout_live.players lp left join sprout_live.answers la on la.player_id=lp.id and la.room_id=r.id and la.question_index=r.question_index where lp.room_id=r.id
  ) x;
  select * into a from sprout_live.answers where room_id=r.id and player_id=p.id and question_index=r.question_index;
- return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',5,'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,
+ return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,
   'answeredCount',(select count(*) from sprout_live.answers where room_id=r.id and question_index=r.question_index),
   'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,
   'self',case when p.id is null then null else jsonb_build_object('nickname',p.nickname,'submitted',a.player_id is not null,'choice',a.choice) || case when phase_now in ('reveal','finished') then jsonb_build_object('correct',a.correct,'points',a.points) else '{}'::jsonb end end);

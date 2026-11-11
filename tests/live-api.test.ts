@@ -27,3 +27,9 @@ it('legacy alias forwards only live-game requests to the fixed primary service w
  const response=await POST(new NextRequest('https://sprouttrading.vercel.app/api/live',{method:'POST',headers:{origin:'https://sprouttrading.vercel.app','content-type':'application/json'},body:JSON.stringify({action:'join',code:'TEST22',nickname:'Guest'})}));
  expect(response.status).toBe(200);expect(upstream.mock.calls[0][0]).toBe('https://sprout-trading.vercel.app/api/live');expect(response.headers.get('set-cookie')).toContain('HttpOnly');expect(mock.rpc).not.toHaveBeenCalled();
 });
+
+it('accepts the host’s custom answer key and rejects invalid quizzes before room creation',async()=>{
+ const questions=[{question:'Custom question',options:['First','Second','Third','Fourth'],answer:3,explanation:'Fourth is correct.'}];
+ const response=await POST(request({action:'create',pack:'0',questions},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.rpc.mock.calls[0][1].p_questions).toEqual(questions);
+ mock.rpc.mockClear();const invalid=await POST(request({action:'create',pack:'0',questions:[{...questions[0],answer:4}]},{authorization:'Bearer verified-session'}));expect(invalid.status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
+});

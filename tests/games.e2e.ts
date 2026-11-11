@@ -19,7 +19,7 @@ test('beginner home leads into bounded solo quests and guided study',async({page
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
-test('a host and two independent guests complete one synchronized five-question game',async({browser,baseURL})=>{
+test('a host and two independent guests complete one synchronized custom three-question game',async({browser,baseURL})=>{
  test.setTimeout(90000);const db=new PGlite(),contexts:BrowserContext[]=[];
  const hostId='00000000-0000-4000-8000-000000000001';
  try{
@@ -29,23 +29,23 @@ test('a host and two independent guests complete one synchronized five-question 
   for(const context of contexts){await context.route('**/api/live**',async route=>{
    try{
     const req=route.request(),body=req.method()==='POST'?req.postDataJSON():null,isHost=context===hostContext,code=body?.code||new URL(req.url()).searchParams.get('code');let result;
-    if(body?.action==='create'){await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[hostId,'TEST22','Market Basics',JSON.stringify(gameQuestions('0')),45]);result={code:'TEST22'};}
+    if(body?.action==='create'){await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[hostId,'TEST22','Market Basics',JSON.stringify(body.questions??gameQuestions('0')),45]);result={code:'TEST22'};}
     else if(body){const answer=await db.query<{value:object}>('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7) as value',[code,hashes.get(context),isHost?hostId:null,body.action,body.index??0,body.choice??null,body.nickname??null]);result={...answer.rows[0].value,code};}
     else result=(await db.query<{value:object}>('select public.sprout_live_snapshot($1,$2,$3) as value',[code,hashes.get(context),isHost?hostId:null])).rows[0].value;
     await route.fulfill({contentType:'application/json',body:JSON.stringify(result)});
    }catch(e){await route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({error:e instanceof Error?e.message:'Test request failed'})});}
   });}
   const host=await hostContext.newPage(),a=await aContext.newPage(),b=await bContext.newPage();
-  await host.goto('/play');await host.getByRole('button',{name:'Live quiz',exact:true}).click();await host.getByRole('button',{name:'Create a live room',exact:true}).click();await expect(host.getByRole('heading',{name:'Your room is ready. Invite your players.',exact:true})).toBeVisible();
+  await host.goto('/play');await host.getByRole('button',{name:'Live quiz',exact:true}).click();await host.getByRole('spinbutton',{name:'Number of questions',exact:true}).fill('3');await host.locator('.live-editor summary').first().click();await host.getByRole('textbox',{name:'Question 1',exact:true}).fill('Which answer did the host choose?');await host.getByRole('radio',{name:'Question 1 correct answer 2',exact:true}).check();await host.getByRole('button',{name:'Create a live room',exact:true}).click();await expect(host.getByRole('heading',{name:'Your room is ready. Invite your players.',exact:true})).toBeVisible();
   for(const [page,nickname] of [[a,'Alpha'],[b,'Beta']] as const){await page.goto('/play?room=TEST22');await page.getByRole('textbox',{name:'Your nickname',exact:true}).fill(nickname);await page.getByRole('button',{name:'Join with code',exact:true}).click();await expect(page.getByRole('heading',{name:'You’re in! Wait for the host to start.',exact:true})).toBeVisible();}
   await a.reload();await expect(a.getByRole('heading',{name:'You’re in! Wait for the host to start.',exact:true})).toBeVisible();
-  await host.getByRole('button',{name:'Start five-question game',exact:true}).click();
-  const questions=gameQuestions('0');
-  for(let i=0;i<5;i++){
-   for(const page of [a,b]){await expect(page.getByText(`Question ${i+1} of 5`,{exact:true})).toBeVisible();await page.locator('.live-answer').nth(questions[i].answer).click();await expect(page.getByText(/Answer saved. Wait for the reveal./)).toBeVisible();}
+  await host.getByRole('button',{name:'Start 3-question game',exact:true}).click();
+  const questions=gameQuestions('0').slice(0,3);questions[0].answer=1;
+  for(let i=0;i<3;i++){
+   for(const page of [a,b]){await expect(page.getByText(`Question ${i+1} of 3`,{exact:true})).toBeVisible();await page.locator('.live-answer').nth(questions[i].answer).click();await expect(page.getByText(/Answer saved. Wait for the reveal./)).toBeVisible();}
    await expect(host.getByText(/2\/2 answered/)).toBeVisible();await host.getByRole('button',{name:'Reveal answer',exact:true}).click();
    for(const page of [a,b])await expect(page.getByRole('heading',{name:'Correct—nice work!',exact:true})).toBeVisible();
-   await host.getByRole('button',{name:i===4?'Show final results':'Next question',exact:true}).click();
+   await host.getByRole('button',{name:i===2?'Show final results':'Next question',exact:true}).click();
   }
   for(const page of [host,a,b]){await expect(page.getByRole('heading',{name:'Game complete! Everyone learned something.',exact:true})).toBeVisible();await expect(page.getByRole('heading',{name:'Final leaderboard',exact:true})).toBeVisible();await expect(page.locator('.live-scoreboard li')).toHaveCount(2);}
   await a.setViewportSize({width:390,height:844});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
