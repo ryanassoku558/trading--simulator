@@ -1,6 +1,7 @@
 "use client";
+import QuizTopicPicker from './QuizTopicPicker';
 import {useEffect,useRef,useState} from 'react';
-import {gamePacks,gameQuestions} from '@/lib/games/content';
+import {gameQuestions,topicQuestions} from '@/lib/games/content';
 import {validateQuestions,type LiveQuestion} from '@/lib/games/authoring';
 import {emptyQuestion,parseQuizDraft,quizDraftKey,quizTimers,quizUploadLimit,type QuizDraft} from '@/lib/games/draft';
 const initialDraft=():QuizDraft=>({version:1,title:'',pack:'0',seconds:45,questions:gameQuestions('0')});
@@ -16,13 +17,13 @@ export default function QuizBuilder({busy,onSignIn,onCreate}:{busy:boolean;onSig
  function resize(n:number){if(!Number.isSafeInteger(n)||n<1)return;const estimated=JSON.stringify(draft).length+Math.max(0,n-draft.questions.length)*(JSON.stringify(emptyQuestion()).length+1);if(estimated>quizUploadLimit){setError('This quiz exceeds the upload size. Shorten some content and try again.');return;}updateQuestions(Array.from({length:n},(_,i)=>draft.questions[i]??emptyQuestion()));}
  function move(index:number,delta:number){const questions=[...draft.questions];[questions[index],questions[index+delta]]=[questions[index+delta],questions[index]];updateQuestions(questions);}
  function check(){try{validateQuestions(draft.questions);setError('');return true;}catch(e){const message=e instanceof Error?e.message:'Check your questions.';setError(message);const number=/Question (\d+)|question (\d+)/.exec(message);if(number){const detail=editor.current?.querySelectorAll('details')[Number(number[1]??number[2])-1];if(detail){detail.open=true;detail.scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});detail.querySelector<HTMLTextAreaElement>('textarea')?.focus();}}return false;}}
- const q=draft.questions[previewIndex];
+ const q=draft.questions[previewIndex],topicBank=topicQuestions(draft.pack);
  return <form className="live-quiz-builder" onSubmit={e=>{e.preventDefault();if(check()){if(!storageBlocked){try{localStorage.setItem(quizDraftKey,JSON.stringify(draft));setSaveStatus('Draft saved on this device.');}catch{setSaveStatus('Draft could not be saved on this device.');}}void onCreate(draft);}}}>
   <h3>Host a game</h3><p className="small">Every Sprout account can host. Build your quiz, preview it, then share the room code.</p><button type="button" className="text-link" onClick={onSignIn}>Sign in or create an account</button>
   <p className="small live-draft-status" role="status">{saveStatus||'Preparing your quiz…'} Your draft stays in this browser; it does not sync between devices.</p>
   {storageBlocked&&<button type="button" className="secondary" onClick={()=>{setStorageBlocked(false);setSaveStatus('Saving your current draft…');}}>Replace saved copy with this draft</button>}
   <label>Quiz name<input aria-label="Quiz name" maxLength={80} value={draft.title} onChange={e=>patch({title:e.target.value})} placeholder="Give your quiz a name"/></label>
-  <label>Quiz topic<select aria-label="Quiz topic" value={draft.pack} onChange={e=>patch({pack:e.target.value})}>{gamePacks.map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></label><p className="small">Changing topics keeps your edited questions. Use “Add 5 from this topic” to include that topic’s questions.</p>
+  <QuizTopicPicker value={draft.pack} onChange={pack=>patch({pack})}/><p className="small">{topicBank.length} question{topicBank.length===1?'':'s'} available in this topic. Changing topics keeps your edits. Use topic questions to replace the quiz, or add them to mix topics.</p>
   <label>Number of questions<input aria-label="Number of questions" type="number" min={1} value={draft.questions.length} onChange={e=>resize(Number(e.target.value))}/></label>
   <p className="small">Add as many questions as you need. Select the correct answer for each question, then preview your quiz.</p>
   <div className="live-editor" ref={editor}>{draft.questions.map((question,i)=><details key={i}><summary>Question {i+1}: {question.question||'Write your question'}</summary>
@@ -32,7 +33,7 @@ export default function QuizBuilder({busy,onSignIn,onCreate}:{busy:boolean;onSig
    </fieldset><label>Explanation (optional)<textarea maxLength={600} value={question.explanation} onChange={e=>changeQuestion(i,{explanation:e.target.value})}/></label>
    <div className="live-question-tools"><button type="button" className="secondary" aria-label={`Move question ${i+1} up`} disabled={i===0} onClick={()=>move(i,-1)}>↑ Move up</button><button type="button" className="secondary" aria-label={`Move question ${i+1} down`} disabled={i===draft.questions.length-1} onClick={()=>move(i,1)}>↓ Move down</button><button type="button" className="secondary" aria-label={`Duplicate question ${i+1}`} onClick={()=>updateQuestions([...draft.questions.slice(0,i+1),{...question,options:[...question.options]},...draft.questions.slice(i+1)])}>Duplicate</button><button type="button" className="text-link" aria-label={`Remove question ${i+1}`} disabled={draft.questions.length===1} onClick={()=>updateQuestions(draft.questions.filter((_,j)=>j!==i))}>Remove question</button></div>
   </details>)}</div>
-  <div className="live-builder-actions"><button type="button" className="secondary" onClick={()=>updateQuestions([...draft.questions,emptyQuestion()])}>＋ Add question</button><button type="button" className="secondary" onClick={()=>updateQuestions([...draft.questions,...gameQuestions(draft.pack)])}>Add 5 from this topic</button></div>
+  <div className="live-builder-actions"><button type="button" className="secondary" onClick={()=>updateQuestions([...draft.questions,emptyQuestion()])}>＋ Add question</button><button type="button" className="secondary" onClick={()=>updateQuestions(topicBank)}>Use topic questions</button><button type="button" className="secondary" onClick={()=>updateQuestions([...draft.questions,...topicBank])}>Add topic questions</button></div>
   <label>Time per question<select aria-label="Time per question" value={draft.seconds} onChange={e=>patch({seconds:Number(e.target.value)})}>{quizTimers.map(s=><option key={s} value={s}>{s} seconds</option>)}</select></label>
   <div className="live-builder-actions"><button ref={previewTrigger} type="button" className="secondary" onClick={()=>{if(check()){setPreviewIndex(0);setShowAnswer(false);setPreview(true);}}}>Preview quiz</button><button className="primary" disabled={busy||!ready}>{busy?'Creating room…':'Create a live room'}</button></div><p className="small">{draft.questions.length} questions · up to 50 players · rooms expire after 2 hours</p>
   {error&&<p role="alert" className="error">{error}</p>}

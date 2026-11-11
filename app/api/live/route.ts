@@ -1,7 +1,7 @@
 import {NextRequest,NextResponse} from 'next/server';
 import {createHash,randomBytes,randomInt} from 'node:crypto';
 import {admin,identify} from '@/lib/billing/server';
-import {gamePacks,gameQuestions} from '@/lib/games/content';
+import {gamePacks,topicQuestions} from '@/lib/games/content';
 import {validateQuestions} from '@/lib/games/authoring';
 const cookieName='sprout-live-player';
 const noStore={'Cache-Control':'no-store'};
@@ -41,7 +41,7 @@ export async function POST(request:NextRequest){try{
   const {user}=await identify(request);
   const pack=gamePacks.find(p=>p.id===body.pack);if(!pack)throw Error('Choose a quiz topic.');
   const title=typeof body.title==='string'&&body.title.trim()?body.title.trim():pack.title;if(title.length>80)throw Error('Keep the quiz title under 80 characters.');
-  const questions=validateQuestions(body.questions??gameQuestions(pack.id));
+  const questions=validateQuestions(body.questions??topicQuestions(pack.id));
   const seconds=[5,10,15,20,30,45,60,90,120,240].includes(body.seconds)?body.seconds:45;
   let code='';for(let attempt=0;attempt<3;attempt++){
    const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';code=Array.from({length:6},()=>alphabet[randomInt(alphabet.length)]).join('');

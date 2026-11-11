@@ -84,3 +84,16 @@ test('host drafts survive refresh, keep topic edits, reorder and preview without
  await page.getByRole('button',{name:'Next preview question',exact:true}).click();await expect(preview).toContainText('My custom question');await expect(preview.locator('.correct-answer')).toHaveCount(0);
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(requests).toBe(0);
 });
+
+test('quiz topics cover the full curriculum and support module, lesson and mixed-topic games',async({page})=>{
+ await page.goto('/play');await page.getByRole('button',{name:'Live quiz',exact:true}).click();
+ const picker=page.locator('.live-quiz-builder .quiz-topic-picker'),select=picker.getByRole('combobox',{name:'Quiz topic',exact:true});
+ await expect(picker).toContainText('41 modules · 159 lessons');await expect(select.locator('optgroup[label="Modules"] option')).toHaveCount(41);await expect(select.locator('optgroup[label="Lessons"] option')).toHaveCount(159);
+ await select.selectOption('40');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();
+ const moduleQuestions=await page.locator('.live-editor details').count();expect(moduleQuestions).toBeGreaterThan(0);
+ await picker.getByRole('searchbox',{name:'Find a module or lesson',exact:true}).fill('What is a stock?');await select.selectOption('lesson:1');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Number of questions',exact:true})).toHaveValue('1');await expect(page.locator('.live-editor summary')).toContainText('What does a share represent?');
+ await picker.getByRole('searchbox').fill('');await select.selectOption('40');await page.getByRole('button',{name:'Add topic questions',exact:true}).click();await expect(page.locator('.live-editor details')).toHaveCount(moduleQuestions+1);
+ await page.getByRole('button',{name:'Preview quiz',exact:true}).click();await expect(page.getByRole('region',{name:'Quiz preview',exact:true})).toBeVisible();
+ await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('sprout-live-draft-v1')||'{}').pack)).toBe('40');await page.reload();await page.getByRole('button',{name:'Live quiz',exact:true}).click();await expect(page.getByRole('combobox',{name:'Quiz topic',exact:true})).toHaveValue('40');
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

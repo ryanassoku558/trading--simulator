@@ -9,7 +9,7 @@ afterEach(()=>{vi.unstubAllEnvs();vi.unstubAllGlobals();});
 beforeEach(()=>{vi.clearAllMocks();mock.rpc.mockResolvedValue({data:{ok:true},error:null});mock.identify.mockResolvedValue({user:{id:host}});});
 it('requires an account to host and ignores a forged host id in the body',async()=>{
  expect((await POST(request({action:'create',pack:'0',host_id:host}))).status).toBe(403);expect(mock.rpc).not.toHaveBeenCalled();
- const response=await POST(request({action:'create',pack:'0',host_id:'fake'},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.identify).toHaveBeenCalledOnce();expect(mock.rpc.mock.calls[0][1].p_host).toBe(host);expect(mock.rpc.mock.calls[0][1].p_questions).toHaveLength(5);
+ const response=await POST(request({action:'create',pack:'0',host_id:'fake'},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.identify).toHaveBeenCalledOnce();expect(mock.rpc.mock.calls[0][1].p_host).toBe(host);expect(mock.rpc.mock.calls[0][1].p_questions).toHaveLength(4);
 });
 it('joins without an account and keeps the random player secret in an HttpOnly cookie',async()=>{
  const response=await POST(request({action:'join',code:'TEST22',nickname:'Guest'}));expect(response.status).toBe(200);expect(mock.identify).not.toHaveBeenCalled();expect(mock.rpc.mock.calls[0][1].p_token).toHaveLength(64);expect(mock.rpc.mock.calls[0][1].p_host).toBeNull();expect(response.headers.get('set-cookie')).toContain('HttpOnly');expect(response.headers.get('set-cookie')).toContain('Secure');expect(await response.json()).toEqual({ok:true,code:'TEST22'});
@@ -32,4 +32,8 @@ it('accepts the host’s custom answer key and rejects invalid quizzes before ro
  const questions=[{question:'Custom question',options:['First','Second','Third','Fourth'],answer:3,explanation:'Fourth is correct.'}];
  const response=await POST(request({action:'create',pack:'0',title:'My own quiz',seconds:120,questions:Array(25).fill(questions[0])},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.rpc.mock.calls[0][1].p_questions).toEqual(Array(25).fill(questions[0]));expect(mock.rpc.mock.calls[0][1].p_title).toBe('My own quiz');expect(mock.rpc.mock.calls[0][1].p_seconds).toBe(120);
  mock.rpc.mockClear();const invalid=await POST(request({action:'create',pack:'0',questions:[{...questions[0],answer:4}]},{authorization:'Bearer verified-session'}));expect(invalid.status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
+});
+
+it('creates games from a non-Starter module or an individual lesson',async()=>{
+ for(const pack of ['40','lesson:1']){mock.rpc.mockClear();const response=await POST(request({action:'create',pack},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);const questions=mock.rpc.mock.calls[0][1].p_questions;expect(questions.length).toBeGreaterThan(0);if(pack==='lesson:1'){expect(questions).toHaveLength(1);expect(questions[0].question).toBe('What does a share represent?');}}
 });

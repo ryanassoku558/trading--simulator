@@ -4528,3 +4528,6 @@ input[type=range] {width:100%;accent-color:var(--green);cursor:pointer;}
 .live-quiz-preview .live-answer {min-height:74px;font-size:15px;}
 .live-quiz-preview .live-answer-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
 @media(max-width:600px) {.live-quiz-preview .live-answer-grid {grid-template-columns:1fr;}.live-question-tools button {min-height:40px;}}
+.quiz-topic-picker {display:grid;gap:8px;margin:16px 0;min-width:0;}
+.quiz-topic-picker input,.quiz-topic-picker select {width:100%;min-width:0;max-width:100%;}
+.quiz-topic-picker p {margin:0;}

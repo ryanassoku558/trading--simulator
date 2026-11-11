@@ -4,7 +4,7 @@ The existing Home, curriculum, navigation, accounts and trading experience remai
 
 ## Modes
 
-- Practice quest: five untimed questions from an existing Starter module, answer explanations, a correct-answer streak, and round-only stars. No lesson XP or account balances change.
+- Practice quest: five untimed questions from any existing module or lesson, answer explanations, a correct-answer streak, and round-only stars. No lesson XP or account balances change.
 - Learn & review: six beginner words, examples, understanding checks, and one bounded review of missed terms. Original flashcards, matching and definition quizzes remain available below.
 - Live quiz: any signed-in account can create a room. Guests enter its six-character code and a nickname without creating an account. The host starts, reveals answers and advances the chosen questions, with no fixed question-count cap, with a final leaderboard. Players can refresh to reconnect.
 
@@ -30,7 +30,7 @@ Run `npm test`, `npm run build`, then the browser tests against a running app:
 
 `TEST_BASE_URL=http://127.0.0.1:3000 TEST_CHROMIUM_PATH=/path/to/chromium npx playwright test tests/games.e2e.ts tests/restored-content.e2e.ts tests/focused-feedback.e2e.ts`
 
-Hosts can edit every question, provide 2–4 distinct answer choices, mark the correct answer, and add an optional explanation and quiz name before creating the room. The API normalizes and validates all custom content (300-character questions, 150-character choices, 600-character explanations; 2 MiB upload size limit). Topic presets still start with five existing questions. Hosts can append custom questions or five questions from a topic, choose timers from 5–240 seconds, and enter full-screen mode. Live tiles, question entrances, lobby arrivals, answer-count bars, final-seconds pulses and the winners’ podium respect reduced-motion preferences.
+Hosts can edit every question, provide 2–4 distinct answer choices, mark the correct answer, and add an optional explanation and quiz name before creating the room. The API normalizes and validates all custom content (300-character questions, 150-character choices, 600-character explanations; 2 MiB upload size limit). The topic picker includes all 41 displayed modules and all 159 individual lessons. A module source includes every lesson quiz in that displayed module; a lesson source includes that lesson’s quiz. The original five-question default draft remains available. Hosts can append custom questions or all questions from a topic, choose timers from 5–240 seconds, and enter full-screen mode. Live tiles, question entrances, lobby arrivals, answer-count bars, final-seconds pulses and the winners’ podium respect reduced-motion preferences.
 
 Incremental hosted migration: `lib/games/custom-questions.sql` (`sprout_live_custom_question_counts`). Existing five-question rooms remain valid. The hosted one-question custom answer/reveal/finish flow passed in a rollback-only transaction.
 
@@ -40,6 +40,8 @@ Follow-up migration `sprout_live_open_question_count` removes the count/index ce
 
 `QuizBuilder` keeps one versioned draft in this browser's local storage, including unfinished questions, title, topic and timer. Edits save after a 500 ms pause; room creation also saves immediately. This is device-local storage, not account or cloud sync. Unsupported or damaged saved data is preserved until the user explicitly replaces it. Storage failures show a message instead of claiming success.
 
-Hosts can move, duplicate and remove questions. Selecting a topic only changes the source for the “Add 5 from this topic” button, so it cannot silently replace edited questions. The inline preview validates the quiz and shows each question, answer tiles and an optional correct-answer reveal without creating a room or making a live API request. An incomplete question opens automatically when validation fails. Live guests still receive only the current question from the server.
+Hosts can move, duplicate and remove questions. Selecting a topic only changes the source. “Use topic questions” replaces the quiz with that source’s questions; “Add topic questions” appends them so hosts can combine modules and lessons. A search field filters module and lesson titles, and selecting a source alone cannot silently replace edited questions. The inline preview validates the quiz and shows each question, answer tiles and an optional correct-answer reveal without creating a room or making a live API request. An incomplete question opens automatically when validation fails. Live guests still receive only the current question from the server.
 
 Draft parser tests cover incomplete work, invalid formats, size bounds and more than twenty questions. Browser coverage checks refresh restoration, topic changes, order, duplication, validation focus, preview answer visibility and mobile layout. Leaving a room exits full-screen mode; new-round timers update immediately when a snapshot arrives.
+
+All curriculum topic IDs are accepted by the live API and versioned saved drafts. Existing numeric Starter IDs 0–4 are retained; the remaining displayed modules use numeric IDs 5–40, and individual lessons use `lesson:<id>`. Tests verify every original lesson answer key, every module’s complete lesson set, validation of every live source, search, mixed-topic composition, draft restoration and phone layout. Lesson access rules and the underlying curriculum are unchanged.
