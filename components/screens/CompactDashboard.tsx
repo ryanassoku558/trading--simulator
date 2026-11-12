@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {ClassroomHomePrompt} from "../classroom/Today";
+import {ClassroomHomePrompt} from "../classroom/ClassroomHomePrompt";
 import StudyModes from "../academy/StudyModes";
 import CurriculumCover from "../academy/CurriculumCover";
 import {
