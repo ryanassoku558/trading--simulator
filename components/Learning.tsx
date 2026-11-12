@@ -281,7 +281,7 @@ export default function Learning({
               {lessons.length} lessons · {modules.length} modules
             </span>
           </div>
-          {topic==="Long-term investing"&&<aside className="research-notice"><strong>Your long-term investing journey</strong><p>Start with asset types, build a diversified plan, study businesses, then practice contributions and periodic reviews. Track mastery module by module; your existing progress stays saved.</p><Link href="/market?investing=1">Explore the long-term line chart →</Link></aside>}
+          {topic==="Long-term investing"&&<aside className="research-notice"><strong>Your long-term investing journey</strong><p>Start with asset types, build a diversified plan, study businesses, then practice contributions and periodic reviews. Track mastery module by module; your existing progress stays saved.</p><Link href="/market">Explore charts in the simulator →</Link></aside>}
           <p className="small">
             {pro
               ? "Full curriculum unlocked."

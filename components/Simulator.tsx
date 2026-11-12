@@ -56,8 +56,6 @@ import Community from "./screens/Community";
 import ReferralCard from "./ReferralCard";
 import {Pricing,ProGate,SimulatorMoney,useSubscription,billingRequest} from "./Subscription";
 import VisualTools from "./VisualTools";
-import BudgetGame from "./BudgetGame";
-import FinancialMath from "./FinancialMath";
 import {PsychologyVisuals} from "./PracticeVisuals";
 import About from "./screens/About";
 import Policies,{policyPages} from "./screens/Policies";
@@ -82,7 +80,7 @@ const navigation = [
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
- {href:"/tools",label:"Tools"},{href:"/tools#budget-game",label:"Budget journey"},{href:"/market?view=research",label:"Research"},
+ {href:"/tools",label:"Tools"},{href:"/market?view=research",label:"Research"},
  {href:"/learn?view=Tutorials",label:"Tutorials"},
  {href:"/practice",label:"Practice Lab"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
@@ -400,7 +398,7 @@ export default function Simulator() {
           {page === "market" && <SimulatorMoney state={state} onReset={()=>setReset("simulator")} onRecharge={async()=>{await billingRequest("simulator",{action:"recharge"});retry();setToast("$5,000 virtual cash added.");}}/>}
 </div></details>}
           {page === "community" && <Community state={state} user={user}/>}
-          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your financial toolkit</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><BudgetGame state={state} update={update}/><FinancialMath/><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
+          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
           {page === "about" && <About/>}
           {policyPages.includes(page)&&<Policies page={page}/>}
           {page === "practice" && <Practice state={state} update={update}/>}
@@ -452,7 +450,7 @@ export default function Simulator() {
 
           {page==="profile"&&<ReferralCard/>}
           <footer className="app-footer compact-footer">
-            <nav aria-label="Footer links"><Link href="/classrooms?view=resources">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
+            <nav aria-label="Footer links"><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
           </footer>
         </div></main>
       </div>

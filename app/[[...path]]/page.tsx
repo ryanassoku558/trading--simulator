@@ -5,7 +5,8 @@ export default async function Page({params,searchParams}:{params:Promise<{path?:
   const query=await searchParams;
   if(path?.[0]==="about")redirect("/");
   if(path?.[0]==="learn"&&query.view==="Glossary")redirect("/play?mode=Flashcards");
-  if(path?.[0]==="educators")redirect("/classrooms?view=resources");
+  if(path?.[0]==="classrooms"&&query.view==="resources")redirect("/classrooms");
+  if(path?.[0]==="educators")redirect("/classrooms");
   if(path?.[0]==="today")redirect("/classrooms");
   return <Simulator />;
 }

@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import {useSearchParams} from "next/navigation";
 import {investmentHistory} from "@/lib/market";
 import ConditionalOrder from "../ConditionalOrder";
 import MissionBanner from "../classroom/MissionBanner";
@@ -35,9 +34,8 @@ export default function StockDetail({
   onTrade: (t: Trade) => void;
   guided: boolean;
 }) {
-  const investing=useSearchParams().get("investing")==="1";
-  const [range, setRange] = useState(investing?"5Y":"LIVE");
-  const [chartType, setChartType] = useState<"line" | "candles">(investing?"line":"candles");
+  const [range, setRange] = useState("LIVE");
+  const [chartType, setChartType] = useState<"line" | "candles">("candles");
   return (
     <div className="institutional-simulator"><MissionBanner/>
       <TradingAccountBar state={state}/>
@@ -71,7 +69,6 @@ export default function StockDetail({
               <Delta value={current.change} percent />{" "}
               <span className="muted">simulated last 24 hours</span>
             </p>
-            <div className="investment-mode-entry"><button className="secondary" onClick={()=>{setChartType("line");setRange("5Y");}}>Long-term investing view</button><Link href="/learn?view=Modules&topic=Long-term%20investing">Long-term investing journey →</Link></div>
             <div
               className="chart-type-buttons"
               role="group"
