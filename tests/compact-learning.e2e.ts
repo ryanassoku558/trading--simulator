@@ -61,17 +61,18 @@ test("mobile and dark mode retain accessible persistent navigation", async ({
   await page.getByRole("button", { name: "Toggle navigation" }).click();
   const nav = page.locator("#workspace-navigation");
   await expect(
-    nav.getByRole("link", { name: "Glossary", exact: true }),
+    nav.getByRole("link", { name: "Play & study", exact: true }),
   ).toBeVisible();
-  await nav.getByRole("link", { name: "Glossary", exact: true }).click();
-  await expect(page.locator(".glossary-grid")).toBeVisible();
+  await nav.getByRole("link", { name: "Play & study", exact: true }).click();
+  await page.getByRole("button",{name:"Flashcards",exact:true}).click();
+  await expect(page.locator(".flip-card")).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
   await page.evaluate(() => (document.documentElement.dataset.theme = "dark"));
-  await expect(page.getByLabel("Search trading glossary")).toBeVisible();
+  await expect(page.getByLabel("Find a concept")).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   expect(
     await page
