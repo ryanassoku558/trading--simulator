@@ -3,7 +3,7 @@ test("compact home and learning keep core actions in view", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
+  await page.goto("/dashboard");
   await expect(
     page.getByRole("heading", { name: /Build knowledge/ }),
   ).toBeVisible();

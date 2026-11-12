@@ -21,3 +21,6 @@
 @media(max-width:600px){.classroom-next-action {padding:20px;align-items:flex-start;flex-direction:column;gap:16px;}.classroom-next-action strong {font-size:16px;}}
 
 .classroom-assigned-work {margin:20px 0;border-top:1px solid var(--line);padding-top:18px;}.classroom-assigned-work h4 {font-size:13px;margin-bottom:12px;}.classroom-assigned-work>div+div {border-top:1px solid var(--line);padding-top:12px;margin-top:12px;}.classroom-assigned-work .text-link {display:inline-flex;align-items:center;gap:6px;line-height:1.8;}.classroom-assigned-work p {font-size:11px;color:var(--muted);margin-top:7px;}
+
+.classroom-sections {display:flex;gap:8px;border-bottom:1px solid var(--line);margin:8px 0 28px;flex-wrap:wrap;}.classroom-sections a {padding:14px 18px;font-size:12px;font-weight:650;color:var(--muted);border-bottom:3px solid transparent;}.classroom-sections a[aria-current=page] {color:var(--green);border-color:var(--green);}.classroom-sections a:focus-visible {outline:3px solid var(--green);outline-offset:2px;}.classroom-resources .educator-toolkit>.page-heading h2 {font-size:clamp(24px,3vw,34px);line-height:1.25;letter-spacing:-.8px;}
+@media print {body:has(.educator-toolkit) .classroom-resources>.page-heading,body:has(.educator-toolkit) .classroom-sections {display:none!important;}}

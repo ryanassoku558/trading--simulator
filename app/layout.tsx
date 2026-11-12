@@ -4,6 +4,7 @@ import "./design-system.css";
 import "./motion.css";
 import "./academy.css";
 import "./classroom.css";
+import "./product.css";
 import SubscriptionProvider from "@/components/Subscription";
 import ClassroomProvider from "@/components/classroom/ClassroomProvider";
 import SproutyHelp from "@/components/SproutyHelp";

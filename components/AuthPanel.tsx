@@ -9,11 +9,14 @@ export default function AuthPanel({
   user,
   pending,
   onSignedIn,
+  initialMode="combined",
 }: {
   user: User | null;
   pending: boolean;
   onSignedIn?: () => void;
+  initialMode?: "combined"|"signin"|"signup";
 }) {
+  const [mode,setMode]=useState(initialMode);
   const [referralCode,setReferralCode]=useState("");
   const [verificationEmail, setVerificationEmail] = useState("");
   const verificationNotice = useRef<HTMLDivElement>(null);
@@ -68,10 +71,10 @@ export default function AuthPanel({
     }
   }
   return (
-    <section className="card auth-card" aria-label="Account sign-in">
+    <section className="card auth-card" aria-label={mode==="signup"?"Account creation":"Account sign-in"}>
       <div>
         <span className="eyebrow">YOUR SPROUT ACCOUNT</span>
-        <h2>{user ? "Your Sprout account" : "Save your progress"}</h2>
+        <h2>{user ? "Your Sprout account" : mode==="signup"?"Create your Sprout account":mode==="signin"?"Welcome back":"Save your progress"}</h2>
         <p>
           {user
             ? `Signed in as ${user.email}`
@@ -102,13 +105,13 @@ export default function AuthPanel({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            void authenticate(false);
+            void authenticate(mode==="signup");
           }}
         >
-          <label>
-            First name <small>For new accounts</small>
-            <input aria-label="First name" name="firstName" autoComplete="given-name" maxLength={60} value={firstName} onChange={e=>setFirstName(e.target.value)}/>
-          </label>
+          {mode!=="signin"&&<label>
+            First name {mode==="combined"&&<small>For new accounts</small>}
+            <input aria-label="First name" name="firstName" required={mode==="signup"} autoComplete="given-name" maxLength={60} value={firstName} onChange={e=>setFirstName(e.target.value)}/>
+          </label>}
           <label>
             Email
             <input
@@ -122,21 +125,22 @@ export default function AuthPanel({
           <PasswordField label="Password"
               required
               minLength={8}
-              autoComplete="current-password"
+              autoComplete={mode==="signup"?"new-password":"current-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          <label>Referral code (optional)<small>Leave blank to create an account without a code. Codes are only used for new accounts, never for signing in. A valid code gives new accounts $5,000 in virtual bonus cash after email confirmation.</small><input aria-label="Signup referral code" maxLength={24} value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Optional · your friend’s code"/></label>
-          <p className="small">Creating an account? We’ll email you a verification link. If it arrives in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click the link to confirm your account.</p>
+          {mode!=="signin"&&<>{mode==="combined"?<label>Referral code (optional)<small>Leave blank to create an account without a code. Codes are only used for new accounts, never for signing in. A valid code gives new accounts $5,000 in virtual bonus cash after email confirmation.</small><input aria-label="Signup referral code" maxLength={24} value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Optional · your friend’s code"/></label>:<details className="auth-referral"><summary>Have a referral code? (optional)</summary><label>Referral code (optional)<small>Leave blank to create an account without a code. Codes are only used for new accounts, never for signing in. A valid code gives new accounts $5,000 in virtual bonus cash after email confirmation.</small><input aria-label="Signup referral code" maxLength={24} value={referralCode} onChange={e=>setReferralCode(e.target.value.toUpperCase())} placeholder="Optional · your friend’s code"/></label></details>}
+          <p className="small">{mode==="combined"?"Creating an account? We’ll email you a verification link. If it arrives in Spam or Junk, mark it as not spam and move it to your main inbox (Primary/General), then click the link to confirm your account.":"We’ll send a link to verify your email before you sign in."}</p></>}
+          {mode!=="combined"&&<p className="auth-mode-switch">{mode==="signup"?"Already have an account? ":"New to Sprout? "}<button type="button" className="text-link" disabled={busy||pending} onClick={()=>{setMode(mode==="signup"?"signin":"signup");setMessage("");}}>{mode==="signup"?"Sign in":"Create account"}</button></p>}
           <div className="auth-actions">
             <button
               className="primary"
               disabled={busy || pending}
               type="submit"
             >
-              Sign in
+              {mode==="signup"?"Create account":"Sign in"}
             </button>
-            <button
+            {mode==="combined"&&<button
               className="secondary"
               disabled={busy || pending}
               type="button"
@@ -149,7 +153,7 @@ export default function AuthPanel({
               }}
             >
               Create account
-            </button>
+            </button>}
           </div>
           <p className="small">By creating an account, you agree to our <Link href="/terms">Terms of use</Link>. Read our <Link href="/privacy">Privacy notice</Link>.</p>
         </form>

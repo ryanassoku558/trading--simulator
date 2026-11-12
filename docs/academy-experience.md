@@ -4,7 +4,7 @@ The interface now treats Sprout as a learning platform for individual learners, 
 
 ## Learner journey
 
-Home presents the recommended next lesson and module progress, then connects the learner to guided study, revision, live games and simulated application. The primary navigation includes Play & study and Glossary. Curriculum search in the learning workspace opens a filtered lesson catalog; market search remains available in the simulator. Catalog links can filter by a displayed module's actual title.
+Home presents the recommended next lesson and module progress, then connects the learner to guided study, revision, live games and simulated application. The primary navigation includes Classrooms, Play & study and Glossary. Learn has been removed from desktop and mobile navigation, while lesson URLs, the module catalog, and assignment lesson links remain available. Curriculum search in the learning workspace opens a filtered lesson catalog; market search remains available in the simulator. Catalog links can filter by a displayed module's actual title.
 
 The learning overview includes a foundation journey through the five Starter chapters, with completed/current/upcoming states from actual lesson completion. Learners can continue into the complete 41-module catalog. Module covers use decorative illustrations while access, completion and quizzes retain their original logic. Opening Lessons browses the catalog; opening an individual lesson still starts its presentation and five-question check.
 
@@ -12,7 +12,7 @@ Study modes support direct URLs (`/play?mode=Study%20cards`, `/play?mode=Live%20
 
 ## Educator resource
 
-`/educators` provides a module-based session planner. Educators choose any curriculum module and a 10–180 minute session. The five stages—introduce, explore/review, check understanding, apply and reflect—divide the chosen time exactly. The plan includes the module's lessons, learning intention, real lesson rationale and exit-ticket prompts. The optional facilitator answer reference uses original lesson quiz keys.
+`/classrooms?view=resources` provides a module-based session planner inside Classrooms. The old `/educators` URL redirects here. Classrooms switches between Classes & assignments and Educator resources; the separate educator navigation entry has been removed. Educators choose any curriculum module and a 10–180 minute session. The five stages—introduce, explore/review, check understanding, apply and reflect—divide the chosen time exactly. The plan includes the module's lessons, learning intention, real lesson rationale and exit-ticket prompts. The optional facilitator answer reference uses original lesson quiz keys.
 
 Educators can print the plan and copy a module link, and open the lesson catalog, live-game builder or guided simulator. The connected Classrooms workspace now supports invite-code enrollment, assignments, learner reports and teacher feedback; see [classroom-journey.md](classroom-journey.md). Institutional billing and LMS integrations are outside this feature. Learner subscription access remains enforced by the existing lesson flow.
 

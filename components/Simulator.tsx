@@ -8,7 +8,6 @@ import {
   Sprout,
   LayoutDashboard,
   Library,
-  BookOpen,
   ChartNoAxesCombined,
   Trophy,
   Settings,
@@ -21,6 +20,7 @@ import {
   Search,
   Gamepad2,
   Users,
+  BriefcaseBusiness,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { useMarketClock } from "@/lib/market/useMarketClock";
@@ -45,6 +45,7 @@ import LogoutButton from "./LogoutButton";
 import ThemeToggle from "./ThemeToggle";
 import MarketTicker from "./MarketTicker";
 import Landing from "./screens/Landing";
+import MarketingHome from "./screens/MarketingHome";
 import Market from "./screens/Market";
 import StockDetail from "./screens/StockDetail";
 import Progress from "./screens/Progress";
@@ -66,31 +67,30 @@ import Dialog from "./Dialog";
 import Learning from "./Learning";
 import Classrooms from "./classroom/Classrooms";
 import Assignment from "./classroom/Assignment";
-import EducatorToolkit from "./academy/EducatorToolkit";
 import dynamic from "next/dynamic";
 const PlayAndStudy = dynamic(() => import("./games/PlayAndStudy"), {loading: () => <section className="card"><p>Loading your practice choices…</p></section>});
 import { ExplainTrade } from "./Trading";
 const navigation = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/classrooms", label: "Classrooms", icon: Users },
-  { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/learn?view=Modules", label: "Modules", icon: Library },
   { href: "/learn?view=Glossary", label: "Glossary", icon: Search },
   { href: "/play", label: "Play & study", icon: Gamepad2 },
   { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
+  { href: "/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
  {href:"/tools",label:"Tools"},
- {href:"/educators",label:"Educator resources"},
  {href:"/about",label:"About Sprout"},{href:"/learn?view=Tutorials",label:"Tutorials"},
- {href:"/practice",label:"Practice Lab"},{href:"/portfolio",label:"Portfolio"},
+ {href:"/practice",label:"Practice Lab"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
 ];
 export default function Simulator() {
   const { state: savedState, update: persist, error, user, pending, retry } = useAccount();
   const subscription=useSubscription();
   const [authOpen,setAuthOpen]=useState(false);
+  const [authIntent,setAuthIntent]=useState<"combined"|"signin"|"signup">("combined");
   const liveTick = useMarketClock();
   const [marketPace,setMarketPace]=useState<{base:number;started:number;fast:boolean}|null>(null);
   const effectiveTick=marketPace?marketPace.base+Math.max(0,liveTick-marketPace.started)*(marketPace.fast&&subscription.pro?4:1):liveTick;
@@ -157,6 +157,7 @@ export default function Simulator() {
   function navActive(href:string){
     if(href==="/classrooms")return path.startsWith("/classrooms")||path.startsWith("/assignments");
     if(href==="/dashboard")return path==="/"||path==="/dashboard";
+    if(href==="/learn?view=Modules"&&path==="/learn"&&(searchParams.has("lesson")||!searchParams.get("view")||searchParams.get("view")==="Overview"))return true;
     if(href==="/learn")return path==="/learn"&&!["Modules","Glossary"].includes(searchParams.get("view")||"");
     if(href.includes("?"))return path==="/learn"&&searchParams.get("view")===new URLSearchParams(href.split("?")[1]).get("view");
     return path.startsWith(href);
@@ -207,6 +208,8 @@ export default function Simulator() {
         : "Simulated prices updated",
     );
   }
+  const accountDialog=authOpen&&!user?<Dialog className={path==="/"?"public-auth-dialog academy-shell":""} title="Your Sprout account" onClose={()=>{setAuthOpen(false);setAuthIntent("combined");}}><AuthPanel user={user} pending={pending} initialMode={authIntent} onSignedIn={()=>{setAuthOpen(false);setAuthIntent("combined");if(path==="/")router.push("/dashboard");}}/></Dialog>:null;
+  if(!user&&path==="/")return <><MarketingHome pending={pending} onAuth={mode=>{setAuthIntent(mode);setAuthOpen(true);}} onGuest={()=>router.push("/dashboard")}/>{accountDialog}</>;
   if (!state.profile.onboarded && page === "pricing") return <main className="content"><Link href="/" className="text-link">← Back to Sprout</Link><Pricing/>{!user&&<div id="account"><AuthPanel user={user} pending={pending}/></div>}</main>;
   if (!state.profile.onboarded && page === "welcome")
     return (
@@ -275,7 +278,7 @@ export default function Simulator() {
 
         </details>
       </aside>
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.filter(n=>["Home","Learn","Play & study","Simulator","Progress"].includes(n.label)).map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.filter(n=>["Home","Classrooms","Play & study","Simulator","Progress"].includes(n.label)).map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
       <div className={`main-area ${["learn","dashboard","achievements","tools","play","educators","classrooms","assignments"].includes(page)?"compact-workspace":""}`}>
         <header className="topbar">
           <div className="breadcrumb">
@@ -295,7 +298,9 @@ export default function Simulator() {
                 ? stock.company
                 : page === "dashboard"
                   ? "Dashboard"
-                  : page === "play"
+                  : page === "learn"
+                    ? searchParams.get("view")||"Modules"
+                    : page === "play"
                     ? "Play & study"
                     : page === "history"
                     ? "Trade History"
@@ -394,7 +399,6 @@ export default function Simulator() {
           {page === "community" && <Community state={state} user={user}/>}
           {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
           {page === "about" && <About/>}
-          {page === "educators" && <EducatorToolkit/>}
           {policyPages.includes(page)&&<Policies page={page}/>}
           {page === "practice" && <Practice state={state} update={update}/>}
           {page === "portfolio" && <Portfolio state={state} p={p} />}
@@ -445,7 +449,7 @@ export default function Simulator() {
 
           {page==="profile"&&<ReferralCard/>}
           <footer className="app-footer compact-footer">
-            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/educators">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
+            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/classrooms?view=resources">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
             <small>Educational simulation only · Virtual money · Not financial advice.</small>
           </footer>
         </div></main>
@@ -453,7 +457,7 @@ export default function Simulator() {
       {pending && (
         <div className="sync-overlay"><LoadingBrand compact message="Saving your progress…" /></div>
       )}
-      {authOpen&&!user&&<Dialog title="Your Sprout account" onClose={()=>setAuthOpen(false)}><AuthPanel user={user} pending={pending} onSignedIn={()=>setAuthOpen(false)}/></Dialog>}
+      {accountDialog}
       {trade && (
         <ExplainTrade
           trade={trade}

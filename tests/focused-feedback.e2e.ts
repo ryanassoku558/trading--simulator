@@ -4,7 +4,7 @@ import {learningModules} from '../lib/billing/curriculum';
 import {presentationQuestions} from '../lib/education/presentation';
 
 test('existing homepage shows module steps and earned milestone feedback',async({page})=>{
- await page.goto('/');
+ await page.goto('/dashboard');
  await expect(page.getByRole('heading',{name:/Build knowledge/})).toBeVisible();
  const steps=page.getByRole('navigation',{name:'Market Basics lesson steps'});
  await expect(steps.getByRole('link')).toHaveCount(4);
@@ -29,7 +29,7 @@ test('five-question feedback finishes once and retakes preserve XP',async({page}
  await expect(d.locator('.quiz-next-module')).toContainText('Up next: Candlesticks');
  await expect(d.locator('.quiz-options')).toHaveCount(0);
  await d.getByRole('button',{name:'Close dialog',exact:true}).click();
- await page.goto('/');
+ await page.goto('/dashboard');
  await expect(page.locator('.home-module-steps .step-complete')).toHaveCount(0); // the next module is now recommended
  await expect(page.locator('.home-milestone-note')).toContainText('1 milestone earned');
  await expect(page.getByRole('link',{name:'Continue Learning',exact:true})).toBeVisible();
