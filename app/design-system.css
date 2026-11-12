@@ -92,7 +92,7 @@
   color: var(--color-secondary);
   font-size: var(--text-xs);
 }
-.ds-path-steps a > span {
+.ds-path-steps a > span:first-child {
   border-radius: 50%;
   background: var(--color-highlight);
   color: var(--color-action);
@@ -113,7 +113,7 @@
   border-color: var(--color-action);
   color: var(--color-text);
 }
-.ds-path-steps .done > span {
+.ds-path-steps .done > span:first-child {
   background: var(--color-action);
   color: var(--color-panel);
 }

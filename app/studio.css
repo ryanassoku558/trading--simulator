@@ -71,3 +71,8 @@ body{font-family:Manrope,Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:-.
 @media(max-width:650px){.public-home .about-hero{padding:30px 20px}.public-home .about-hero h1{font-size:39px}}
 .academy-shell .simulator-price-card .range-buttons{display:flex;flex-wrap:wrap;gap:6px}.academy-shell .simulator-price-card .range-buttons button{flex:0 0 auto}
 @media(max-width:650px){.academy-shell .quick-asset-buttons{max-width:100%;overflow-x:auto;flex-wrap:nowrap}.academy-shell .chart-stock-search{min-width:0;max-width:100%}}
+
+/* Completed-step color belongs to the check icon, never the copy. */
+.academy-shell .ds-path-steps .path-step-copy{background:transparent;color:var(--ink)}
+.academy-shell .ds-path-steps .path-step-copy strong{color:var(--ink)}
+.academy-shell .ds-path-steps .path-step-copy small{color:var(--muted)}
