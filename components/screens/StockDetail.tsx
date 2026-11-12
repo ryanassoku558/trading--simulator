@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import MissionBanner from "../classroom/MissionBanner";
 import TradingAccountBar from "../academy/TradingAccountBar";
 import HandsOnTrading from "../HandsOnTrading";
 import {VideoHelp} from "../OnboardingTutorials";
@@ -34,7 +35,7 @@ export default function StockDetail({
   const [range, setRange] = useState("LIVE");
   const [chartType, setChartType] = useState<"line" | "candles">("candles");
   return (
-    <div className="institutional-simulator">
+    <div className="institutional-simulator"><MissionBanner/>
       <TradingAccountBar state={state}/>
       <div className="page-heading simulator-asset-header">
         <div className="stock-detail-heading">

@@ -20,6 +20,8 @@ import {
   Check,
   Search,
   Gamepad2,
+  CalendarCheck,
+  Users,
 } from "lucide-react";
 import type { State, Trade, Experience } from "@/types";
 import { useMarketClock } from "@/lib/market/useMarketClock";
@@ -63,12 +65,17 @@ import TradeHistory from "./screens/TradeHistory";
 import { Empty } from "./ui/MarketUI";
 import Dialog from "./Dialog";
 import Learning from "./Learning";
+import Today from "./classroom/Today";
+import Classrooms from "./classroom/Classrooms";
+import Assignment from "./classroom/Assignment";
 import EducatorToolkit from "./academy/EducatorToolkit";
 import dynamic from "next/dynamic";
 const PlayAndStudy = dynamic(() => import("./games/PlayAndStudy"), {loading: () => <section className="card"><p>Loading your practice choices…</p></section>});
 import { ExplainTrade } from "./Trading";
 const navigation = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { href: "/today", label: "Today", icon: CalendarCheck },
+  { href: "/classrooms", label: "Classrooms", icon: Users },
   { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/learn?view=Modules", label: "Modules", icon: Library },
   { href: "/learn?view=Glossary", label: "Glossary", icon: Search },
@@ -151,6 +158,7 @@ export default function Simulator() {
   const current = stock ? quote(stock.ticker, state.tick) : null;
   const page = path.split("/")[1] || "dashboard";
   function navActive(href:string){
+    if(href==="/today")return path.startsWith("/today")||path.startsWith("/assignments");
     if(href==="/dashboard")return path==="/"||path==="/dashboard";
     if(href==="/learn")return path==="/learn"&&!["Modules","Glossary"].includes(searchParams.get("view")||"");
     if(href.includes("?"))return path==="/learn"&&searchParams.get("view")===new URLSearchParams(href.split("?")[1]).get("view");
@@ -270,8 +278,8 @@ export default function Simulator() {
 
         </details>
       </aside>
-      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.filter(n=>!["Modules","Glossary"].includes(n.label)).map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
-      <div className={`main-area ${["learn","dashboard","achievements","tools","play","educators"].includes(page)?"compact-workspace":""}`}>
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{navigation.filter(n=>["Today","Learn","Play & study","Simulator","Progress"].includes(n.label)).map(n=><Link key={n.href} href={n.href} aria-label={n.label} aria-current={navActive(n.href)?"page":undefined}><n.icon size={18}/><span>{n.label}</span></Link>)}</nav>
+      <div className={`main-area ${["learn","dashboard","achievements","tools","play","educators","today","classrooms","assignments"].includes(page)?"compact-workspace":""}`}>
         <header className="topbar">
           <div className="breadcrumb">
             <button
@@ -303,7 +311,7 @@ export default function Simulator() {
             onSubmit={(e) => {
               e.preventDefault();
               router.push(
-                page==="market" ? `/market?q=${encodeURIComponent(marketSearch.trim())}` : `/learn?view=Lessons&q=${encodeURIComponent(marketSearch.trim())}`,
+                page==="market" ? `/market?q=${encodeURIComponent(marketSearch.trim())}${searchParams.get("assignment")?`&assignment=${encodeURIComponent(searchParams.get("assignment")!)}`:""}` : `/learn?view=Lessons&q=${encodeURIComponent(marketSearch.trim())}`,
               );
             }}
           >
@@ -336,7 +344,7 @@ export default function Simulator() {
           </div>
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
-        {!["learn","dashboard","achievements","tools","play","educators"].includes(page)&&page!=="market"&&<MarketTicker tick={state.tick} />}
+        {!["learn","dashboard","achievements","tools","play","educators","today","classrooms","assignments"].includes(page)&&page!=="market"&&<MarketTicker tick={state.tick} />}
         <main className="content"><div className="motion-surface" key={`${path}-${searchParams.get("view")||"default"}`}>
           {error && (
             <div className="error" role="alert">
@@ -347,6 +355,9 @@ export default function Simulator() {
           {page === "dashboard" && (
             <CompactDashboard state={state} />
           )}
+          {page === "today" && <Today state={state} update={update} onSignIn={()=>setAuthOpen(true)}/>}
+          {page === "classrooms" && <Classrooms state={state} onSignIn={()=>setAuthOpen(true)}/>}
+          {page === "assignments" && <Assignment key={ticker} id={ticker||''} state={state} onSignIn={()=>setAuthOpen(true)}/>}
           {page === "play" && <PlayAndStudy onSignIn={() => setAuthOpen(true)}/> }
           {page === "learn" && (
             <Learning key={`${subscription.pro}-${searchParams.get("lesson")||`${searchParams.get("view")||"curriculum"}-${searchParams.get("q")||""}`}`} state={state} update={update} firstTrade={firstTrade} />
@@ -413,6 +424,9 @@ export default function Simulator() {
             "pricing",
             "about",
             "educators",
+            "today",
+            "classrooms",
+            "assignments",
             "dashboard",
             "learn",
             "play",

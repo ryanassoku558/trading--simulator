@@ -1,0 +1,12 @@
+export type MissionKind='risk_plan'|'comparison'|'trade_reflection';
+export interface ClassroomAssignment {id:string;class_id:string;title:string;instructions:string;lesson_ids:number[];mission:MissionKind;due_at:string;closed:boolean;created_at:string}
+export interface MissionEvidence {kind:MissionKind;ticker?:string;secondTicker?:string;entry?:number;stop?:number;quantity?:number;plannedRisk?:number;rationale:string;reflection:string;trade?:{id:string;ticker:string;side:string;shares:number;price:number;date:string}}
+export interface ClassroomProgress {assignment_id:string;class_id:string;user_id:string;lessons_completed:number[];quiz_best:number|null;quiz_latest:number|null;quiz_attempts:number;weak_ids:number[];mission_data:MissionEvidence|null;mission_status:'not_started'|'submitted'|'revision'|'approved';mission_version:number;submitted_at:string|null;feedback:string|null;rubric:{concept:boolean;evidence:boolean;reflection:boolean}|null;reviewed_at:string|null;completed_at:string|null;updated_at:string;mastery?:Mastery[]}
+export interface Mastery {lessonId:number;attempts:number;correct:number;status:'needs_review'|'developing'|'secure';lastAt:string}
+export interface ClassroomSummary {id:string;name:string;teacherName:string;archived:boolean;code?:string;memberCount?:number;assignmentCount?:number;displayName?:string}
+export interface AssignmentRow {assignment:ClassroomAssignment;className:string;archived:boolean;progress:ClassroomProgress}
+export interface ClassroomOverview {ownedClasses:ClassroomSummary[];joinedClasses:ClassroomSummary[];assignments:AssignmentRow[];mastery:Mastery[];serverNow:string}
+export interface ClassroomReport {class:{id:string;name:string;teacher_name:string;code:string;archived:boolean};members:{id:string;name:string;joinedAt:string}[];assignments:ClassroomAssignment[];progress:ClassroomProgress[];serverNow:string}
+export interface CheckSession {id:string;assignmentId:string;kind:'check'|'review';index:number;total:number;status:'active'|'complete'|'abandoned';score:number|null;question:{text:string;options:string[];lessonId:number}|null;results:{lessonId:number;correct:boolean;question:string;explanation:string}[]|null}
+export interface AssignmentDetail {assignment:ClassroomAssignment;class:{id:string;name:string;teacherName:string;archived:boolean};isTeacher:boolean;progress:ClassroomProgress|null;mastery:Mastery[];session:CheckSession|null;serverNow:string}
+export interface CheckAnswer {session:CheckSession;feedback:{correct:boolean;answer:number;explanation:string}}

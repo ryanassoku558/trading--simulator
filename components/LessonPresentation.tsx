@@ -9,6 +9,7 @@ import {
   recordPresentationAttempts,
 } from "@/lib/education/presentation";
 import Dialog from "./Dialog";
+import AssignmentReturn from "./classroom/AssignmentReturn";
 import LessonIntro from "./LessonIntro";
 import { learningModules } from "@/lib/billing/curriculum";
 import Sprouty from "./Sprouty";
@@ -119,6 +120,7 @@ export default function LessonPresentation({
       onClose={onClose}
       className={`lesson-dialog phase-${phase}`}
     >
+      {phase!=="quiz"&&<AssignmentReturn/>}
       {intro ? (
         <LessonIntro
           title={moduleMode ? title || group[0].title : group[0].title}

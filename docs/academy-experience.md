@@ -14,7 +14,7 @@ Study modes support direct URLs (`/play?mode=Study%20cards`, `/play?mode=Live%20
 
 `/educators` provides a module-based session planner. Educators choose any curriculum module and a 10–180 minute session. The five stages—introduce, explore/review, check understanding, apply and reflect—divide the chosen time exactly. The plan includes the module's lessons, learning intention, real lesson rationale and exit-ticket prompts. The optional facilitator answer reference uses original lesson quiz keys.
 
-Educators can print the plan and copy a module link, and open the lesson catalog, live-game builder or guided simulator. Links guide learners to existing content; this resource does not create rosters, organizational enrollment, institution billing or a teacher gradebook. Learner subscription access remains enforced by the existing lesson flow. No learner records are sent to a school or a third-party service.
+Educators can print the plan and copy a module link, and open the lesson catalog, live-game builder or guided simulator. The connected Classrooms workspace now supports invite-code enrollment, assignments, learner reports and teacher feedback; see [classroom-journey.md](classroom-journey.md). Institutional billing and LMS integrations are outside this feature. Learner subscription access remains enforced by the existing lesson flow.
 
 ## Simulator
 

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {ClassroomHomePrompt} from "../classroom/Today";
 import StudyModes from "../academy/StudyModes";
 import CurriculumCover from "../academy/CurriculumCover";
 import {
@@ -45,7 +46,7 @@ export default function CompactDashboard({ state }: { state: State }) {
     { label: "Progress", href: "/achievements", icon: Trophy },
   ];
   return (
-    <div className="compact-learning compact-home">
+    <div className="compact-learning compact-home"><ClassroomHomePrompt/>
       <div className="academy-welcome"><div><span className="eyebrow">YOUR LEARNING DASHBOARD</span><p>{state.profile.name==='Guest'?'Welcome to your next chapter.':`Good to see you, ${state.profile.name}.`}</p></div><Link href="/play?mode=Live%20quiz" className="secondary">Join a live game <ArrowRight size={15}/></Link></div>
       <section className="compact-home-hero academy-home-hero"><div className="academy-hero-copy">
         <span className="eyebrow">
