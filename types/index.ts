@@ -52,6 +52,11 @@ export interface Trade {
   portfolioValue: number;
 }
 export interface Order {
+ kind?: "limit"|"stop"|"trailing-stop";
+ trailingAmount?:number;
+ anchor?:number;
+ expiresAt?:string;
+ reason?:string;
   id: string;
   ticker: string;
   side: "buy" | "sell";
@@ -109,6 +114,7 @@ export interface JournalEntry {
 }
 export interface PracticeChallenge { id: string; startedAt: string; startingEquity: number; startTradeCount: number; }
 export interface State extends VirtualAccount {
+ budgetGame?: import("@/lib/education/budget").BudgetGame;
  simulatorDeposits?: number;
  referralDeposits?: number;
  moods?: {id:string;date:string;mood:"Calm"|"Fear"|"Greed"|"Tilt"|"Hesitation"}[];

@@ -43,7 +43,7 @@ export default function CompactDashboard({ state }: { state: State }) {
   const quick = [
     { label: "Lessons", href: "/learn?view=Lessons", icon: BookOpen },
     { label: "Modules", href: "/learn?view=Modules", icon: Library },
-    { label: "Glossary", href: "/learn?view=Glossary", icon: Search },
+    { label: "Flashcards", href: "/play?mode=Flashcards", icon: Search },
     { label: "Tools", href: "/tools", icon: Calculator },
     { label: "Simulator", href: simulatorHref, icon: ChartNoAxesCombined },
     { label: "Progress", href: "/achievements", icon: Trophy },
@@ -97,7 +97,7 @@ export default function CompactDashboard({ state }: { state: State }) {
         <span><strong>{earnedMilestones.length} milestone{earnedMilestones.length === 1 ? "" : "s"} earned</strong>{nextMilestone ? ` · Next: ${nextMilestone.title} — ${nextMilestone.description}` : " · Keep practicing and exploring your learning path."}</span>
         <Link href="/achievements" className="text-link">View rewards →</Link>
       </div>
-      <div className="beginner-next-note"><strong>Not sure what to click?</strong> {completed.size===0 ? 'Choose Start Learning above. We’ll explain what a stock is, show an example, then guide you through five questions.' : state.trades.length===0 ? 'You’ve started learning. When you’re ready, Open Simulator lets you practise with pretend money—nothing is bought with real cash.' : 'Keep learning with Resume, revisit a tricky word in Glossary, or try a friendly practice game.'}</div>
+      <div className="beginner-next-note"><strong>Not sure what to click?</strong> {completed.size===0 ? 'Choose Start Learning above. We’ll explain what a stock is, show an example, then guide you through five questions.' : state.trades.length===0 ? 'You’ve started learning. When you’re ready, Open Simulator lets you practise with pretend money—nothing is bought with real cash.' : 'Keep learning with Resume, review a tricky concept with flashcards, or try a friendly practice game.'}</div>
       <div className="compact-section-heading">
         <h2>{completed.size ? "Your next steps" : "Start here"}</h2>
         <Link href="/learn?view=Tutorials" className="text-link">Watch a quick tour →</Link>

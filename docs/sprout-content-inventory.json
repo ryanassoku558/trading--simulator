@@ -1,7 +1,8 @@
 {
-  "generatedAt": "2026-11-12T16:19:08.867Z",
-  "sourceCommit": "dc9d7b8279e0b146bffa22a02b9318ec97afdbdb",
-  "scope": "Existing Sprout content only. StockTrak public-reference comparison in progress.",
+  "generatedAt": "2026-11-12T21:09:39.968Z",
+  "sourceCommit": "99a4764bd808534ffe5dd1375f7e2726a64a1689",
+  "includesWorkingTreeChanges": true,
+  "scope": "Current Sprout learning content. Definitions power Flashcards and Sprouty; there is no standalone glossary page.",
   "modules": [
     {
       "number": 1,
@@ -489,6 +490,90 @@
       ],
       "starter": false,
       "url": "/learn?view=Modules&q=Options%20Contract%20Practice"
+    },
+    {
+      "number": 42,
+      "title": "Everyday Money Decisions",
+      "lessonIds": [
+        200,
+        201,
+        202,
+        203
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Everyday%20Money%20Decisions"
+    },
+    {
+      "number": 43,
+      "title": "Credit, Debt and Consumer Protection",
+      "lessonIds": [
+        204,
+        205,
+        206,
+        207
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Credit%2C%20Debt%20and%20Consumer%20Protection"
+    },
+    {
+      "number": 44,
+      "title": "Work, Benefits and Long-Term Goals",
+      "lessonIds": [
+        208,
+        209,
+        210,
+        211
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Work%2C%20Benefits%20and%20Long-Term%20Goals"
+    },
+    {
+      "number": 45,
+      "title": "Economics in Everyday Markets",
+      "lessonIds": [
+        212,
+        213,
+        214,
+        215
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Economics%20in%20Everyday%20Markets"
+    },
+    {
+      "number": 46,
+      "title": "Business and Accounting Foundations",
+      "lessonIds": [
+        216,
+        217,
+        218,
+        219
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Business%20and%20Accounting%20Foundations"
+    },
+    {
+      "number": 47,
+      "title": "Careers and Financial Information Skills",
+      "lessonIds": [
+        220,
+        221,
+        222,
+        223
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Careers%20and%20Financial%20Information%20Skills"
+    },
+    {
+      "number": 48,
+      "title": "A Long-Term Investor’s Routine",
+      "lessonIds": [
+        224,
+        225,
+        226,
+        227
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=A%20Long-Term%20Investor%E2%80%99s%20Routine"
     }
   ],
   "lessons": [
@@ -2081,6 +2166,286 @@
       "hasExample": true,
       "hasLearningRationale": true,
       "quizOptionCount": 3
+    },
+    {
+      "id": 200,
+      "title": "A budget is a decision plan",
+      "level": 46,
+      "url": "/learn?lesson=200",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 201,
+      "title": "Needs, wants and opportunity cost",
+      "level": 46,
+      "url": "/learn?lesson=201",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 202,
+      "title": "Emergency savings and irregular bills",
+      "level": 46,
+      "url": "/learn?lesson=202",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 203,
+      "title": "Checking, savings and account costs",
+      "level": 46,
+      "url": "/learn?lesson=203",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 204,
+      "title": "Borrowing costs and APR",
+      "level": 47,
+      "url": "/learn?lesson=204",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 205,
+      "title": "Credit-card statements and repayment",
+      "level": 47,
+      "url": "/learn?lesson=205",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 206,
+      "title": "Credit reports, scores and errors",
+      "level": 47,
+      "url": "/learn?lesson=206",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 207,
+      "title": "Fraud, contracts and identity safety",
+      "level": 47,
+      "url": "/learn?lesson=207",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 208,
+      "title": "Gross pay, take-home pay and taxes",
+      "level": 48,
+      "url": "/learn?lesson=208",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 209,
+      "title": "Employer benefits and retirement accounts",
+      "level": 48,
+      "url": "/learn?lesson=209",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 210,
+      "title": "Insurance, deductibles and risk transfer",
+      "level": 48,
+      "url": "/learn?lesson=210",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 211,
+      "title": "Goal timelines and inflation",
+      "level": 48,
+      "url": "/learn?lesson=211",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 212,
+      "title": "Supply, demand and changing prices",
+      "level": 49,
+      "url": "/learn?lesson=212",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 213,
+      "title": "Inflation, real returns and purchasing power",
+      "level": 49,
+      "url": "/learn?lesson=213",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 214,
+      "title": "Interest rates and policy transmission",
+      "level": 49,
+      "url": "/learn?lesson=214",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 215,
+      "title": "Employment, growth and economic releases",
+      "level": 49,
+      "url": "/learn?lesson=215",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 216,
+      "title": "Revenue, costs and profit",
+      "level": 50,
+      "url": "/learn?lesson=216",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 217,
+      "title": "The balance-sheet equation",
+      "level": 50,
+      "url": "/learn?lesson=217",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 218,
+      "title": "Cash flow versus accounting earnings",
+      "level": 50,
+      "url": "/learn?lesson=218",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 219,
+      "title": "Margins, ratios and business comparisons",
+      "level": 50,
+      "url": "/learn?lesson=219",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 220,
+      "title": "Comparing job offers beyond salary",
+      "level": 51,
+      "url": "/learn?lesson=220",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 221,
+      "title": "Reading agreements and avoiding hidden costs",
+      "level": 51,
+      "url": "/learn?lesson=221",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 222,
+      "title": "Evaluating financial sources",
+      "level": 51,
+      "url": "/learn?lesson=222",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 223,
+      "title": "Turning research into a stock pitch",
+      "level": 51,
+      "url": "/learn?lesson=223",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 224,
+      "title": "Choose a horizon and a benchmark",
+      "level": 52,
+      "url": "/learn?lesson=224",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 225,
+      "title": "Contributions through rising and falling markets",
+      "level": 52,
+      "url": "/learn?lesson=225",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 226,
+      "title": "Fees, taxes and real outcomes",
+      "level": 52,
+      "url": "/learn?lesson=226",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 227,
+      "title": "Annual reviews without reacting to every tick",
+      "level": 52,
+      "url": "/learn?lesson=227",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
     }
   ],
   "glossary": [
@@ -2563,6 +2928,72 @@
       "definition": "Written rules for when to enter, when to exit, and how much to risk.",
       "hasExample": true,
       "lessonId": 41
+    },
+    {
+      "term": "Take-home pay",
+      "definition": "Earnings remaining after payroll deductions.",
+      "hasExample": true,
+      "lessonId": 208
+    },
+    {
+      "term": "Emergency reserve",
+      "definition": "Accessible savings for an unexpected necessary cost or income disruption.",
+      "hasExample": true,
+      "lessonId": 202
+    },
+    {
+      "term": "Grace period",
+      "definition": "A contractual interval when qualifying balances may avoid interest if conditions are met.",
+      "hasExample": true,
+      "lessonId": 205
+    },
+    {
+      "term": "Vesting",
+      "definition": "The process by which specified benefit rights become non-forfeitable.",
+      "hasExample": true,
+      "lessonId": 209
+    },
+    {
+      "term": "Real return",
+      "definition": "A return adjusted for inflation over a matching period.",
+      "hasExample": true,
+      "lessonId": 213
+    },
+    {
+      "term": "Disinflation",
+      "definition": "A decline in the inflation rate; prices may still be rising.",
+      "hasExample": true,
+      "lessonId": 213
+    },
+    {
+      "term": "Receivables",
+      "definition": "Amounts customers owe a business for recorded sales or services.",
+      "hasExample": true,
+      "lessonId": 218
+    },
+    {
+      "term": "Book equity",
+      "definition": "Reported assets minus liabilities under the applicable accounting framework.",
+      "hasExample": true,
+      "lessonId": 217
+    },
+    {
+      "term": "Net margin",
+      "definition": "Net income divided by revenue for a specified reporting period.",
+      "hasExample": true,
+      "lessonId": 219
+    },
+    {
+      "term": "Primary source",
+      "definition": "An original record used as evidence rather than a later retelling.",
+      "hasExample": true,
+      "lessonId": 222
+    },
+    {
+      "term": "SIC",
+      "definition": "Standard Industrial Classification, an industry classification reported in SEC company records.",
+      "hasExample": true,
+      "lessonId": 222
     }
   ],
   "tutorials": [

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import {tradesCsv} from "@/lib/trading/export";
 import type { State, Trade } from "@/types";
 import { money } from "@/lib/market";
 import { Delta, Empty } from "../ui/MarketUI";
@@ -24,6 +25,7 @@ export default function TradeHistory({
           <p>A record of your completed virtual buys and sells. Review prices, quantities, and results, then use your trade journal to reflect on each decision.</p>
         </div>
       </div>
+      <button className="secondary" disabled={!state.trades.length} onClick={()=>{const url=URL.createObjectURL(new Blob([tradesCsv(state)],{type:"text/csv;charset=utf-8"}));const link=document.createElement("a");link.href=url;link.download="sprout-simulated-trades.csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}}>Export trades & journal CSV</button>
       <Link href="/practice#journal" className="secondary journal-history-link">Open trade journal & analytics <ArrowUpRight size={16}/></Link>
       <section className="card">
         <h2>Completed trades</h2>
@@ -80,9 +82,9 @@ export default function TradeHistory({
         )}
       </section>
       <section className="card">
-        <h2>Limit orders</h2>
+        <h2>Pending & completed orders</h2>
         <p className="small">
-          Pending limits are checked automatically while the app is open. No funds or shares are
+          Pending limit, stop and trailing-stop orders are checked automatically while the app is open. No funds or shares are
           reserved. Orders without sufficient resources cancel when triggered.
         </p>
         <button className="secondary" onClick={advance}>
@@ -98,7 +100,7 @@ export default function TradeHistory({
                     {o.side.toUpperCase()} {o.shares} {o.ticker}
                   </strong>
                   <small>
-                    Limit {money(o.limit)} · {o.status}
+                    {o.kind==="trailing-stop"?"Trailing stop trigger":o.kind==="stop"?"Stop trigger":"Limit"} {money(o.limit)} · {o.status}{o.expiresAt?` · expires ${new Date(o.expiresAt).toLocaleString()}`:""}{o.reason?` · ${o.reason}`:""}
                   </small>
                 </span>
                 {o.status === "pending" && (
@@ -120,7 +122,7 @@ export default function TradeHistory({
             ))}
           </div>
         ) : (
-          <p>No limit orders yet.</p>
+          <p>No pending orders yet.</p>
         )}
       </section>
     </>

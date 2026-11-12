@@ -1,7 +1,7 @@
 import {isCryptoTicker} from "@/lib/market/crypto";
 import {validAssetQuantity,normalizeQuantity} from "@/lib/market/quantity";
 import type { State, Trade } from "@/types";
-import { quote, round } from "@/lib/market";
+import { quote, round, marketEpoch } from "@/lib/market";
 export function initialState(): State {
   return {
     profile: {
@@ -159,12 +159,30 @@ export function placeLimit(
     ],
   };
 }
+/** Stop/trailing orders are evaluated on observed generated ticks while the app is open. */
+export function placeConditional(s:State,ticker:string,side:"buy"|"sell",shares:number,kind:"stop"|"trailing-stop",amount:number,expiresIn24Hours=false):State{
+ if(!Number.isFinite(amount)||amount<=0)throw new Error("Enter a positive trigger or trailing amount.");
+ const anchor=quote(ticker,s.tick).price;
+ const trigger=kind==="stop"?amount:round(side==="sell"?anchor-amount:anchor+amount);
+ if(trigger<=0)throw new Error("A sell trailing amount must be below the current price.");
+ const next=placeLimit(s,ticker,side,shares,trigger);
+ next.orders[0]={...next.orders[0],kind,...(kind==="trailing-stop"?{trailingAmount:amount,anchor}:{}),...(expiresIn24Hours?{expiresAt:new Date(marketEpoch+s.tick*2000+86400000).toISOString()}: {})};
+ return next;
+}
 export function advanceMarket(s: State, tick = s.tick + 1): { state: State; filled: Trade[] } {
   let next = { ...s, tick };
   const filled: Trade[] = [];
-  for (const order of next.orders.filter((o) => o.status === "pending")) {
+  for (let order of next.orders.filter((o) => o.status === "pending")) {
+    if(order.expiresAt&&marketEpoch+next.tick*2000>=Date.parse(order.expiresAt)){next={...next,orders:next.orders.map(o=>o.id===order.id?{...o,status:"cancelled",reason:"24-hour practice term expired"}:o)};continue;}
     const price = quote(order.ticker, next.tick).price;
-    if (order.side === "buy" ? price <= order.limit : price >= order.limit) {
+    if(order.kind==="trailing-stop"){
+      const anchor=order.side==="sell"?Math.max(order.anchor!,price):Math.min(order.anchor!,price);
+      order={...order,anchor,limit:round(order.side==="sell"?anchor-order.trailingAmount!:anchor+order.trailingAmount!)};
+      next={...next,orders:next.orders.map(o=>o.id===order.id?order:o)};
+    }
+    const stop=order.kind==="stop"||order.kind==="trailing-stop";
+    const triggered=stop?(order.side==="buy"?price>=order.limit:price<=order.limit):(order.side==="buy"?price<=order.limit:price>=order.limit);
+    if (triggered) {
       try {
         const result = executeTrade(
           next,
@@ -184,7 +202,7 @@ export function advanceMarket(s: State, tick = s.tick + 1): { state: State; fill
         next = {
           ...next,
           orders: next.orders.map((o) =>
-            o.id === order.id ? { ...o, status: "cancelled" } : o,
+            o.id === order.id ? { ...o, status: "cancelled", reason:"Insufficient cash or holdings at trigger" } : o,
           ),
         };
       }

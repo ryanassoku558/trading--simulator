@@ -9,9 +9,9 @@ test.beforeEach(async({page})=>{
  await page.route('**/api/billing/status',r=>r.fulfill({contentType:'application/json',body:JSON.stringify({pro:true,ready:true})}));
 });
 test('verified account status unlocks full curriculum, tools, replay and mode controls',async({page})=>{
- await page.goto('/tools');await expect(page.getByRole('heading',{name:'Your trading tools'})).toBeVisible();await expect(page.getByRole('slider',{name:'Hypothetical exit price'})).toBeVisible();
+ await page.goto('/tools');await expect(page.getByRole('heading',{name:'Your financial toolkit'})).toBeVisible();await page.getByRole('button',{name:'Profit / loss',exact:true}).click();await expect(page.getByRole('slider',{name:'Hypothetical exit price'})).toBeVisible();
  await page.goto('/learn?lesson=151');await expect(page.getByRole('dialog')).toBeVisible();await page.getByRole('button',{name:'Close dialog'}).click();
- await page.goto('/market');await page.getByRole('button',{name:'High-Volatility Mode',exact:true}).click();await expect(page.getByRole('button',{name:'High-volatility · 4× movement speed'})).toHaveAttribute('aria-pressed','true');
+ await page.goto('/market');await page.getByText('Account settings & practice modes',{exact:true}).click();await page.getByRole('button',{name:'High-Volatility Mode',exact:true}).click();await expect(page.getByRole('button',{name:'High-volatility · 4× movement speed'})).toHaveAttribute('aria-pressed','true');
  await page.getByRole('button',{name:'Replay Mode',exact:true}).click();await expect(page.getByRole('heading',{name:'Your practice lab'})).toBeVisible();
  await page.goto('/pricing');await expect(page.getByRole('button',{name:'Manage subscription',exact:true})).toBeEnabled();await expect(page.getByRole('heading',{name:'Priority support request'})).toBeVisible();
  await expect(page.getByRole('heading',{name:'Save your progress',exact:true})).toHaveCount(0);

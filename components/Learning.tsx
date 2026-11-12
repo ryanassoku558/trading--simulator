@@ -6,7 +6,6 @@ import CurriculumCover from "./academy/CurriculumCover";
 import StudyModes from "./academy/StudyModes";
 import CourseJourney from "./academy/CourseJourney";
 import LearningPathSteps from "./LearningPathSteps";
-import LearningDiscovery from "./LearningDiscovery";
 import { useSubscription } from "./Subscription";
 import { learningModules } from "@/lib/billing/curriculum";
 import { canLearn, starterLessonIds } from "@/lib/billing/access";
@@ -14,6 +13,7 @@ import { canLearn, starterLessonIds } from "@/lib/billing/access";
 import TutorialHub from "./TutorialHub";
 import LessonPresentation from "./LessonPresentation";
 import { BookOpen, Check, ArrowRight, Search, Lock } from "lucide-react";
+import {expandedModules} from "@/lib/education/expanded";
 import { lessons, levels, beginnerLearningOrder } from "@/lib/education";
 import type { State, Lesson } from "@/types";
 export default function Learning({
@@ -44,7 +44,6 @@ export default function Learning({
     "Overview",
     "Lessons",
     "Modules",
-    "Glossary",
     "Tutorials",
   ].includes(requestedView)
     ? requestedView
@@ -53,7 +52,7 @@ export default function Learning({
     hash === "#tutorials"
       ? "Tutorials"
       : ["#glossary", "#beginner-mistakes"].includes(hash)
-        ? "Glossary"
+        ? "Modules"
         : hash === "#curriculum"
           ? "Modules"
           : section;
@@ -66,14 +65,15 @@ export default function Learning({
   }
   const [libraryPage, setLibraryPage] = useState(0);
 
-  const [topic, setTopic] = useState("All topics"),
+  const [topic, setTopic] = useState(params.get("topic")||"All topics"),
     [search, setSearch] = useState(params.get("q")||"");
   const matches = (lesson: Lesson) =>
     (topic === "All topics" ||
       (topic === "Long-term investing" &&
-        [17,18,41,42].includes(lesson.level)) ||
+        expandedModules.some(m=>m.track==="Long-term investing"&&m.level===lesson.level)) ||
       (topic === "Trading" && lesson.level <= 12) ||
-      (topic === "Advanced trading" && lesson.level >= 23 && ![41,42].includes(lesson.level))) &&
+      (topic === "Advanced trading" && lesson.level >= 23 && lesson.level<46 && ![41,42].includes(lesson.level)) ||
+      expandedModules.some(m=>m.track===topic&&m.level===lesson.level)) &&
     `${modules.find(m=>m.ids.includes(lesson.id))?.title} ${levels[lesson.level - 1]} ${lesson.title} ${lesson.explanation} ${lesson.example}`
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "")
@@ -165,7 +165,7 @@ export default function Learning({
         role="group"
         aria-label="Learning sections"
       >
-        {["Overview", "Lessons", "Modules", "Glossary", "Tutorials"].map(
+        {["Overview", "Lessons", "Modules", "Tutorials"].map(
           (value) => (
             <button
               key={value}
@@ -200,9 +200,9 @@ export default function Learning({
           <div className="compact-quick" aria-label="Quick access">
             {[
               {
-                label: "Glossary",
+                label: "Flashcards",
                 text: "Definitions & games",
-                href: "/learn?view=Glossary",
+                href: "/play?mode=Flashcards",
               },
               {
                 label: "Tools",
@@ -232,7 +232,6 @@ export default function Learning({
         </>
       )}
       {currentSection === "Tutorials" && <TutorialHub />}
-      {currentSection === "Glossary" && <LearningDiscovery />}
       {requestedLesson > 0 && !canLearn(requestedLesson, pro) && (
         <section className="card pro-lock">
           <h3>This lesson is part of Sprout Pro.</h3>
@@ -270,6 +269,10 @@ export default function Learning({
                 "Long-term investing",
                 "Trading",
                 "Advanced trading",
+                "Personal finance",
+                "Economics",
+                "Business",
+                "Career development",
               ].map((t) => (
                 <option key={t}>{t}</option>
               ))}
@@ -278,6 +281,7 @@ export default function Learning({
               {lessons.length} lessons · {modules.length} modules
             </span>
           </div>
+          {topic==="Long-term investing"&&<aside className="research-notice"><strong>Your long-term investing journey</strong><p>Start with asset types, build a diversified plan, study businesses, then practice contributions and periodic reviews. Track mastery module by module; your existing progress stays saved.</p><Link href="/market?investing=1">Explore the long-term line chart →</Link></aside>}
           <p className="small">
             {pro
               ? "Full curriculum unlocked."

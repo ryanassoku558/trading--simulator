@@ -1,3 +1,4 @@
+import {isBudgetGame} from "@/lib/education/budget";
 import {validAssetQuantity} from "@/lib/market/quantity";
 import {isProfilePhoto} from "@/lib/profile-photo";
 import {avatarIds} from "@/lib/avatars";
@@ -34,6 +35,7 @@ const unique = (items: unknown[]) => new Set(items).size === items.length;
 export function isAccountState(value: unknown): value is State {
   if (!record(value) || !record(value.profile) || !record(value.learning))
     return false;
+  if(value.budgetGame!==undefined&&!isBudgetGame(value.budgetGame))return false;
   if (value.journal !== undefined && (!every(value.journal, j => record(j) && text(j.tradeId) && text(j.note) && j.note.length <= 4000 && text(j.emotion) && j.emotion.length <= 80 && (j.initialRisk === undefined || positive(j.initialRisk))) || !unique((value.journal as Record<string, unknown>[]).map(j=>j.tradeId)))) return false;
   if (value.challenge !== undefined && (!record(value.challenge) || !["plan-3","seven-days"].includes(String(value.challenge.id)) || !date(value.challenge.startedAt) || !positive(value.challenge.startingEquity) || !integer(value.challenge.startTradeCount))) return false;
   if (value.simulatorDeposits !== undefined && !nonnegative(value.simulatorDeposits)) return false;
@@ -103,6 +105,10 @@ export function isAccountState(value: unknown): value is State {
         side(o.side) &&
         validAssetQuantity(o.ticker,o.shares) &&
         positive(o.limit) &&
+        (o.kind===undefined||["limit","stop","trailing-stop"].includes(String(o.kind)))&&
+        (o.kind!=="trailing-stop"||(positive(o.trailingAmount)&&positive(o.anchor)&&o.limit===Math.round(((o.side==="sell"?(o.anchor as number)-(o.trailingAmount as number):(o.anchor as number)+(o.trailingAmount as number))+Number.EPSILON)*100)/100))&&
+        (o.expiresAt===undefined||date(o.expiresAt))&&
+        (o.reason===undefined||(text(o.reason)&&o.reason.length<=200))&&
         text(o.status) &&
         ["pending", "filled", "cancelled"].includes(o.status),
     )

@@ -4,10 +4,10 @@ import {lessons,levels,answerLesson,achievements,earned} from '../lib/education'
 import {initialState} from '../lib/trading';
 import {isAccountState} from '../lib/storage/schema';
 it('adds trading and investing modules without changing the original lesson identities',()=>{
- expect(expandedModules).toHaveLength(25);expect(expandedLessons).toHaveLength(100);expect(lessons).toHaveLength(159);expect(levels).toHaveLength(45);
- expect(expandedModules.filter(m=>m.track==='Long-term investing')).toHaveLength(4);
+ expect(expandedModules).toHaveLength(32);expect(expandedLessons).toHaveLength(128);expect(lessons).toHaveLength(187);expect(levels).toHaveLength(52);
+ expect(expandedModules.filter(m=>m.track==='Long-term investing')).toHaveLength(5);
  expect(lessons.find(l=>l.id===1)?.title).toBe('What is a stock?');expect(lessons.find(l=>l.id===55)?.title).toContain('Moving averages');
- expect(new Set(lessons.map(l=>l.id)).size).toBe(159);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(100);
+ expect(new Set(lessons.map(l=>l.id)).size).toBe(187);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(128);
  for(const l of expandedLessons){expect(l.explanation.length).toBeGreaterThan(200);expect(l.example.length).toBeGreaterThan(90);expect(l.why.length).toBeGreaterThan(30);expect(new Set(l.quiz.options).size).toBe(3);}
  expect(lessons.some(l=>l.id===60)).toBe(false);
 });
@@ -24,3 +24,5 @@ it('unlocks broad learning milestones from completed lessons rather than repeate
  expect(earned(s,'fifty')).toBe(true);expect(earned(s,'hundred')).toBe(true);expect(earned(s,'curriculum')).toBe(false);
  for(const l of lessons.slice(100))s=answerLesson(s,l.id,l.quiz.answer);expect(earned(s,'curriculum')).toBe(true);
 });
+
+it('preserves the original curriculum badge and earned XP when new lessons are introduced',()=>{let s=initialState();for(const l of lessons.filter(l=>l.id<200))s=answerLesson(s,l.id,l.quiz.answer);const xp=s.learning.xp;expect(earned(s,'curriculum')).toBe(true);expect(earned(s,'curriculum-expanded')).toBe(false);expect(isAccountState(s)).toBe(true);for(const l of lessons.filter(l=>l.id>=200))s=answerLesson(s,l.id,l.quiz.answer);expect(earned(s,'curriculum')).toBe(true);expect(earned(s,'curriculum-expanded')).toBe(true);expect(s.learning.xp).toBeGreaterThan(xp);});

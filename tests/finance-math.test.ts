@@ -1,0 +1,6 @@
+import {it,expect} from 'vitest';
+import {loanPayment,savingsProjection,spendingStats,housingProjection} from '../lib/education/finance-math';
+it('handles zero interest and known amortization without confusing interest with principal',()=>{expect(loanPayment(1200,0,12)).toBe(100);expect(loanPayment(100000,6,360)).toBeCloseTo(599.5505,3);});
+it('separates contributions from assumed returns and allows negative return assumptions',()=>{expect(savingsProjection(1000,100,0,1)[0]).toEqual({year:1,balance:2200,contributed:2200});expect(savingsProjection(1000,0,-12,1)[0].balance).toBeCloseTo(886.3849,3);});
+it('shows skew and median for odd and even samples without mutating data',()=>{const sample=[100,1,2];expect(spendingStats(sample)).toMatchObject({total:103,mean:103/3,median:2});expect(sample).toEqual([100,1,2]);expect(spendingStats([4,2])).toMatchObject({median:3});expect(spendingStats([])).toBeNull();});
+it('compares equal budgets and pays off zero-interest mortgage on schedule',()=>{const result=housingProjection({price:1200,downPercent:0,rate:0,termYears:1,rent:100,ownerMonthly:0,appreciation:0,rentGrowth:0,investmentReturn:0,years:2,saleCost:0});expect(result.payment).toBe(100);expect(result.rows[0]).toMatchObject({debt:0,buyerNet:1200,renterNet:0});expect(result.rows[1]).toMatchObject({debt:0,buyerNet:2400});});

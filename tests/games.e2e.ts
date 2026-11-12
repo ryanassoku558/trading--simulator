@@ -3,20 +3,10 @@ import type {BrowserContext} from '@playwright/test';
 import {PGlite} from '@electric-sql/pglite';
 import {readFile} from 'node:fs/promises';
 import {createHash,randomBytes} from 'node:crypto';
-import {gameQuestions,beginnerTerms} from '../lib/games/content';
+import {gameQuestions} from '../lib/games/content';
 
-test('beginner home leads into bounded solo quests and guided study',async({page})=>{
- await page.goto('/dashboard');await expect(page.getByText('Not sure what to click?',{exact:true})).toBeVisible();await expect(page.getByRole('link',{name:'Open Simulator',exact:true})).toHaveAttribute('href','/market/AAPL?guided=1');
- await page.getByRole('link',{name:/Choose a game/}).click();await page.getByRole('button',{name:'Choose',exact:true}).click();await expect(page.getByRole('heading',{name:'Play & study',exact:true})).toBeVisible();await expect(page.getByText('This page has not sprouted yet.',{exact:true})).toHaveCount(0);
- await page.getByRole('button',{name:'Play on my own',exact:false}).click();await page.getByRole('button',{name:'Start five-question quest',exact:true}).click();
- const questions=gameQuestions('0');for(let i=0;i<5;i++){await page.locator('.practice-quest .live-answer').nth(questions[i].answer).click();await page.getByRole('button',{name:i===4?'See quest results':'Next question',exact:true}).click();}
- await expect(page.getByRole('heading',{name:'Quest complete!',exact:true})).toBeVisible();await expect(page.locator('.practice-quest')).toContainText('5/5 correct');
- await page.getByRole('button',{name:'Study cards',exact:true}).click();
- for(let i=0;i<6;i++){await page.getByRole('button',{name:'Check my understanding',exact:true}).click();await page.locator('.study-options').getByRole('button',{name:beginnerTerms[i][1],exact:true}).click();await page.getByRole('button',{name:i===5?'See study results':'Next word',exact:true}).click();}
- await expect(page.getByRole('heading',{name:'Your first pass is complete',exact:true})).toBeVisible();await expect(page.locator('.study-coach')).toContainText('6/6 checks correct');
- await page.getByText('More ways to study: flashcards, matching & definition quizzes',{exact:true}).click();await expect(page.getByRole('region',{name:'Glossary practice',exact:true})).toBeVisible();
- await page.getByRole('button',{name:'Live quiz',exact:true}).click();await page.getByRole('button',{name:'Sign in or create an account',exact:true}).click();await expect(page.getByRole('dialog',{name:'Your Sprout account',exact:true})).toBeVisible();await page.getByRole('dialog').getByRole('button',{name:'Close dialog',exact:true}).click();
- await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+test('Play and study presents flashcards and live quizzes without Practice Quest',async({page})=>{
+ await page.goto('/play');await expect(page.getByRole('heading',{name:/A smarter way/})).toBeVisible();await expect(page.getByRole('button',{name:'Practice quest',exact:true})).toHaveCount(0);await page.getByRole('button',{name:'Start flipping',exact:false}).click();const cards=page.getByRole('region',{name:'Flashcards',exact:true});const card=cards.locator('.flip-card');await expect(card).toHaveAttribute('aria-pressed','false');await card.click();await expect(card).toHaveAttribute('aria-pressed','true');await expect(cards.locator('.flip-card-back')).toContainText('DEFINITION');await cards.getByRole('button',{name:'Next flashcard',exact:true}).click();await expect(card).toHaveAttribute('aria-pressed','false');await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.getByRole('button',{name:'Live quiz',exact:true}).click();await expect(page.getByRole('link',{name:/I’m joining/})).toBeVisible();await expect(page.getByRole('link',{name:/I’m hosting/})).toBeVisible();
 });
 
 test('a host and two independent guests complete one synchronized custom three-question game',async({browser,baseURL})=>{
@@ -88,7 +78,7 @@ test('host drafts survive refresh, keep topic edits, reorder and preview without
 test('quiz topics cover the full curriculum and support module, lesson and mixed-topic games',async({page})=>{
  await page.goto('/play');await page.getByRole('button',{name:'Live quiz',exact:true}).click();
  const picker=page.locator('.live-quiz-builder .quiz-topic-picker'),select=picker.getByRole('combobox',{name:'Quiz topic',exact:true});
- await expect(picker).toContainText('41 modules · 159 lessons');await expect(select.locator('optgroup[label="Modules"] option')).toHaveCount(41);await expect(select.locator('optgroup[label="Lessons"] option')).toHaveCount(159);
+ await expect(picker).toContainText('48 modules · 187 lessons');await expect(select.locator('optgroup[label="Modules"] option')).toHaveCount(48);await expect(select.locator('optgroup[label="Lessons"] option')).toHaveCount(187);
  await select.selectOption('40');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();
  const moduleQuestions=await page.locator('.live-editor details').count();expect(moduleQuestions).toBeGreaterThan(0);
  await picker.getByRole('searchbox',{name:'Find a module or lesson',exact:true}).fill('What is a stock?');await select.selectOption('lesson:1');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Number of questions',exact:true})).toHaveValue('1');await expect(page.locator('.live-editor summary')).toContainText('What does a share represent?');

@@ -6,24 +6,24 @@ import {presentationQuestions} from '../lib/education/presentation';
 test('restores all original modules, lessons and learning resources',async({page})=>{
  await page.goto('/dashboard');
  await expect(page.getByRole('heading',{name:/Build knowledge/})).toBeVisible();
- await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','159');
+ await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','187');
  await page.goto('/learn?view=Modules');
- await expect(page.getByText('159 lessons · 41 modules',{exact:true})).toBeVisible();
+ await expect(page.getByText('187 lessons · 48 modules',{exact:true})).toBeVisible();
  const moduleTitles:string[]=[];
- for(let i=0;i<7;i++){
+ for(let i=0;i<Math.ceil(learningModules.length/6);i++){
   moduleTitles.push(...await page.locator('.compact-module-grid h3').allTextContents());
-  if(i<6)await page.getByRole('button',{name:'Next',exact:true}).click();
+  if(i<Math.ceil(learningModules.length/6)-1)await page.getByRole('button',{name:'Next',exact:true}).click();
  }
  expect(moduleTitles).toEqual(learningModules.map(m=>m.title));
  await page.goto('/learn?view=Lessons');
  await expect(page.locator('.compact-lesson-grid button strong').first()).toBeVisible();
  const titles:string[]=[];
- for(let i=0;i<20;i++){
+ for(let i=0;i<Math.ceil(lessons.length/8);i++){
   titles.push(...await page.locator('.compact-lesson-grid button strong').allTextContents());
-  if(i<19)await page.getByRole('button',{name:'Next',exact:true}).click();
+  if(i<Math.ceil(lessons.length/8)-1)await page.getByRole('button',{name:'Next',exact:true}).click();
  }
  expect(titles).toEqual(lessons.map(l=>l.title));
- await page.goto('/learn?view=Glossary');await expect(page.locator('.glossary-grid')).toBeVisible();
+ await page.goto('/learn?view=Glossary');await expect(page).toHaveURL(/mode=Flashcards/);await expect(page.getByRole('region',{name:'Flashcards',exact:true})).toBeVisible();
  await page.goto('/learn?view=Tutorials');await expect(page.locator('.onboarding-video-grid')).toBeVisible();
  await page.goto('/practice');await expect(page.getByRole('heading',{name:'Your practice lab'})).toBeVisible();
  await expect(page.locator('.locked-lab')).toHaveCount(6);

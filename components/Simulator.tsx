@@ -56,6 +56,8 @@ import Community from "./screens/Community";
 import ReferralCard from "./ReferralCard";
 import {Pricing,ProGate,SimulatorMoney,useSubscription,billingRequest} from "./Subscription";
 import VisualTools from "./VisualTools";
+import BudgetGame from "./BudgetGame";
+import FinancialMath from "./FinancialMath";
 import {PsychologyVisuals} from "./PracticeVisuals";
 import About from "./screens/About";
 import Policies,{policyPages} from "./screens/Policies";
@@ -74,15 +76,14 @@ const navigation = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
   { href: "/classrooms", label: "Classrooms", icon: Users },
   { href: "/learn?view=Modules", label: "Modules", icon: Library },
-  { href: "/learn?view=Glossary", label: "Glossary", icon: Search },
   { href: "/play", label: "Play & study", icon: Gamepad2 },
   { href: "/market", label: "Simulator", icon: ChartNoAxesCombined },
   { href: "/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
   { href: "/achievements", label: "Progress", icon: Trophy },
 ];
 const moreNavigation = [
- {href:"/tools",label:"Tools"},
- {href:"/about",label:"About Sprout"},{href:"/learn?view=Tutorials",label:"Tutorials"},
+ {href:"/tools",label:"Tools"},{href:"/tools#budget-game",label:"Budget journey"},{href:"/market?view=research",label:"Research"},
+ {href:"/learn?view=Tutorials",label:"Tutorials"},
  {href:"/practice",label:"Practice Lab"},
  {href:"/history",label:"Trade History"},{href:"/community",label:"Community"},{href:"/pricing",label:"Sprout Pro"},
 ];
@@ -98,7 +99,9 @@ export default function Simulator() {
   useEffect(() => {
     if (!savedState || pending || error || effectiveTick <= savedState.tick || !savedState.orders.some(o => o.status === "pending")) return;
     const result = advanceMarket(savedState, effectiveTick);
-    if (result.state.orders.some((o, i) => o.status !== savedState.orders[i].status)) void persist(result.state);
+    const statusChanged=result.state.orders.some((o,i)=>o.status!==savedState.orders[i].status);
+    const anchorChanged=result.state.orders.some((o,i)=>o.anchor!==savedState.orders[i].anchor);
+    if(statusChanged||anchorChanged)void persist({...result.state,snapshots:statusChanged?result.state.snapshots:savedState.snapshots});
   }, [savedState, effectiveTick, pending, error, persist]);
   const searchParams = useSearchParams();
   const path = usePathname(),
@@ -204,7 +207,7 @@ export default function Simulator() {
     }
     setToast(
       result.filled.length
-        ? `${result.filled.length} limit order(s) filled`
+        ? `${result.filled.length} practice order(s) filled`
         : "Simulated prices updated",
     );
   }
@@ -250,7 +253,7 @@ export default function Simulator() {
               {n.label === "Learn" && <span className="nav-dot" />}
             </Link></Fragment>
           ))}
-          <details className="sidebar-more"><summary>More resources</summary>{moreNavigation.map(n=><Link key={n.href} href={n.href} onClick={()=>setMobile(false)}>{n.label}</Link>)}</details>
+          <div className="sidebar-resources" aria-label="More navigation">{moreNavigation.map(n=><Link key={n.href} href={n.href} onClick={()=>setMobile(false)}>{n.label}</Link>)}</div>
         </nav>
         <div className="sidebar-course">
           <span className="course-icon">
@@ -357,7 +360,7 @@ export default function Simulator() {
           {page === "dashboard" && (
             <CompactDashboard state={state} />
           )}
-          {page === "classrooms" && <Classrooms state={state} onSignIn={()=>setAuthOpen(true)}/>}
+          {page === "classrooms" && <Classrooms key={searchParams.toString()} state={state} onSignIn={()=>setAuthOpen(true)}/>}
           {page === "assignments" && <Assignment key={ticker} id={ticker||''} state={state} onSignIn={()=>setAuthOpen(true)}/>}
           {page === "play" && <PlayAndStudy onSignIn={() => setAuthOpen(true)}/> }
           {page === "learn" && (
@@ -365,7 +368,7 @@ export default function Simulator() {
           )}
           {page === "market" && !ticker && (
             <Market
-              key={`${searchParams.get("q")||""}-${searchParams.get("symbol")||""}`}
+              key={`${searchParams.get("q")||""}-${searchParams.get("symbol")||""}-${searchParams.get("view")||""}`}
               state={state}
               advance={advance}
               watch={watch}
@@ -397,7 +400,7 @@ export default function Simulator() {
           {page === "market" && <SimulatorMoney state={state} onReset={()=>setReset("simulator")} onRecharge={async()=>{await billingRequest("simulator",{action:"recharge"});retry();setToast("$5,000 virtual cash added.");}}/>}
 </div></details>}
           {page === "community" && <Community state={state} user={user}/>}
-          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your trading tools</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
+          {page === "tools" && <><div className="page-heading"><div><span className="eyebrow">PRACTICE WITH A PLAN</span><h1>Your financial toolkit</h1><p>Planning tools help you explore share size, potential losses, possible outcomes, and your mindset before a virtual trade. Open each guide to learn how it works.</p></div></div><BudgetGame state={state} update={update}/><FinancialMath/><VisualTools tick={state.tick}/><details className="card compact-extra"><summary>Psychology insights · understand your trading habits</summary><ProGate feature="Psychology insights"><PsychologyVisuals state={state} update={update}/></ProGate></details></>}
           {page === "about" && <About/>}
           {policyPages.includes(page)&&<Policies page={page}/>}
           {page === "practice" && <Practice state={state} update={update}/>}
@@ -449,8 +452,7 @@ export default function Simulator() {
 
           {page==="profile"&&<ReferralCard/>}
           <footer className="app-footer compact-footer">
-            <nav aria-label="Footer links"><Link href="/about">About</Link><Link href="/classrooms?view=resources">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
-            <small>Educational simulation only · Virtual money · Not financial advice.</small>
+            <nav aria-label="Footer links"><Link href="/classrooms?view=resources">For educators</Link><Link href="/support">Contact</Link><details><summary>Legal</summary><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/cancellation">Cancellation</Link></details>{!user&&<button onClick={()=>setAuthOpen(true)}>Sign in / Create account</button>}</nav>
           </footer>
         </div></main>
       </div>

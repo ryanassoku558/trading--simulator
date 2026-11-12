@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {BookOpen,Layers3,Gamepad2,ChartNoAxesCombined,ArrowUpRight} from 'lucide-react';
 export const studyModes=[
  {title:'Learn a concept',tag:'LEARN',copy:'Build understanding with guided lessons, visual examples, and short knowledge checks.',href:'/learn?view=Modules',action:'Explore modules',icon:BookOpen,tone:'mint'},
- {title:'Make it stick',tag:'REVIEW',copy:'Turn new terms into lasting knowledge with study cards and focused practice.',href:'/play?mode=Study%20cards',action:'Study flashcards',icon:Layers3,tone:'violet'},
+ {title:'Make it stick',tag:'REVIEW',copy:'Turn new terms into lasting knowledge with flashcards and focused practice.',href:'/play?mode=Flashcards',action:'Study flashcards',icon:Layers3,tone:'violet'},
  {title:'Learn together',tag:'PLAY',copy:'Bring a topic to life. Host a live quiz or join a room with your friends.',href:'/play?mode=Live%20quiz',action:'Choose a game',icon:Gamepad2,tone:'peach'},
  {title:'Put it into practice',tag:'APPLY',copy:'Research an asset, plan a trade, and learn from your virtual portfolio.',href:'/market',action:'Practice trading',icon:ChartNoAxesCombined,tone:'blue'},
 ];

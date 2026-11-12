@@ -1,3 +1,4 @@
+import {financialLiteracyModules} from "./financial-literacy";
 import { strategyModules } from "./strategy-setups";
 import type { Lesson } from "@/types";
 // Explicit levels and IDs preserve existing progress when modules are retired.
@@ -987,6 +988,7 @@ export const expandedModules = [
     level: 45,
     startId: 188,
   },
+ ...financialLiteracyModules,
 ];
 export const expandedLessons: Lesson[] = expandedModules.flatMap((module) =>
   module.content.map((c, i) => ({

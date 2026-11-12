@@ -5,13 +5,14 @@ import "./motion.css";
 import "./academy.css";
 import "./classroom.css";
 import "./product.css";
+import "./studio.css";
 import SubscriptionProvider from "@/components/Subscription";
 import ClassroomProvider from "@/components/classroom/ClassroomProvider";
 import SproutyHelp from "@/components/SproutyHelp";
 export const metadata: Metadata = {
   title: "Sprout | Financial Education, Study & Trading Practice",
   description:
-    "A guided financial learning journey for individuals, schools and educators. Explore lessons, study cards, live quizzes, classroom session plans and virtual trading practice.",
+    "A guided financial learning journey for individuals, schools and educators. Explore lessons, flashcards, live quizzes, classroom session plans and virtual trading practice.",
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

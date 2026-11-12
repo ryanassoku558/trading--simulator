@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {gameQuestions,gamePacks,beginnerTerms} from '../lib/games/content';
 const host='00000000-0000-4000-8000-000000000001',other='00000000-0000-4000-8000-000000000002';
 it('covers every curriculum topic in five-question solo packs and has enough beginner study cards',()=>{
- expect(gamePacks.filter(p=>p.kind==='module')).toHaveLength(41);expect(gamePacks.filter(p=>p.kind==='lesson')).toHaveLength(159);for(const pack of gamePacks){const questions=gameQuestions(pack.id);expect(questions).toHaveLength(5);for(const q of questions){expect(q.options[q.answer]).toBeTruthy();expect(q.explanation.length).toBeGreaterThan(10);}}
+ expect(gamePacks.filter(p=>p.kind==='module')).toHaveLength(48);expect(gamePacks.filter(p=>p.kind==='lesson')).toHaveLength(187);for(const pack of gamePacks){const questions=gameQuestions(pack.id);expect(questions).toHaveLength(5);for(const q of questions){expect(q.options[q.answer]).toBeTruthy();expect(q.explanation.length).toBeGreaterThan(10);}}
  expect(()=>gameQuestions('99')).toThrow();expect(beginnerTerms.length).toBeGreaterThanOrEqual(6);expect(new Set(beginnerTerms.map(t=>t[0])).size).toBe(beginnerTerms.length);
 });
 describe('server-authoritative live game database',()=>{

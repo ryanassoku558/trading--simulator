@@ -16,4 +16,4 @@ export const chartTour=[
  ['Replay one bar at a time','Replay hides later candles. Step advances one bar. Stop replay returns to the current chart; replay does not submit historical trades.','replay'],
  ['Alerts, patterns and comparisons','Set a browser alert, review approximate pattern tags, or compare another ticker. Alerts require this page to stay open; tags are learning prompts.','advanced']
 ] as const;
-export const starterTourSteps=8;
+export const starterTourSteps=16;

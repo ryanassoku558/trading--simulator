@@ -3,18 +3,15 @@ import {useState} from 'react';
 import {useSearchParams} from 'next/navigation';
 import Link from 'next/link';
 import LiveGame from './LiveGame';
-import PracticeQuest from './PracticeQuest';
 import StudyCoach from './StudyCoach';
-import {Layers3,Gamepad2,Sparkles,ArrowUpRight} from 'lucide-react';
-import GlossaryPractice from '../GlossaryPractice';
+import FinancialVisual from '../academy/FinancialVisual';
+import {Layers3,Gamepad2,ArrowUpRight} from 'lucide-react';
 export default function PlayAndStudy({onSignIn}:{onSignIn:()=>void}){
  const params=useSearchParams(),initialRoom=params.get('room')||'';
- const [mode,setMode]=useState(initialRoom?'Live quiz':['Practice quest','Study cards','Live quiz'].includes(params.get('mode')||'')?params.get('mode')!:'Choose');
- return <div className="play-study academy-study-hub"><div className="page-heading"><div><span className="eyebrow">YOUR PERSONAL STUDY STUDIO</span><h1>Play & study</h1><p>Learning can be a small adventure. Start on your own, study a few words, or join friends in a live quiz.</p></div><Link className="secondary" href="/dashboard">Back to Home</Link></div>
- <div className="learning-sections" role="group" aria-label="Play and study modes">{['Choose','Practice quest','Study cards','Live quiz'].map(m=><button key={m} aria-pressed={mode===m} onClick={()=>setMode(m)}>{m}</button>)}</div>
- {mode==='Choose'&&<div className="play-mode-cards">{[{title:'Practice quest',icon:Sparkles,copy:'Play a five-question round on your own. No timer, just helpful explanations.',action:'Play on my own'},{title:'Study cards',icon:Layers3,copy:'Learn six useful words, check what you remember, and revisit the tricky ones.',action:'Learn some words'},{title:'Live quiz',icon:Gamepad2,copy:'Host with a Sprout account, or join a friend’s room with a code. No account needed to join.',action:'Host or join a game'}].map(m=><section className="card" key={m.title}><div className="study-mode-cover"><span className="study-cover-shape"/><m.icon size={44} strokeWidth={1.5}/><span className="study-cover-caption">{m.title==='Live quiz'?'TOGETHER IS BETTER':m.title==='Study cards'?'MAKE KNOWLEDGE STICK':'SMALL WINS. REAL PROGRESS.'}</span></div><h2>{m.title}</h2><p>{m.copy}</p><button className="primary" onClick={()=>setMode(m.title)}>{m.action} <ArrowUpRight size={16}/></button></section>)}</div>}
- {mode==='Practice quest'&&<PracticeQuest/>}
- {mode==='Study cards'&&<><StudyCoach/><details className="card study-extra"><summary>More ways to study: flashcards, matching & definition quizzes</summary><GlossaryPractice/></details></>}
- {mode==='Live quiz'&&<LiveGame initialRoom={initialRoom} onSignIn={onSignIn}/>}
- <p className="small">New to trading? <Link className="text-link" href="/learn?lesson=1">Start with “What is a stock?” →</Link> Your original lessons, quizzes and progress are always available.</p></div>;
+ const [mode,setMode]=useState(initialRoom?'Live quiz':['Flashcards','Study cards'].includes(params.get('mode')||'')?'Flashcards':params.get('mode')==='Live quiz'?'Live quiz':'Choose');
+ return <div className="play-study academy-study-hub">{mode==='Choose'?<div className="studio-intro"><div><span className="eyebrow">YOUR KNOWLEDGE. IN MOTION.</span><h1>A smarter way<br/>to make it stick.</h1><p>Build financial confidence one concept at a time. Flip through a deck, challenge your friends, and bring what you learn into the market.</p><Link className="text-link" href="/learn?view=Modules">Explore the full learning journey <ArrowUpRight size={17}/></Link></div><div className="studio-intro-mark"><Layers3 size={44}/><span>Learn it.<br/>Recall it.<br/>Use it.</span></div></div>:<div className="study-mode-heading"><h1>Play & study</h1><p>{mode==='Flashcards'?'Your space to focus, flip and remember.':'Create a shared learning moment.'}</p></div>}
+ <div className="learning-sections studio-mode-tabs" role="group" aria-label="Play and study modes">{['Choose','Flashcards','Live quiz'].map(m=><button key={m} aria-pressed={mode===m} onClick={()=>setMode(m)}>{m==='Choose'?'Explore modes':m}</button>)}</div>
+ {mode==='Choose'&&<div className="play-mode-cards studio-mode-cards">{[{title:'Flashcards',icon:Layers3,copy:'Big cards. Clear definitions. A focused way to turn unfamiliar financial ideas into knowledge you can recall.',action:'Start flipping',variant:'cards' as const},{title:'Live quiz',icon:Gamepad2,copy:'Bring the room together. Build a quiz from any lesson, invite players by code, and learn through every reveal.',action:'Host or join a game',variant:'live' as const}].map(m=><section className="studio-mode-card" key={m.title}><FinancialVisual variant={m.variant}/><div><span className="eyebrow">{m.title==='Flashcards'?'AT YOUR OWN PACE':'BETTER TOGETHER'}</span><h2><m.icon size={25}/>{m.title}</h2><p>{m.copy}</p><button className="primary" onClick={()=>setMode(m.title)}>{m.action} <ArrowUpRight size={17}/></button></div></section>)}</div>}
+ {mode==='Flashcards'&&<StudyCoach/>}{mode==='Live quiz'&&<LiveGame initialRoom={initialRoom} onSignIn={onSignIn}/>}
+ </div>;
 }

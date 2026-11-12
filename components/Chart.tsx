@@ -1,6 +1,7 @@
 "use client";
 import {
-  AreaChart,
+  ComposedChart,
+  Line,
   Area,
   ResponsiveContainer,
   Tooltip,
@@ -13,15 +14,19 @@ import { money } from "@/lib/market";
 export default function Chart({
   data,
   color = "#14856f",
+  line=false,
+  label="Value over time",
 }: {
   data: { date: string; price: number }[];
   color?: string;
+  line?:boolean;
+  label?:string;
 }) {
   const gradientId = useId();
   return (
-    <div className="chart" role="img" aria-label="Value over time">
+    <div className="chart" role="img" aria-label={label}>
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
+        <ComposedChart
           data={data}
           margin={{ top: 10, right: 10, bottom: 0, left: 0 }}
         >
@@ -48,15 +53,15 @@ export default function Chart({
             formatter={(v) => money(Number(v))}
             contentStyle={{ borderRadius: 12, border: "1px solid var(--line)", background: "var(--surface)", color: "var(--ink)" }}
           />
-          <Area
+          {line?<Line type="linear" dataKey="price" name="Price" stroke={color} strokeWidth={2.5} dot={false} isAnimationActive={false}/>:<Area
             type="monotone"
             dataKey="price"
             stroke={color}
             strokeWidth={2.5}
             fill={`url(#${gradientId})`}
             isAnimationActive={false}
-          />
-        </AreaChart>
+          />}
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

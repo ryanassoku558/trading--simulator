@@ -17,8 +17,8 @@ describe("trading-focused curriculum", () => {
     expect(lessons.find((l) => l.id === 173)?.title).toBe(
       "Compounding investment returns",
     );
-    expect(lessons).toHaveLength(159);
-    expect(learningModules).toHaveLength(41);
+    expect(lessons).toHaveLength(187);
+    expect(learningModules).toHaveLength(48);
   });
   it("preserves historical progress for retired lessons", () => {
     const state = initialState();

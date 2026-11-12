@@ -615,7 +615,23 @@ const investmentTerms = new Set([
   "Expense ratio",
   "Dollar-cost averaging",
 ]);
-export const glossary = allGlossary
+const literacyGlossary = [
+ ["Take-home pay","Earnings remaining after payroll deductions.","$3,000 gross pay minus $600 deductions leaves $2,400.",208],
+ ["Sinking fund","Money set aside gradually for a predictable future expense.","Save $50 monthly toward a $600 annual bill.",202],
+ ["Emergency reserve","Accessible savings for an unexpected necessary cost or income disruption.","A repair may require cash before the next paycheck.",202],
+ ["APR","Annual percentage rate: an annualized borrowing-cost measure under applicable disclosure rules.","Compare APR, fees, payment terms and total repayment together.",204],
+ ["Grace period","A contractual interval when qualifying balances may avoid interest if conditions are met.","Read card terms; cash advances may have different rules.",205],
+ ["Vesting","The process by which specified benefit rights become non-forfeitable.","An employer contribution may require a stated service period.",209],
+ ["Deductible","An amount the insured may pay under a policy before certain benefits apply.","A covered $2,000 loss may leave a $500 deductible.",210],
+ ["Real return","A return adjusted for inflation over a matching period.","1.05 / 1.03 minus one is about 1.94% before taxes and fees.",213],
+ ["Disinflation","A decline in the inflation rate; prices may still be rising.","Inflation moving from 4% to 3% does not mean a 1% fall in prices.",213],
+ ["Receivables","Amounts customers owe a business for recorded sales or services.","A credit sale can create receivables before cash is collected.",218],
+ ["Book equity","Reported assets minus liabilities under the applicable accounting framework.","$500 assets minus $300 liabilities leaves $200 book equity.",217],
+ ["Net margin","Net income divided by revenue for a specified reporting period.","$20 net income on $200 revenue gives a 10% net margin.",219],
+ ["Primary source","An original record used as evidence rather than a later retelling.","An issuer filing can verify the period behind a financial claim.",222],
+ ["SIC","Standard Industrial Classification, an industry classification reported in SEC company records.","Use the company record and business description rather than assuming sector labels are interchangeable.",222],
+] as [string,string,string,number][];
+export const glossary = [...allGlossary
   .filter(
     (g) =>
       !archivedFinanceLevels.has(13 + Math.floor((g[3] - 60) / 4)) ||
@@ -626,7 +642,7 @@ export const glossary = allGlossary
     investmentTerms.has(g[0])
       ? ([g[0], g[1], g[2], g[0] === "Compound interest" ? 173 : 76] as const)
       : g,
-  );
+  ), ...literacyGlossary.filter(g=>!allGlossary.some(old=>old[0]===g[0]))];
 
 export const mistakes = [
   {

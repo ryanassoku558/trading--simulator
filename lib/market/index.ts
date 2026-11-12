@@ -160,6 +160,12 @@ export function history(ticker: string, range = "1M", tick = 0): StockPriceHisto
   if (!stock) throw new Error("Choose a valid stock.");
   return windows(range, tick).map((w, i) => ({date: String(i+1), price: priceAt(stock, w.end)}));
 }
+/** Fictional multi-year practice history; never exchange data or a return forecast. */
+export function investmentHistory(ticker:string,years:1|5|10,tick=0):StockPriceHistory[]{
+ const stock=stockMap.get(ticker);if(!stock)throw new Error("Choose a valid stock.");
+ const span=years*365.25*86400/2;
+ return Array.from({length:121},(_,i)=>{const point=tick-span+span*i/120;return {date:new Date(marketEpoch+point*2000).toISOString().slice(0,10),price:priceAt(stock,point)};});
+}
 export function candles(ticker: string, range = "1M", tick = 0, count=40): PriceCandle[] {
   const stock = stockMap.get(ticker);
   if (!stock) throw new Error("Choose a valid stock.");

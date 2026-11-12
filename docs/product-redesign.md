@@ -31,3 +31,11 @@ The ring pulses briefly, with animation disabled for reduced motion. Keyboard us
 Validation includes a production build, the existing unit/API/database suite and browser flows for course completion, bounded quizzes, live games, independent classroom accounts, chart controls, virtual trades, dark mode and mobile navigation. Additional browser checks exercise the actual highlighted controls, responsive tour placement, previous-step navigation, reduced motion and focus restoration. Screenshots are captured from the actual application; any prepared review account is local test data, never a claimed customer portfolio.
 
 Release validation: the production build passed, along with 126 unit/API/database tests and all 26 selected browser scenarios. Manual browser review covered 28 combinations of desktop/tablet/phone workspace views and 16 additional public-homepage/dashboard combinations with no document overflow. The tour was also exercised in actual browser fullscreen, with no page errors reported during that review. Account-creation UI tests intercepted Supabase Auth and did not send email or create production accounts.
+
+## Latest user direction — supersedes the earlier palette and tour limits
+
+The current release uses a midnight navy, blue and off-white identity in `app/studio.css`, with original schematic finance visuals. The full sixteen-step tour is now free and can demonstrate advanced controls temporarily. The simulator uses a full-width 620px black canvas and a multi-year line view.
+
+The informational homepage incorporates the former About page, with account entry and a visible learning route. About/Glossary navigation, Practice Quest, district audience blocks and repeated classroom promotions are removed. All additional navigation items are shown directly. Animated, keyboard-accessible Flashcards replace Study cards; live quizzes have clearer entry instructions, animated stage states and monotonic snapshot handling. The requested footer boilerplate is removed. Existing authentication, saved progress, XP, streaks, portfolios and history are preserved.
+
+See `platform-parity-audit.md` for sourced research, original content additions, budget/calculator features, conditional orders, completed verification and remaining parity gaps.

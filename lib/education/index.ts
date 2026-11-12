@@ -409,7 +409,8 @@ export const achievements: Achievement[] = [
   ...expandedModules.map(m=>({id:`module-${m.level}`,title:m.reward,description:`Complete all lessons in ${m.title}`})),
   {id:"fifty",title:"50 Lessons Completed",description:"Build understanding across fifty lessons"},
   {id:"hundred",title:"100 Lessons Completed",description:"Complete one hundred knowledge checks"},
-  {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the current trading and investing curriculum"},
+  {id:"curriculum",title:"Well-Rounded Learner",description:"Complete the original trading and investing core"},
+  {id:"curriculum-expanded",title:"Financial Learning Explorer",description:"Complete the expanded investing and financial-literacy curriculum"},
   ...growthMilestones,
 ];
 export function earned(s: State, id: string): boolean {
@@ -417,7 +418,8 @@ export function earned(s: State, id: string): boolean {
   if(id.startsWith("module-")){const level=Number(id.slice(7));const group=lessons.filter(l=>l.level===level);return group.length>0&&group.every(l=>s.learning.completed.includes(l.id));}
   if(id==="fifty")return s.learning.completed.length>=50;
   if(id==="hundred")return s.learning.completed.length>=100;
-  if(id==="curriculum")return lessons.every(l=>s.learning.completed.includes(l.id));
+  if(id==="curriculum")return lessons.filter(l=>l.id<200).every(l=>s.learning.completed.includes(l.id));
+  if(id==="curriculum-expanded")return lessons.every(l=>s.learning.completed.includes(l.id));
   return (
     (
       {
