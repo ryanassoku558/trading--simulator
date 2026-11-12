@@ -6,7 +6,7 @@ import HandsOnTrading from "../HandsOnTrading";
 import {VideoHelp} from "../OnboardingTutorials";
 import { useState } from "react";
 import type { State, Trade, Stock } from "@/types";
-import { money, history } from "@/lib/market";
+import { money, history,marketEpoch } from "@/lib/market";
 import { StockBadge, Delta } from "../ui/MarketUI";
 
 import Chart from "../Chart";
@@ -114,7 +114,7 @@ export default function StockDetail({
               ))}
             </div>}
             <p className="small">
-              Prices move automatically 24/7. All practice prices and chart history are simulated.
+              Prices move automatically 24/7. All practice prices and chart history are simulated. <time dateTime={new Date(marketEpoch+state.tick*2000).toISOString()}>Simulation time: {new Date(marketEpoch+state.tick*2000).toLocaleString(undefined,{timeZoneName:'short'})}</time>
             </p>
           </section>
           <details className="card about-company ds-extra"><summary>Asset research & key facts</summary>      <p className="small">Practice prices are generated estimates. <a href={`https://finance.yahoo.com/quote/${encodeURIComponent(ticker)}/`} target="_blank" rel="noopener noreferrer">Check the real market quote on Yahoo Finance →</a></p>
@@ -129,13 +129,13 @@ export default function StockDetail({
                   : `Buying one share of ${current.company} means owning a tiny piece of ${current.company}.`}
               </p>
             </div>
-            <h3>At a glance</h3>
+            <h3>Company metrics</h3><p className="small">A verified fundamentals feed is not connected. Current market capitalization and exchange trading volume are unavailable here; use the external research source above and check its timestamp.</p>
             <div className="company-stats">
               <div>
                 <span title="The total value of all shares of a company">
                   Market cap ⓘ
                 </span>
-                <strong>{current.cap}</strong>
+                <strong>Not connected</strong>
                 {state.profile.beginner && (
                   <small>The total value of all company shares.</small>
                 )}
@@ -144,7 +144,7 @@ export default function StockDetail({
                 <span title="The number of shares traded in one day">
                   Daily volume ⓘ
                 </span>
-                <strong>{current.volume}</strong>
+                <strong>Not connected</strong>
                 {state.profile.beginner && (
                   <small>How many shares changed hands.</small>
                 )}

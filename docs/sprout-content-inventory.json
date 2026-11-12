@@ -1,0 +1,3404 @@
+{
+  "generatedAt": "2026-11-12T16:19:08.867Z",
+  "sourceCommit": "dc9d7b8279e0b146bffa22a02b9318ec97afdbdb",
+  "scope": "Existing Sprout content only. StockTrak public-reference comparison in progress.",
+  "modules": [
+    {
+      "number": 1,
+      "title": "Market Basics",
+      "lessonIds": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "starter": true,
+      "url": "/learn?view=Modules&q=Market%20Basics"
+    },
+    {
+      "number": 2,
+      "title": "Candlesticks",
+      "lessonIds": [
+        18,
+        26,
+        27,
+        28
+      ],
+      "starter": true,
+      "url": "/learn?view=Modules&q=Candlesticks"
+    },
+    {
+      "number": 3,
+      "title": "Chart Patterns",
+      "lessonIds": [
+        20,
+        29,
+        30,
+        112
+      ],
+      "starter": true,
+      "url": "/learn?view=Modules&q=Chart%20Patterns"
+    },
+    {
+      "number": 4,
+      "title": "Trend & Momentum",
+      "lessonIds": [
+        19,
+        55,
+        56,
+        113
+      ],
+      "starter": true,
+      "url": "/learn?view=Modules&q=Trend%20%26%20Momentum"
+    },
+    {
+      "number": 5,
+      "title": "Volume & Volatility",
+      "lessonIds": [
+        10,
+        36,
+        57,
+        58
+      ],
+      "starter": true,
+      "url": "/learn?view=Modules&q=Volume%20%26%20Volatility"
+    },
+    {
+      "number": 6,
+      "title": "Trading Basics",
+      "lessonIds": [
+        2
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Trading%20Basics"
+    },
+    {
+      "number": 7,
+      "title": "Understanding Prices",
+      "lessonIds": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Understanding%20Prices"
+    },
+    {
+      "number": 8,
+      "title": "Placing Trades",
+      "lessonIds": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Placing%20Trades"
+    },
+    {
+      "number": 9,
+      "title": "Reading Charts",
+      "lessonIds": [
+        16,
+        17
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Reading%20Charts"
+    },
+    {
+      "number": 10,
+      "title": "Building a Portfolio",
+      "lessonIds": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Building%20a%20Portfolio"
+    },
+    {
+      "number": 11,
+      "title": "Day Trading Foundations",
+      "lessonIds": [
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Day%20Trading%20Foundations"
+    },
+    {
+      "number": 12,
+      "title": "Execution, Accounts & Risk",
+      "lessonIds": [
+        37,
+        38,
+        39,
+        40
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Execution%2C%20Accounts%20%26%20Risk"
+    },
+    {
+      "number": 13,
+      "title": "Planning, Emotions & Reality",
+      "lessonIds": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Planning%2C%20Emotions%20%26%20Reality"
+    },
+    {
+      "number": 14,
+      "title": "Real-World Trading Context",
+      "lessonIds": [
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Real-World%20Trading%20Context"
+    },
+    {
+      "number": 15,
+      "title": "Beginner Practice Lab",
+      "lessonIds": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Beginner%20Practice%20Lab"
+    },
+    {
+      "number": 16,
+      "title": "Indicators Explained",
+      "lessonIds": [
+        59
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Indicators%20Explained"
+    },
+    {
+      "number": 17,
+      "title": "Investment Building Blocks",
+      "lessonIds": [
+        76,
+        77,
+        78,
+        79
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Investment%20Building%20Blocks"
+    },
+    {
+      "number": 18,
+      "title": "Long-Term Portfolio Planning",
+      "lessonIds": [
+        80,
+        81,
+        82,
+        83
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Long-Term%20Portfolio%20Planning"
+    },
+    {
+      "number": 19,
+      "title": "Market Structure & Execution",
+      "lessonIds": [
+        100,
+        101,
+        102,
+        103
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Market%20Structure%20%26%20Execution"
+    },
+    {
+      "number": 20,
+      "title": "Fundamental Analysis & Valuation",
+      "lessonIds": [
+        104,
+        105,
+        106,
+        107
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Fundamental%20Analysis%20%26%20Valuation"
+    },
+    {
+      "number": 21,
+      "title": "Macroeconomics & Market Context",
+      "lessonIds": [
+        108,
+        109,
+        110,
+        111
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Macroeconomics%20%26%20Market%20Context"
+    },
+    {
+      "number": 22,
+      "title": "Strategy Setups & Invalidation",
+      "lessonIds": [
+        114,
+        115
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Strategy%20Setups%20%26%20Invalidation"
+    },
+    {
+      "number": 23,
+      "title": "Testing & Trading Systems",
+      "lessonIds": [
+        116,
+        117,
+        118,
+        119
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Testing%20%26%20Trading%20Systems"
+    },
+    {
+      "number": 24,
+      "title": "Advanced Risk & Leverage",
+      "lessonIds": [
+        120,
+        121,
+        122,
+        123
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Advanced%20Risk%20%26%20Leverage"
+    },
+    {
+      "number": 25,
+      "title": "Options Fundamentals",
+      "lessonIds": [
+        124,
+        125,
+        126,
+        127
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Options%20Fundamentals"
+    },
+    {
+      "number": 26,
+      "title": "Futures, Forex & Digital Assets",
+      "lessonIds": [
+        128,
+        129,
+        130,
+        131
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Futures%2C%20Forex%20%26%20Digital%20Assets"
+    },
+    {
+      "number": 27,
+      "title": "Psychology, Habits & Decision Quality",
+      "lessonIds": [
+        132,
+        133,
+        134,
+        135
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Psychology%2C%20Habits%20%26%20Decision%20Quality"
+    },
+    {
+      "number": 28,
+      "title": "A Complete Trading Practice Plan",
+      "lessonIds": [
+        136,
+        137,
+        138,
+        139
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=A%20Complete%20Trading%20Practice%20Plan"
+    },
+    {
+      "number": 29,
+      "title": "Stock Research Workflow",
+      "lessonIds": [
+        140,
+        141,
+        142,
+        143
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Stock%20Research%20Workflow"
+    },
+    {
+      "number": 30,
+      "title": "Bullish & Bearish Market Context",
+      "lessonIds": [
+        144,
+        145,
+        146,
+        147
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Bullish%20%26%20Bearish%20Market%20Context"
+    },
+    {
+      "number": 31,
+      "title": "Public Insider Transactions",
+      "lessonIds": [
+        148,
+        149,
+        150,
+        151
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Public%20Insider%20Transactions"
+    },
+    {
+      "number": 32,
+      "title": "Liquidity & Structure Setups",
+      "lessonIds": [
+        152,
+        153,
+        154,
+        155
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Liquidity%20%26%20Structure%20Setups"
+    },
+    {
+      "number": 33,
+      "title": "Opening Range & Breakout Setups",
+      "lessonIds": [
+        156,
+        157,
+        158,
+        159
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Opening%20Range%20%26%20Breakout%20Setups"
+    },
+    {
+      "number": 34,
+      "title": "VWAP, Pullbacks & Momentum Setups",
+      "lessonIds": [
+        160,
+        161,
+        162,
+        163
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=VWAP%2C%20Pullbacks%20%26%20Momentum%20Setups"
+    },
+    {
+      "number": 35,
+      "title": "Validate a Strategy Before Scaling",
+      "lessonIds": [
+        164,
+        165,
+        166,
+        167
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Validate%20a%20Strategy%20Before%20Scaling"
+    },
+    {
+      "number": 36,
+      "title": "Trading with AI Tools",
+      "lessonIds": [
+        168,
+        169,
+        170,
+        171
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Trading%20with%20AI%20Tools"
+    },
+    {
+      "number": 37,
+      "title": "Long-Term Investing Foundations",
+      "lessonIds": [
+        172,
+        173,
+        174,
+        175
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Long-Term%20Investing%20Foundations"
+    },
+    {
+      "number": 38,
+      "title": "Long-Term Stock Research & Portfolio Reviews",
+      "lessonIds": [
+        176,
+        177,
+        178,
+        179
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Long-Term%20Stock%20Research%20%26%20Portfolio%20Reviews"
+    },
+    {
+      "number": 39,
+      "title": "Crypto & Bitcoin Trading",
+      "lessonIds": [
+        180,
+        181,
+        182,
+        183
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Crypto%20%26%20Bitcoin%20Trading"
+    },
+    {
+      "number": 40,
+      "title": "Futures Contract Practice",
+      "lessonIds": [
+        184,
+        185,
+        186,
+        187
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Futures%20Contract%20Practice"
+    },
+    {
+      "number": 41,
+      "title": "Options Contract Practice",
+      "lessonIds": [
+        188,
+        189,
+        190,
+        191
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=Options%20Contract%20Practice"
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "title": "What is a stock?",
+      "level": 1,
+      "url": "/learn?lesson=1",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 2,
+      "title": "Why do stock prices move?",
+      "level": 1,
+      "url": "/learn?lesson=2",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 3,
+      "title": "What does buying a stock mean?",
+      "level": 1,
+      "url": "/learn?lesson=3",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 4,
+      "title": "What does selling mean?",
+      "level": 1,
+      "url": "/learn?lesson=4",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 5,
+      "title": "Profit and loss",
+      "level": 1,
+      "url": "/learn?lesson=5",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 6,
+      "title": "Share price",
+      "level": 2,
+      "url": "/learn?lesson=6",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 7,
+      "title": "Market capitalization",
+      "level": 2,
+      "url": "/learn?lesson=7",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 8,
+      "title": "Percentage gains and losses",
+      "level": 2,
+      "url": "/learn?lesson=8",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 9,
+      "title": "Bid and ask",
+      "level": 2,
+      "url": "/learn?lesson=9",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 10,
+      "title": "Volume",
+      "level": 2,
+      "url": "/learn?lesson=10",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 11,
+      "title": "Market orders",
+      "level": 3,
+      "url": "/learn?lesson=11",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 12,
+      "title": "Limit orders",
+      "level": 3,
+      "url": "/learn?lesson=12",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 13,
+      "title": "Stop-loss basics",
+      "level": 3,
+      "url": "/learn?lesson=13",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 14,
+      "title": "Position size",
+      "level": 3,
+      "url": "/learn?lesson=14",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 15,
+      "title": "Risk",
+      "level": 3,
+      "url": "/learn?lesson=15",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 16,
+      "title": "Price charts",
+      "level": 4,
+      "url": "/learn?lesson=16",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 17,
+      "title": "Timeframes",
+      "level": 4,
+      "url": "/learn?lesson=17",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 18,
+      "title": "Candlesticks",
+      "level": 4,
+      "url": "/learn?lesson=18",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 19,
+      "title": "Trends",
+      "level": 4,
+      "url": "/learn?lesson=19",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 20,
+      "title": "Support and resistance",
+      "level": 4,
+      "url": "/learn?lesson=20",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 21,
+      "title": "Diversification",
+      "level": 5,
+      "url": "/learn?lesson=21",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 22,
+      "title": "Risk vs reward",
+      "level": 5,
+      "url": "/learn?lesson=22",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 23,
+      "title": "Long-term investing",
+      "level": 5,
+      "url": "/learn?lesson=23",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 24,
+      "title": "Portfolio allocation",
+      "level": 5,
+      "url": "/learn?lesson=24",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 25,
+      "title": "Reviewing performance",
+      "level": 5,
+      "url": "/learn?lesson=25",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 26,
+      "title": "Candle bodies and wicks",
+      "level": 6,
+      "url": "/learn?lesson=26",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 27,
+      "title": "Green, red, and price gaps",
+      "level": 6,
+      "url": "/learn?lesson=27",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 28,
+      "title": "Doji: a small body",
+      "level": 6,
+      "url": "/learn?lesson=28",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 29,
+      "title": "Hammer: a long lower wick",
+      "level": 6,
+      "url": "/learn?lesson=29",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 30,
+      "title": "Engulfing candles and a practice plan",
+      "level": 6,
+      "url": "/learn?lesson=30",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 31,
+      "title": "What is day trading?",
+      "level": 7,
+      "url": "/learn?lesson=31",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 32,
+      "title": "How a trading day works",
+      "level": 7,
+      "url": "/learn?lesson=32",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 33,
+      "title": "Reading a stock quote",
+      "level": 7,
+      "url": "/learn?lesson=33",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 34,
+      "title": "What happens when you place an order?",
+      "level": 7,
+      "url": "/learn?lesson=34",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 35,
+      "title": "Spreads, fees, and slippage",
+      "level": 7,
+      "url": "/learn?lesson=35",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 36,
+      "title": "Liquidity and volatility",
+      "level": 8,
+      "url": "/learn?lesson=36",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 37,
+      "title": "How much could you lose?",
+      "level": 8,
+      "url": "/learn?lesson=37",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 38,
+      "title": "Stops and price gaps",
+      "level": 8,
+      "url": "/learn?lesson=38",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 39,
+      "title": "Cash accounts and margin accounts",
+      "level": 8,
+      "url": "/learn?lesson=39",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 40,
+      "title": "Settlement and available funds",
+      "level": 8,
+      "url": "/learn?lesson=40",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 41,
+      "title": "Making a trade plan",
+      "level": 9,
+      "url": "/learn?lesson=41",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 42,
+      "title": "Trading emotions: FOMO and revenge trading",
+      "level": 9,
+      "url": "/learn?lesson=42",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 43,
+      "title": "Reviewing a trade: process versus luck",
+      "level": 9,
+      "url": "/learn?lesson=43",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 44,
+      "title": "What practice cannot teach you",
+      "level": 9,
+      "url": "/learn?lesson=44",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 45,
+      "title": "News and earnings",
+      "level": 10,
+      "url": "/learn?lesson=45",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 46,
+      "title": "Trading halts and outages",
+      "level": 10,
+      "url": "/learn?lesson=46",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 47,
+      "title": "Leverage and short selling",
+      "level": 10,
+      "url": "/learn?lesson=47",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 48,
+      "title": "Taxes and recordkeeping",
+      "level": 10,
+      "url": "/learn?lesson=48",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 49,
+      "title": "Misleading trading claims and scams",
+      "level": 10,
+      "url": "/learn?lesson=49",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 50,
+      "title": "Practice: read a quote",
+      "level": 11,
+      "url": "/learn?lesson=50",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 51,
+      "title": "Practice: calculate a possible loss",
+      "level": 11,
+      "url": "/learn?lesson=51",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 52,
+      "title": "Practice: choose an order",
+      "level": 11,
+      "url": "/learn?lesson=52",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 53,
+      "title": "Practice: write a trade plan",
+      "level": 11,
+      "url": "/learn?lesson=53",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 54,
+      "title": "Practice: review an outcome",
+      "level": 11,
+      "url": "/learn?lesson=54",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 55,
+      "title": "Moving averages: smoothing the noise",
+      "level": 12,
+      "url": "/learn?lesson=55",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 56,
+      "title": "RSI: understanding momentum",
+      "level": 12,
+      "url": "/learn?lesson=56",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 57,
+      "title": "VWAP: price weighted by volume",
+      "level": 12,
+      "url": "/learn?lesson=57",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 58,
+      "title": "ATR: measuring movement",
+      "level": 12,
+      "url": "/learn?lesson=58",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 59,
+      "title": "Indicators work better with a plan",
+      "level": 12,
+      "url": "/learn?lesson=59",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 76,
+      "title": "Stocks versus bonds",
+      "level": 17,
+      "url": "/learn?lesson=76",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 77,
+      "title": "ETFs, mutual funds, and index funds",
+      "level": 17,
+      "url": "/learn?lesson=77",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 78,
+      "title": "Dividends, distributions, and total return",
+      "level": 17,
+      "url": "/learn?lesson=78",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 79,
+      "title": "Cash, real assets, and alternative investments",
+      "level": 17,
+      "url": "/learn?lesson=79",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 80,
+      "title": "Diversification and correlation",
+      "level": 18,
+      "url": "/learn?lesson=80",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 81,
+      "title": "Asset allocation and your capacity for loss",
+      "level": 18,
+      "url": "/learn?lesson=81",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 82,
+      "title": "Rebalancing without chasing winners",
+      "level": 18,
+      "url": "/learn?lesson=82",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 83,
+      "title": "Regular contributions and uncertain markets",
+      "level": 18,
+      "url": "/learn?lesson=83",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 100,
+      "title": "Order books, liquidity, and market impact",
+      "level": 23,
+      "url": "/learn?lesson=100",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 101,
+      "title": "Spreads, slippage, and trading costs",
+      "level": 23,
+      "url": "/learn?lesson=101",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 102,
+      "title": "Partial fills, order priority, and uncertain execution",
+      "level": 23,
+      "url": "/learn?lesson=102",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 103,
+      "title": "Halts, gaps, and changing market conditions",
+      "level": 23,
+      "url": "/learn?lesson=103",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 104,
+      "title": "Revenue, profit, and financial statements",
+      "level": 24,
+      "url": "/learn?lesson=104",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 105,
+      "title": "Cash flow, debt, and business resilience",
+      "level": 24,
+      "url": "/learn?lesson=105",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 106,
+      "title": "Valuation ratios need context",
+      "level": 24,
+      "url": "/learn?lesson=106",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 107,
+      "title": "Earnings expectations and corporate actions",
+      "level": 24,
+      "url": "/learn?lesson=107",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 108,
+      "title": "Interest rates and asset prices",
+      "level": 25,
+      "url": "/learn?lesson=108",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 109,
+      "title": "Economic releases and surprise",
+      "level": 25,
+      "url": "/learn?lesson=109",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 110,
+      "title": "Sectors, cycles, and interconnected risks",
+      "level": 25,
+      "url": "/learn?lesson=110",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 111,
+      "title": "Event calendars and scenario planning",
+      "level": 25,
+      "url": "/learn?lesson=111",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 112,
+      "title": "Breakouts and failed breakouts",
+      "level": 26,
+      "url": "/learn?lesson=112",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 113,
+      "title": "Pullbacks in trends",
+      "level": 26,
+      "url": "/learn?lesson=113",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 114,
+      "title": "Ranges and mean reversion",
+      "level": 26,
+      "url": "/learn?lesson=114",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 115,
+      "title": "News, gaps, and choosing to pass",
+      "level": 26,
+      "url": "/learn?lesson=115",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 116,
+      "title": "Write a rule you can evaluate",
+      "level": 27,
+      "url": "/learn?lesson=116",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 117,
+      "title": "Backtests and realistic assumptions",
+      "level": 27,
+      "url": "/learn?lesson=117",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 118,
+      "title": "Look-ahead bias, leakage, and survivorship",
+      "level": 27,
+      "url": "/learn?lesson=118",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 119,
+      "title": "Overfitting and forward practice",
+      "level": 27,
+      "url": "/learn?lesson=119",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 120,
+      "title": "Leverage and margin amplify both directions",
+      "level": 28,
+      "url": "/learn?lesson=120",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 121,
+      "title": "Short selling and borrowing risk",
+      "level": 28,
+      "url": "/learn?lesson=121",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 122,
+      "title": "Portfolio heat and correlated positions",
+      "level": 28,
+      "url": "/learn?lesson=122",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 123,
+      "title": "Drawdown, recovery, and avoiding ruin",
+      "level": 28,
+      "url": "/learn?lesson=123",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 124,
+      "title": "Calls, puts, and contract terms",
+      "level": 29,
+      "url": "/learn?lesson=124",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 125,
+      "title": "Intrinsic value and time value",
+      "level": 29,
+      "url": "/learn?lesson=125",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 126,
+      "title": "Greeks describe sensitivities, not certainties",
+      "level": 29,
+      "url": "/learn?lesson=126",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 127,
+      "title": "Expiration, exercise, assignment, and seller risk",
+      "level": 29,
+      "url": "/learn?lesson=127",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 128,
+      "title": "Futures contracts and daily settlement",
+      "level": 30,
+      "url": "/learn?lesson=128",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 129,
+      "title": "Forex pairs, spreads, and leverage",
+      "level": 30,
+      "url": "/learn?lesson=129",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 130,
+      "title": "Crypto custody, volatility, and product differences",
+      "level": 30,
+      "url": "/learn?lesson=130",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 131,
+      "title": "Compare products before comparing returns",
+      "level": 30,
+      "url": "/learn?lesson=131",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 132,
+      "title": "Overconfidence and outcome bias",
+      "level": 31,
+      "url": "/learn?lesson=132",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 133,
+      "title": "Revenge trading and loss aversion",
+      "level": 31,
+      "url": "/learn?lesson=133",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 134,
+      "title": "Routines, attention, and sustainable practice",
+      "level": 31,
+      "url": "/learn?lesson=134",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 135,
+      "title": "Process goals and honest self-assessment",
+      "level": 31,
+      "url": "/learn?lesson=135",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 136,
+      "title": "Define your boundaries before your strategy",
+      "level": 32,
+      "url": "/learn?lesson=136",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 137,
+      "title": "Use a pre-trade checklist",
+      "level": 32,
+      "url": "/learn?lesson=137",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 138,
+      "title": "Review metrics without chasing a ranking",
+      "level": 32,
+      "url": "/learn?lesson=138",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 139,
+      "title": "Readiness, continuing education, and independent advice",
+      "level": 32,
+      "url": "/learn?lesson=139",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 140,
+      "title": "Start with the business and official filings",
+      "level": 33,
+      "url": "/learn?lesson=140",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 141,
+      "title": "Compare financials with the right peers",
+      "level": 33,
+      "url": "/learn?lesson=141",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 142,
+      "title": "Evaluate news, estimates, and source quality",
+      "level": 33,
+      "url": "/learn?lesson=142",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 143,
+      "title": "Write a research thesis and what would change it",
+      "level": 33,
+      "url": "/learn?lesson=143",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 144,
+      "title": "Bullish, bearish, and neutral views",
+      "level": 34,
+      "url": "/learn?lesson=144",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 145,
+      "title": "Direction can differ across timeframes",
+      "level": 34,
+      "url": "/learn?lesson=145",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 146,
+      "title": "Build a bullish or bearish case from evidence",
+      "level": 34,
+      "url": "/learn?lesson=146",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 147,
+      "title": "Use scenarios instead of certainty",
+      "level": 34,
+      "url": "/learn?lesson=147",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 148,
+      "title": "Public insider filings versus nonpublic information",
+      "level": 35,
+      "url": "/learn?lesson=148",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 149,
+      "title": "Forms 3, 4, and 5: what they report",
+      "level": 35,
+      "url": "/learn?lesson=149",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 150,
+      "title": "Read transaction codes before calling it buying or selling",
+      "level": 35,
+      "url": "/learn?lesson=150",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 151,
+      "title": "Context, trading plans, and limits of insider signals",
+      "level": 35,
+      "url": "/learn?lesson=151",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 152,
+      "title": "Mark session highs and lows",
+      "level": 36,
+      "url": "/learn?lesson=152",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 153,
+      "title": "Sweep and reclaim: wait for evidence",
+      "level": 36,
+      "url": "/learn?lesson=153",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 154,
+      "title": "Break of structure versus a wick",
+      "level": 36,
+      "url": "/learn?lesson=154",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 155,
+      "title": "Retest entries and failed reclaims",
+      "level": 36,
+      "url": "/learn?lesson=155",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 156,
+      "title": "Define an opening range",
+      "level": 37,
+      "url": "/learn?lesson=156",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 157,
+      "title": "Opening-range breakout confirmation",
+      "level": 37,
+      "url": "/learn?lesson=157",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 158,
+      "title": "Failed breakouts and range re-entry",
+      "level": 37,
+      "url": "/learn?lesson=158",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 159,
+      "title": "Breakout pullback and no-trade filters",
+      "level": 37,
+      "url": "/learn?lesson=159",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 160,
+      "title": "VWAP reclaim as a research setup",
+      "level": 38,
+      "url": "/learn?lesson=160",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 161,
+      "title": "Trend pullback toward a moving average",
+      "level": 38,
+      "url": "/learn?lesson=161",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 162,
+      "title": "Momentum continuation and relative volume",
+      "level": 38,
+      "url": "/learn?lesson=162",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 163,
+      "title": "Confluence without counting the same evidence twice",
+      "level": 38,
+      "url": "/learn?lesson=163",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 164,
+      "title": "Write a reproducible strategy checklist",
+      "level": 39,
+      "url": "/learn?lesson=164",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 165,
+      "title": "Expectancy: win rate is only one input",
+      "level": 39,
+      "url": "/learn?lesson=165",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 166,
+      "title": "Review losing streaks and drawdowns",
+      "level": 39,
+      "url": "/learn?lesson=166",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 167,
+      "title": "Check social-media claims with your own evidence",
+      "level": 39,
+      "url": "/learn?lesson=167",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 168,
+      "title": "AI research copilots: verify the sources",
+      "level": 40,
+      "url": "/learn?lesson=168",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 169,
+      "title": "AI-assisted strategy rules and backtests",
+      "level": 40,
+      "url": "/learn?lesson=169",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 170,
+      "title": "Protect account data and keep humans in control",
+      "level": 40,
+      "url": "/learn?lesson=170",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 171,
+      "title": "AI journal review without outsourcing decisions",
+      "level": 40,
+      "url": "/learn?lesson=171",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 172,
+      "title": "Trading versus long-term investing",
+      "level": 41,
+      "url": "/learn?lesson=172",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 173,
+      "title": "Compounding investment returns",
+      "level": 41,
+      "url": "/learn?lesson=173",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 174,
+      "title": "Dividends and total return",
+      "level": 41,
+      "url": "/learn?lesson=174",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 175,
+      "title": "Long-term risk and drawdowns",
+      "level": 41,
+      "url": "/learn?lesson=175",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 176,
+      "title": "Build a multi-year ownership thesis",
+      "level": 42,
+      "url": "/learn?lesson=176",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 177,
+      "title": "Diversification and overlapping funds",
+      "level": 42,
+      "url": "/learn?lesson=177",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 178,
+      "title": "Staged investing and transaction costs",
+      "level": 42,
+      "url": "/learn?lesson=178",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 179,
+      "title": "Review and rebalance with a reason",
+      "level": 42,
+      "url": "/learn?lesson=179",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 180,
+      "title": "Bitcoin and spot trading",
+      "level": 43,
+      "url": "/learn?lesson=180",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 181,
+      "title": "Crypto trading pairs, spreads, and fees",
+      "level": 43,
+      "url": "/learn?lesson=181",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 182,
+      "title": "Custody, wallet security, and transfers",
+      "level": 43,
+      "url": "/learn?lesson=182",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 183,
+      "title": "Spot crypto versus perpetual futures",
+      "level": 43,
+      "url": "/learn?lesson=183",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 184,
+      "title": "Contract size, ticks, and profit or loss",
+      "level": 44,
+      "url": "/learn?lesson=184",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 185,
+      "title": "Margin, leverage, and variation payments",
+      "level": 44,
+      "url": "/learn?lesson=185",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 186,
+      "title": "Expiry, settlement, and rolling contracts",
+      "level": 44,
+      "url": "/learn?lesson=186",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 187,
+      "title": "Futures execution and stop-order risk",
+      "level": 44,
+      "url": "/learn?lesson=187",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 188,
+      "title": "Calls, puts, premiums, and contract size",
+      "level": 45,
+      "url": "/learn?lesson=188",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 189,
+      "title": "Expiry, exercise, and assignment",
+      "level": 45,
+      "url": "/learn?lesson=189",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 190,
+      "title": "Time decay, implied volatility, and Greeks",
+      "level": 45,
+      "url": "/learn?lesson=190",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 191,
+      "title": "Defined and undefined options risk",
+      "level": 45,
+      "url": "/learn?lesson=191",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    }
+  ],
+  "glossary": [
+    {
+      "term": "VWAP",
+      "definition": "Volume-weighted average price: the average price paid during a period, weighted by shares traded.",
+      "hasExample": true,
+      "lessonId": 57
+    },
+    {
+      "term": "Pullback",
+      "definition": "A temporary move against an existing trend. It may develop into a reversal.",
+      "hasExample": true,
+      "lessonId": 113
+    },
+    {
+      "term": "Liquidity",
+      "definition": "How readily an asset can be traded without substantially moving its price.",
+      "hasExample": true,
+      "lessonId": 36
+    },
+    {
+      "term": "Bullish",
+      "definition": "Expecting prices to rise over a stated timeframe; not a guarantee.",
+      "hasExample": true,
+      "lessonId": 144
+    },
+    {
+      "term": "Bearish",
+      "definition": "Expecting prices to fall over a stated timeframe.",
+      "hasExample": true,
+      "lessonId": 144
+    },
+    {
+      "term": "Spread",
+      "definition": "The difference between the best quoted ask and bid.",
+      "hasExample": true,
+      "lessonId": 35
+    },
+    {
+      "term": "Stop loss",
+      "definition": "An order intended to exit after a price trigger. Execution and price are not guaranteed.",
+      "hasExample": true,
+      "lessonId": 13
+    },
+    {
+      "term": "Position size",
+      "definition": "The number of shares or units held in a trade.",
+      "hasExample": true,
+      "lessonId": 14
+    },
+    {
+      "term": "Resistance",
+      "definition": "An observed price area where selling previously slowed a rise. It can break.",
+      "hasExample": true,
+      "lessonId": 20
+    },
+    {
+      "term": "Support",
+      "definition": "An observed price area where buying previously slowed a decline. It can break.",
+      "hasExample": true,
+      "lessonId": 20
+    },
+    {
+      "term": "Volume",
+      "definition": "The number of shares or units traded during a period.",
+      "hasExample": true,
+      "lessonId": 10
+    },
+    {
+      "term": "ETF",
+      "definition": "An exchange-traded fund: a basket of investments traded in shares.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Diversification",
+      "definition": "Spreading exposure across investments whose risks are not identical.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "FOMO",
+      "definition": "Fear of missing out: pressure to act because others appear to be benefiting.",
+      "hasExample": true,
+      "lessonId": 42
+    },
+    {
+      "term": "Drawdown",
+      "definition": "The fall from a portfolio’s previous peak to a later lower value.",
+      "hasExample": true,
+      "lessonId": 123
+    },
+    {
+      "term": "R multiple",
+      "definition": "A trade result divided by its planned initial risk.",
+      "hasExample": true,
+      "lessonId": 138
+    },
+    {
+      "term": "Market order",
+      "definition": "An order seeking prompt execution at available prices.",
+      "hasExample": true,
+      "lessonId": 11
+    },
+    {
+      "term": "Limit order",
+      "definition": "An order specifying the maximum buy or minimum sell price; it may not fill.",
+      "hasExample": true,
+      "lessonId": 12
+    },
+    {
+      "term": "Candlestick",
+      "definition": "A chart mark showing a period’s open, high, low, and close.",
+      "hasExample": true,
+      "lessonId": 18
+    },
+    {
+      "term": "Compound interest",
+      "definition": "Interest or returns that themselves can earn interest or returns.",
+      "hasExample": true,
+      "lessonId": 173
+    },
+    {
+      "term": "Stock",
+      "definition": "An ownership interest in a company, divided into shares.",
+      "hasExample": true,
+      "lessonId": 1
+    },
+    {
+      "term": "Share",
+      "definition": "One unit of ownership in a company or fund.",
+      "hasExample": true,
+      "lessonId": 3
+    },
+    {
+      "term": "Ticker symbol",
+      "definition": "A short code used to identify a traded security.",
+      "hasExample": true,
+      "lessonId": 33
+    },
+    {
+      "term": "Exchange",
+      "definition": "A marketplace with rules for trading listed securities.",
+      "hasExample": true,
+      "lessonId": 32
+    },
+    {
+      "term": "Broker",
+      "definition": "A firm that provides access to investment accounts and order execution.",
+      "hasExample": true,
+      "lessonId": 34
+    },
+    {
+      "term": "Portfolio",
+      "definition": "The collection of investments and cash you hold.",
+      "hasExample": true,
+      "lessonId": 24
+    },
+    {
+      "term": "Bid",
+      "definition": "The highest currently quoted price a buyer offers for a security.",
+      "hasExample": true,
+      "lessonId": 9
+    },
+    {
+      "term": "Ask",
+      "definition": "The lowest currently quoted price a seller asks for a security.",
+      "hasExample": true,
+      "lessonId": 9
+    },
+    {
+      "term": "Slippage",
+      "definition": "The difference between an expected execution price and the actual fill.",
+      "hasExample": true,
+      "lessonId": 35
+    },
+    {
+      "term": "Fill",
+      "definition": "Execution of all or part of an order.",
+      "hasExample": true,
+      "lessonId": 34
+    },
+    {
+      "term": "Partial fill",
+      "definition": "Execution of only some of the quantity requested.",
+      "hasExample": true,
+      "lessonId": 102
+    },
+    {
+      "term": "Stop-limit order",
+      "definition": "An order that becomes a limit order after its stop trigger is reached. It may not execute.",
+      "hasExample": true,
+      "lessonId": 38
+    },
+    {
+      "term": "Price gap",
+      "definition": "A jump between traded prices with no trades at the intermediate prices.",
+      "hasExample": true,
+      "lessonId": 38
+    },
+    {
+      "term": "Trading halt",
+      "definition": "A temporary pause in trading a security under applicable market rules.",
+      "hasExample": true,
+      "lessonId": 46
+    },
+    {
+      "term": "Settlement",
+      "definition": "Completion of the exchange of cash and securities after a trade.",
+      "hasExample": true,
+      "lessonId": 40
+    },
+    {
+      "term": "Cash account",
+      "definition": "A brokerage account that pays for investments without borrowing on margin.",
+      "hasExample": true,
+      "lessonId": 39
+    },
+    {
+      "term": "Margin account",
+      "definition": "A brokerage account that may allow borrowing against eligible holdings.",
+      "hasExample": true,
+      "lessonId": 39
+    },
+    {
+      "term": "Margin call",
+      "definition": "A demand to restore required equity in a margin account; positions may be liquidated.",
+      "hasExample": true,
+      "lessonId": 120
+    },
+    {
+      "term": "Leverage",
+      "definition": "Exposure larger than the capital committed, often through borrowing or derivatives.",
+      "hasExample": true,
+      "lessonId": 120
+    },
+    {
+      "term": "Long position",
+      "definition": "A position that generally benefits when the asset price rises.",
+      "hasExample": true,
+      "lessonId": 3
+    },
+    {
+      "term": "Short selling",
+      "definition": "Selling borrowed securities with an obligation to return equivalent securities.",
+      "hasExample": true,
+      "lessonId": 121
+    },
+    {
+      "term": "Unrealized gain or loss",
+      "definition": "A change in value on an investment you still hold.",
+      "hasExample": true,
+      "lessonId": 5
+    },
+    {
+      "term": "Dividend",
+      "definition": "A distribution a company pays to shareholders, often in cash. It is not guaranteed.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Market capitalization",
+      "definition": "Share price multiplied by the number of outstanding shares.",
+      "hasExample": true,
+      "lessonId": 7
+    },
+    {
+      "term": "P/E ratio",
+      "definition": "Price-to-earnings ratio: share price divided by the chosen earnings per share measure.",
+      "hasExample": true,
+      "lessonId": 106
+    },
+    {
+      "term": "Revenue",
+      "definition": "Money a business earns from selling goods or services before subtracting expenses.",
+      "hasExample": true,
+      "lessonId": 104
+    },
+    {
+      "term": "Net income",
+      "definition": "Profit or loss after the expenses and taxes included in an accounting period.",
+      "hasExample": true,
+      "lessonId": 104
+    },
+    {
+      "term": "Cash flow",
+      "definition": "Cash moving into or out of a business or household.",
+      "hasExample": true,
+      "lessonId": 105
+    },
+    {
+      "term": "Earnings report",
+      "definition": "A company update on financial results for a reporting period.",
+      "hasExample": true,
+      "lessonId": 107
+    },
+    {
+      "term": "Balance sheet",
+      "definition": "A statement of assets, liabilities, and equity at a particular date.",
+      "hasExample": true,
+      "lessonId": 104
+    },
+    {
+      "term": "SEC filing",
+      "definition": "A disclosure submitted under US securities reporting rules.",
+      "hasExample": true,
+      "lessonId": 140
+    },
+    {
+      "term": "Form 4",
+      "definition": "A US filing reporting certain changes in insiders’ beneficial ownership.",
+      "hasExample": true,
+      "lessonId": 149
+    },
+    {
+      "term": "Insider transaction",
+      "definition": "A securities transaction involving a company insider that may be subject to disclosure rules.",
+      "hasExample": true,
+      "lessonId": 150
+    },
+    {
+      "term": "Bull market",
+      "definition": "A period broadly characterized by rising prices; definitions and timeframes vary.",
+      "hasExample": true,
+      "lessonId": 144
+    },
+    {
+      "term": "Bear market",
+      "definition": "A period broadly characterized by falling prices; definitions and timeframes vary.",
+      "hasExample": true,
+      "lessonId": 144
+    },
+    {
+      "term": "Trend",
+      "definition": "The general direction of price movement over a chosen timeframe.",
+      "hasExample": true,
+      "lessonId": 19
+    },
+    {
+      "term": "Breakout",
+      "definition": "A move beyond an observed trading range or price area. It may fail.",
+      "hasExample": true,
+      "lessonId": 112
+    },
+    {
+      "term": "Failed breakout",
+      "definition": "A move beyond an observed level that subsequently returns inside the previous area.",
+      "hasExample": true,
+      "lessonId": 112
+    },
+    {
+      "term": "Reversal",
+      "definition": "A change in the direction of an established trend.",
+      "hasExample": true,
+      "lessonId": 113
+    },
+    {
+      "term": "Trading range",
+      "definition": "An interval in which prices repeatedly move between observed upper and lower areas.",
+      "hasExample": true,
+      "lessonId": 114
+    },
+    {
+      "term": "OHLC",
+      "definition": "Open, high, low, and close: four prices describing a chart period.",
+      "hasExample": true,
+      "lessonId": 18
+    },
+    {
+      "term": "Candle wick",
+      "definition": "The thin part of a candlestick extending to a period’s high or low.",
+      "hasExample": true,
+      "lessonId": 26
+    },
+    {
+      "term": "Candle body",
+      "definition": "The part of a candlestick between its opening and closing prices.",
+      "hasExample": true,
+      "lessonId": 26
+    },
+    {
+      "term": "Doji",
+      "definition": "A candle with an opening and closing price close together relative to its range.",
+      "hasExample": true,
+      "lessonId": 28
+    },
+    {
+      "term": "Hammer",
+      "definition": "A candle shape with a small body near the top and a long lower wick.",
+      "hasExample": true,
+      "lessonId": 29
+    },
+    {
+      "term": "Engulfing pattern",
+      "definition": "Two candles where the later body covers the earlier body in the opposite direction.",
+      "hasExample": true,
+      "lessonId": 30
+    },
+    {
+      "term": "Moving average",
+      "definition": "An average of prices over a selected number of periods, updated as new data arrives.",
+      "hasExample": true,
+      "lessonId": 55
+    },
+    {
+      "term": "RSI",
+      "definition": "Relative Strength Index: a momentum measure comparing recent gains with losses.",
+      "hasExample": true,
+      "lessonId": 56
+    },
+    {
+      "term": "ATR",
+      "definition": "Average True Range: a measure of price-movement size that accounts for gaps.",
+      "hasExample": true,
+      "lessonId": 58
+    },
+    {
+      "term": "Asset allocation",
+      "definition": "How a portfolio is divided among asset types.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Correlation",
+      "definition": "A measure of how two sets of returns move together over a chosen period.",
+      "hasExample": true,
+      "lessonId": 80
+    },
+    {
+      "term": "Rebalancing",
+      "definition": "Adjusting holdings to bring a portfolio back toward a planned allocation.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Risk/reward ratio",
+      "definition": "A comparison of planned potential loss with a hypothetical potential gain.",
+      "hasExample": true,
+      "lessonId": 22
+    },
+    {
+      "term": "Win rate",
+      "definition": "The share of eligible recorded trades that produced a gain, using a stated counting method.",
+      "hasExample": true,
+      "lessonId": 138
+    },
+    {
+      "term": "Inflation",
+      "definition": "A rise in the general price level that reduces money’s purchasing power.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Index fund",
+      "definition": "A fund designed to track a stated index, subject to fees and tracking differences.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Bond",
+      "definition": "A debt security with terms for payments and repayment, subject to issuer and market risk.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Dollar-cost averaging",
+      "definition": "Investing a planned amount at regular intervals regardless of price. It does not guarantee gains.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Expense ratio",
+      "definition": "A fund’s recurring operating expenses expressed as a percentage of fund assets.",
+      "hasExample": true,
+      "lessonId": 76
+    },
+    {
+      "term": "Trading plan",
+      "definition": "Written rules for when to enter, when to exit, and how much to risk.",
+      "hasExample": true,
+      "lessonId": 41
+    }
+  ],
+  "tutorials": [
+    {
+      "slug": "stocks",
+      "title": "What is a stock?",
+      "lessonIds": [
+        1,
+        3
+      ],
+      "duration": 40,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose What is a stock?. A stock is a small piece of ownership in a company.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "day-trading",
+      "title": "Day trading: a guided lesson",
+      "lessonIds": [
+        31
+      ],
+      "duration": 40,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose What is day trading?. Day trading means opening and closing a position during the same trading day.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "candlesticks",
+      "title": "Read your first candlestick",
+      "lessonIds": [
+        26,
+        27
+      ],
+      "duration": 39,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Candle bodies and wicks. Each candle summarizes one period.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "orders",
+      "title": "Market orders vs. limit orders",
+      "lessonIds": [
+        11,
+        12,
+        52
+      ],
+      "duration": 35,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Market orders. A market order trades at the available price.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "risk-planning",
+      "title": "Plan your risk and share size",
+      "lessonIds": [
+        13,
+        14,
+        15
+      ],
+      "duration": 34,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Stop-loss basics. A stop order activates when a trigger price is reached.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "support-resistance",
+      "title": "Understand support and resistance",
+      "lessonIds": [
+        20
+      ],
+      "duration": 34,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Support and resistance. Support is an area where buying has previously slowed declines.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "etfs-diversification",
+      "title": "ETFs and diversification",
+      "lessonIds": [
+        21,
+        77,
+        80
+      ],
+      "duration": 36,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Diversification. Diversification spreads investments across different businesses or assets..",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "stock-research",
+      "title": "Research a company before a trade",
+      "lessonIds": [
+        143
+      ],
+      "duration": 38,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Write a research thesis and what would change it. A research thesis states the idea, evidence, valuation assumptions, timeframe, main risks, and what would contradict it.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "trading-emotions",
+      "title": "Recognize FOMO and revenge trading",
+      "lessonIds": [
+        42
+      ],
+      "duration": 34,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Trading emotions: FOMO and revenge trading. FOMO means fear of missing out.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "compound-interest",
+      "title": "Compounding investment returns",
+      "lessonIds": [
+        173
+      ],
+      "duration": 36,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose Compounding investment returns. Compounding means returns can build on earlier returns when capital remains invested.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    },
+    {
+      "slug": "profit-loss",
+      "title": "Read gains, losses, and returns",
+      "lessonIds": [
+        4,
+        5,
+        8
+      ],
+      "duration": 34,
+      "scenes": [
+        {
+          "title": "Open the lesson",
+          "caption": "Open Learn, select Lessons, and choose What does selling mean?. Selling exchanges your shares for cash.",
+          "action": "curriculum-open"
+        },
+        {
+          "title": "Explore the example",
+          "caption": "Click Next slide to open the worked example. Read the numbers and explore the visual or interactive example where available.",
+          "action": "curriculum-example"
+        },
+        {
+          "title": "Practice and review",
+          "caption": "Click Next slide to see the practice prompt and summary. Expand Show the reasoning, then choose Start quiz when ready. At least four of five correct answers are required to pass.",
+          "action": "curriculum-practice"
+        }
+      ],
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface"
+    }
+  ],
+  "onboarding": [
+    {
+      "slug": "navigate-sprout",
+      "title": "Navigate Home and the dashboard",
+      "category": "Start here",
+      "lessonIds": [],
+      "duration": 30,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Follow the main navigation",
+          "caption": "Click Learn in the sidebar, then return Home. The six core destinations stay available without scrolling.",
+          "action": "home-nav"
+        },
+        {
+          "title": "Use your learning path",
+          "caption": "Click Modules to inspect the next part of the learning path, then return Home. Progress bars reflect completed lessons.",
+          "action": "home-path"
+        },
+        {
+          "title": "Find secondary sections",
+          "caption": "Open More resources and choose Tools. The separate account menu contains profile and settings. Pro tools are shown in this demonstration account.",
+          "action": "home-tools"
+        }
+      ]
+    },
+    {
+      "slug": "lesson-flow",
+      "title": "Complete a lesson and quiz",
+      "category": "Learning",
+      "lessonIds": [],
+      "duration": 47,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open a lesson",
+          "caption": "Click Learn, choose Lessons, and open the first lesson. The Sprout opening introduces the topic before the concepts appear.",
+          "action": "lesson-open"
+        },
+        {
+          "title": "Work through the material",
+          "caption": "Click Next slide to see the example, then open the practice prompt and summary. Underlined words open definitions.",
+          "action": "lesson-study"
+        },
+        {
+          "title": "Complete the quiz",
+          "caption": "Click Start quiz, choose an answer, and check it. Work through all five questions. At least four correct answers are needed to pass.",
+          "action": "lesson-quiz"
+        }
+      ]
+    },
+    {
+      "slug": "module-flow",
+      "title": "Explore a module and its quiz",
+      "category": "Learning",
+      "lessonIds": [],
+      "duration": 35,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Expand a module",
+          "caption": "Click Modules, expand Market Basics, and choose its presentation. The module groups related lessons together.",
+          "action": "module-open"
+        },
+        {
+          "title": "Explore each part",
+          "caption": "Use Concepts, Examples, and Practice and summary within a module lesson. Next slide moves to the next lesson in the module.",
+          "action": "module-study"
+        },
+        {
+          "title": "Review before the quiz",
+          "caption": "Continue through the module presentation, then choose Start quiz. You can review the presentation before submitting answers.",
+          "action": "module-quiz"
+        }
+      ]
+    },
+    {
+      "slug": "simulator-guide",
+      "title": "Buy and sell in the simulator",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 43,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open the trading screen",
+          "caption": "Click Simulator and select Apple. Read the generated candlestick chart and the current virtual quote before placing an order.",
+          "action": "sim-open"
+        },
+        {
+          "title": "Review a buy order",
+          "caption": "Enter one share, click Review buy, and inspect the quantity, estimated cost, and remaining virtual cash.",
+          "action": "sim-review"
+        },
+        {
+          "title": "Confirm the purchase",
+          "caption": "Click Confirm buy. Read the trade breakdown, then close it to return to the chart and your position.",
+          "action": "sim-buy"
+        },
+        {
+          "title": "Sell the position",
+          "caption": "Select Sell, enter one share, review the order, and confirm the sale. The breakdown explains the completed virtual trade.",
+          "action": "sim-sell"
+        }
+      ]
+    },
+    {
+      "slug": "progress-guide",
+      "title": "Use Progress and achievements",
+      "category": "Learning",
+      "lessonIds": [],
+      "duration": 28,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Read your progress",
+          "caption": "Click Progress. Review completed lessons, modules, and your learning streak before choosing your next learning step.",
+          "action": "progress-open"
+        },
+        {
+          "title": "Browse achievements",
+          "caption": "Click Achievements and move to the next page of badges. Earned and locked rewards remain clearly separated.",
+          "action": "progress-badges"
+        },
+        {
+          "title": "Set a learning reminder",
+          "caption": "Open Habits and goals and choose a daily reminder time. Download the calendar file and import it into your own calendar to activate it.",
+          "action": "progress-habits"
+        }
+      ]
+    },
+    {
+      "slug": "glossary-guide",
+      "title": "Search terms and play study games",
+      "category": "Learning",
+      "lessonIds": [],
+      "duration": 25,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Look up a term",
+          "caption": "Click Glossary, search for VWAP, and expand its definition to read the worked example.",
+          "action": "glossary-search"
+        },
+        {
+          "title": "Use flashcards",
+          "caption": "Open Study games. Reveal a flashcard, read the definition, and mark whether you know it.",
+          "action": "glossary-cards"
+        },
+        {
+          "title": "Try matching",
+          "caption": "Select Matching, choose a term, then choose a definition. Correct matches remain marked while you complete the round.",
+          "action": "glossary-match"
+        }
+      ]
+    },
+    {
+      "slug": "position-tool",
+      "title": "Position size calculator: enter a plan",
+      "category": "Tools",
+      "lessonIds": [],
+      "duration": 31,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open the calculator",
+          "caption": "Open More resources, choose Tools, and select Position size. This is a Pro tool; the walkthrough uses a demonstration account.",
+          "action": "tool-position"
+        },
+        {
+          "title": "Enter your inputs",
+          "caption": "Set a practice budget of one thousand dollars, a one percent risk limit, a one hundred dollar entry, and a ninety eight dollar stop.",
+          "action": "tool-position-input"
+        },
+        {
+          "title": "Read the share size",
+          "caption": "Read the resulting five-share estimate and expand the tool guide. The size is a planning calculation and does not place a trade.",
+          "action": "tool-position-guide"
+        }
+      ]
+    },
+    {
+      "slug": "risk-tool",
+      "title": "Risk calculator: adjust the loss limit",
+      "category": "Tools",
+      "lessonIds": [],
+      "duration": 30,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Find the risk tool",
+          "caption": "Open Tools and select Risk. The risk calculator shares its practice budget with the position size calculator.",
+          "action": "tool-risk"
+        },
+        {
+          "title": "Adjust the percentage",
+          "caption": "Move the risk slider from one percent to two percent and watch the dollar risk budget change. This does not guarantee an executed stop price.",
+          "action": "tool-risk-input"
+        },
+        {
+          "title": "Compare position size",
+          "caption": "Return to Position size and read the updated risk setting and share estimate. Revisit the assumptions before a practice order.",
+          "action": "tool-risk-result"
+        }
+      ]
+    },
+    {
+      "slug": "profit-tool",
+      "title": "Profit and loss explorer: compare exits",
+      "category": "Tools",
+      "lessonIds": [],
+      "duration": 28,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open the explorer",
+          "caption": "Open Tools and select Profit and loss. Inputs from Position size define the hypothetical share quantity and entry.",
+          "action": "tool-profit"
+        },
+        {
+          "title": "Change the exit",
+          "caption": "Move the exit slider above the entry price and compare the potential gain with the planned loss at the stop.",
+          "action": "tool-profit-input"
+        },
+        {
+          "title": "Test a losing exit",
+          "caption": "Move the exit below entry and read the negative result. These are planning examples, not predictions or actual orders.",
+          "action": "tool-profit-loss"
+        }
+      ]
+    },
+    {
+      "slug": "volatility-tool",
+      "title": "Volatility meter: read the gauge",
+      "category": "Tools",
+      "lessonIds": [],
+      "duration": 28,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Find the meter",
+          "caption": "Open Tools and choose Volatility. This gauge measures variability in generated SPY price changes.",
+          "action": "tool-volatility"
+        },
+        {
+          "title": "Read the guide",
+          "caption": "Expand How to use this tool and read what the percentage represents. A higher reading is not a buy or sell instruction.",
+          "action": "tool-volatility-guide"
+        },
+        {
+          "title": "Apply the context",
+          "caption": "Return to Position size to consider your planned risk. Volatility is one input in a decision process, not a direction forecast.",
+          "action": "tool-volatility-result"
+        }
+      ]
+    },
+    {
+      "slug": "practice-guide",
+      "title": "Use chart practice and challenges",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 32,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open the Practice Lab",
+          "caption": "Choose Practice Lab from More resources. Open Chart practice to inspect a scenario before making a choice. Pro practice features are shown here.",
+          "action": "practice-open"
+        },
+        {
+          "title": "Choose a response",
+          "caption": "Select one of the scenario responses and read the feedback. The purpose is to explain your reasoning, not guess a guaranteed outcome.",
+          "action": "practice-choice"
+        },
+        {
+          "title": "Choose a challenge",
+          "caption": "Open Challenges and start a three-trade reflection challenge. Progress is based on completing and reviewing practice, not chasing a profit target.",
+          "action": "practice-challenge"
+        }
+      ]
+    },
+    {
+      "slug": "portfolio-guide",
+      "title": "Inspect your virtual portfolio",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 30,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open the portfolio",
+          "caption": "Choose Portfolio from More resources. Read virtual account value, available cash, and total return.",
+          "action": "portfolio-open"
+        },
+        {
+          "title": "Inspect a holding",
+          "caption": "After a practice purchase, open Portfolio again and inspect the holdings row, quantity, current value, and gain or loss.",
+          "action": "portfolio-holding"
+        },
+        {
+          "title": "Return to the chart",
+          "caption": "Open the Apple holding to return to its chart. Check your order and position before making another practice decision.",
+          "action": "portfolio-chart"
+        }
+      ]
+    },
+    {
+      "slug": "history-guide",
+      "title": "Review completed trades",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 35,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open trade history",
+          "caption": "After a virtual buy and sell, choose Trade History from More resources. Both fills appear in the completed-trades table.",
+          "action": "history-open"
+        },
+        {
+          "title": "Inspect the trade",
+          "caption": "Use Explain My Trade to review a completed fill and read its breakdown before returning to the record.",
+          "action": "history-review"
+        },
+        {
+          "title": "Open the journal",
+          "caption": "Use Open trade journal and analytics to reflect on the reasoning behind your trade.",
+          "action": "history-journal"
+        }
+      ]
+    },
+    {
+      "slug": "journal-guide",
+      "title": "Write and save a trade reflection",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 44,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Find a completed trade",
+          "caption": "Open Practice Lab and choose Journal. Select the completed virtual trade you want to review.",
+          "action": "journal-open"
+        },
+        {
+          "title": "Write the reflection",
+          "caption": "Enter why you took the trade, what could invalidate the idea, and what you learned. Choose the emotion that best describes the decision.",
+          "action": "journal-write"
+        },
+        {
+          "title": "Save the note",
+          "caption": "Save the journal entry and review the saved feedback. Keep notes specific enough to improve your next practice decision.",
+          "action": "journal-save"
+        }
+      ]
+    },
+    {
+      "slug": "community-guide",
+      "title": "Browse community and prepare a post",
+      "category": "Account & community",
+      "lessonIds": [],
+      "duration": 31,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open Community",
+          "caption": "Choose Community from More resources. Switch between discussions, strategies, chart competition, and leaderboards.",
+          "action": "community-open"
+        },
+        {
+          "title": "Prepare a discussion",
+          "caption": "Return to Discussions and enter a clear title and explanation. This example prepares a draft without publishing to real users.",
+          "action": "community-draft"
+        },
+        {
+          "title": "Review public sharing",
+          "caption": "Open Leaderboards to inspect the sharing controls. Sharing a portfolio snapshot is optional, and virtual account value is not a measure of trading skill.",
+          "action": "community-board"
+        }
+      ]
+    },
+    {
+      "slug": "profile-guide",
+      "title": "Edit your profile and review insights",
+      "category": "Account & community",
+      "lessonIds": [],
+      "duration": 29,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open your profile",
+          "caption": "Open Account and settings, then choose Profile. Your profile brings identity, learning progress, and simulator insights together.",
+          "action": "profile-open"
+        },
+        {
+          "title": "Update the display name",
+          "caption": "Edit the display name in Profile details and save the profile. The demonstration uses a sample account, not a real customer.",
+          "action": "profile-edit"
+        },
+        {
+          "title": "Review learning growth",
+          "caption": "Scroll to Your learning growth to review completed modules, lessons, and learning habits.",
+          "action": "profile-progress"
+        }
+      ]
+    },
+    {
+      "slug": "settings-guide",
+      "title": "Change display and practice settings",
+      "category": "Account & community",
+      "lessonIds": [],
+      "duration": 30,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Find Settings",
+          "caption": "Open Account and settings, then click Settings. Read the practice preferences before changing them.",
+          "action": "settings-open"
+        },
+        {
+          "title": "Toggle beginner explanations",
+          "caption": "Switch Beginner Mode off and on to control additional order explanations. This does not change the five-question quiz pass requirement.",
+          "action": "settings-beginner"
+        },
+        {
+          "title": "Switch the display theme",
+          "caption": "Use the theme control in the top bar to switch between light and dark. Account security controls remain separate from practice settings.",
+          "action": "settings-theme"
+        }
+      ]
+    },
+    {
+      "slug": "plans-guide",
+      "title": "Compare Starter and Pro access",
+      "category": "Account & community",
+      "lessonIds": [],
+      "duration": 30,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open plan comparison",
+          "caption": "Choose Sprout Pro from More resources. Compare the Starter and Pro feature lists before considering an upgrade.",
+          "action": "plans-open"
+        },
+        {
+          "title": "Read the comparison",
+          "caption": "Review included lessons, tutorials, practice tools, and simulator features. Video walkthroughs do not unlock the Pro tools themselves.",
+          "action": "plans-compare"
+        },
+        {
+          "title": "Review cancellation information",
+          "caption": "Read the cancellation and subscription information. This walkthrough does not enter payment details or start a paid subscription.",
+          "action": "plans-cancel"
+        }
+      ]
+    },
+    {
+      "slug": "tutorials-guide",
+      "title": "Find and use walkthrough videos",
+      "category": "Start here",
+      "lessonIds": [],
+      "duration": 28,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Open Tutorials",
+          "caption": "Open Learn and select Tutorials. Platform walkthroughs and trading lessons have separate categories.",
+          "action": "tutorials-open"
+        },
+        {
+          "title": "Filter walkthroughs",
+          "caption": "Use the section filter to find Tools or Simulator guides. Browse a page of videos without expanding a long list.",
+          "action": "tutorials-filter"
+        },
+        {
+          "title": "Use captions and transcripts",
+          "caption": "Open a guide and use its video controls, English captions, and transcript. Videos play only when you choose to start them.",
+          "action": "tutorials-transcript"
+        }
+      ]
+    },
+    {
+      "slug": "chart-tools-guide",
+      "title": "Use chart indicators and navigation",
+      "category": "Simulator",
+      "lessonIds": [],
+      "duration": 29,
+      "narrationVersion": "actual-ui-v4",
+      "recordingType": "actual-interface",
+      "scenes": [
+        {
+          "title": "Find chart controls",
+          "caption": "Open the simulator chart and change the candle interval. Zoom in to inspect a smaller section of generated price action.",
+          "action": "chart-open"
+        },
+        {
+          "title": "Explore an indicator",
+          "caption": "Open Indicators and select a moving average. Pro chart tools are demonstrated here; availability depends on your plan.",
+          "action": "chart-indicator"
+        },
+        {
+          "title": "Use the chart tour",
+          "caption": "Open Sprouty’s chart tour and advance through a step. The tour explains how the controls relate to reading a chart.",
+          "action": "chart-tour"
+        }
+      ]
+    }
+  ]
+}

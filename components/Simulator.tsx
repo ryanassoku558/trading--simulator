@@ -209,7 +209,7 @@ export default function Simulator() {
     );
   }
   const accountDialog=authOpen&&!user?<Dialog className={path==="/"?"public-auth-dialog academy-shell":""} title="Your Sprout account" onClose={()=>{setAuthOpen(false);setAuthIntent("combined");}}><AuthPanel user={user} pending={pending} initialMode={authIntent} onSignedIn={()=>{setAuthOpen(false);setAuthIntent("combined");if(path==="/")router.push("/dashboard");}}/></Dialog>:null;
-  if(!user&&path==="/")return <><MarketingHome pending={pending} onAuth={mode=>{setAuthIntent(mode);setAuthOpen(true);}} onGuest={()=>router.push("/dashboard")}/>{accountDialog}</>;
+  if(!user&&path==="/")return <><MarketingHome tick={state.tick} pending={pending} onAuth={mode=>{setAuthIntent(mode);setAuthOpen(true);}} onGuest={()=>router.push("/dashboard")}/>{accountDialog}</>;
   if (!state.profile.onboarded && page === "pricing") return <main className="content"><Link href="/" className="text-link">← Back to Sprout</Link><Pricing/>{!user&&<div id="account"><AuthPanel user={user} pending={pending}/></div>}</main>;
   if (!state.profile.onboarded && page === "welcome")
     return (
@@ -346,7 +346,7 @@ export default function Simulator() {
           </div>
         </header>
         <ActivityTracker accountId={state.profile.id} page={page}/>
-        {!["learn","dashboard","achievements","tools","play","educators","classrooms","assignments"].includes(page)&&page!=="market"&&<MarketTicker tick={state.tick} />}
+        <MarketTicker tick={state.tick} />
         <main className="content"><div className="motion-surface" key={`${path}-${searchParams.get("view")||"default"}`}>
           {error && (
             <div className="error" role="alert">

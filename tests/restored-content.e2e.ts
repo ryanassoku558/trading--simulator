@@ -16,6 +16,7 @@ test('restores all original modules, lessons and learning resources',async({page
  }
  expect(moduleTitles).toEqual(learningModules.map(m=>m.title));
  await page.goto('/learn?view=Lessons');
+ await expect(page.locator('.compact-lesson-grid button strong').first()).toBeVisible();
  const titles:string[]=[];
  for(let i=0;i<20;i++){
   titles.push(...await page.locator('.compact-lesson-grid button strong').allTextContents());

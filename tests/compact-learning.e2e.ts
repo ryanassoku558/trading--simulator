@@ -7,6 +7,7 @@ test("compact home and learning keep core actions in view", async ({
   await expect(
     page.getByRole("heading", { name: /Build knowledge/ }),
   ).toBeVisible();
+  await page.evaluate(async()=>{await document.fonts.ready;});
   expect(
     await page
       .locator(".home-path")

@@ -1,12 +1,16 @@
 # Sprout Trading product redesign
 
+The original navy/slate colors have been restored, and headline emphasis no longer uses colored highlights or gradient text. The scrolling simulated-stock ticker is visible under the header on the public homepage and throughout the workspace.
+
+Classrooms provides audience entry points for teachers/students/families and schools/districts. The school overview shows real enrollment and assignment totals across the signed-in account’s own classes; it does not imply cross-account administrator access.
+
 The existing Next/React application, Supabase authentication and private classroom service, account persistence, Pro checks and trading engine remain in place. The redesign adds a shared presentation layer in `app/product.css`; it does not replace curriculum content or store a new version of account data.
 
 ## Visual system
 
-Warm neutral surfaces and emerald accents replace the navy/purple emphasis. A self-hosted Manrope variable font provides consistent typography without a runtime font-service connection; its OFL license ships beside the font. Controls use consistent borders, focus rings, pressed/selected states and touch target sizing. Supporting blue and amber tones distinguish study modes without becoming the primary brand. Dark mode uses forest surfaces, readable text and the same emerald hierarchy.
+The original cool neutral surfaces and navy/slate palette are restored. Headline emphasis uses solid inherited text color rather than accent highlights or gradient text. A self-hosted Manrope variable font provides consistent typography without a runtime font-service connection; its OFL license ships beside the font. Controls use consistent borders, focus rings, pressed/selected states and touch target sizing. Supporting blue and amber tones distinguish study modes without becoming the primary brand. Dark mode uses forest surfaces, readable text and the same emerald hierarchy.
 
-The public homepage explains the product and prioritizes free account creation and sign-in. Its learning preview is explicitly illustrative and does not present invented customer results. Guest practice remains available through an explicit action. Signed-in visitors see their dashboard at the home URL. Account dialogs open in the chosen sign-in or signup mode while retaining the existing Supabase calls and confirmation flow. Signing in from an existing workspace keeps that page open.
+The public homepage explains the product and prioritizes free account creation and sign-in. It reuses the full About page, including its mission, educational pillars and clearly labeled example figures. Guest practice remains available through an explicit action. Signed-in visitors see their dashboard at the home URL. Account dialogs open in the chosen sign-in or signup mode while retaining the existing Supabase calls and confirmation flow. Signing in from an existing workspace keeps that page open.
 
 The dashboard pairs an actual virtual-portfolio summary with the next learning session. Value, cash, holdings, return, lesson completion, XP and streak all use the existing saved state and calculation helpers. The equity line uses saved portfolio snapshots plus the current value, with a flat baseline and explanatory caption for a new account. It contains no invented market history or gains. A mobile lesson shortcut keeps the next action visible above the account summary. Existing module steps, study modes and milestones continue below.
 
