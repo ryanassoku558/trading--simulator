@@ -419,7 +419,7 @@ export function earned(s: State, id: string): boolean {
   if(id==="fifty")return s.learning.completed.length>=50;
   if(id==="hundred")return s.learning.completed.length>=100;
   if(id==="curriculum")return lessons.filter(l=>l.id<200).every(l=>s.learning.completed.includes(l.id));
-  if(id==="curriculum-expanded")return lessons.every(l=>s.learning.completed.includes(l.id));
+  if(id==="curriculum-expanded")return lessons.filter(l=>l.id<228).every(l=>s.learning.completed.includes(l.id));
   return (
     (
       {

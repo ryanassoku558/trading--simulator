@@ -4,14 +4,16 @@ import {learningModules} from './curriculum';
 export const freeTutorialSlugs=tutorials.slice(0,5).map(t=>t.slug);
 export const canWatchTutorial=(slug:string,pro:boolean)=>pro||freeTutorialSlugs.includes(slug);
 export const psychologyLessonCount=learningModules.filter(m=>/psychology|emotions/i.test(m.title)).reduce((total,m)=>total+m.ids.length,0);
-export const aiLessonCount=learningModules.filter(m=>m.title==='Trading with AI Tools').reduce((count,m)=>count+m.ids.length,0);
+const aiGroups=learningModules.filter(m=>m.ids.some(id=>lessons.some(l=>l.id===id&&[40,53,54,55].includes(l.level))));
+export const aiModuleCount=aiGroups.length;
+export const aiLessonCount=aiGroups.reduce((count,m)=>count+m.ids.length,0);
 export const proBenefits=[
  `${learningModules.length} modules · ${lessons.length} lessons`,
  `${tutorials.length} narrated video tutorials with captions`,
  '4 trading tools · position sizing, risk, P/L & volatility',
  '3 visual strategy labs · 3 replay scenarios',
  `${psychologyLessonCount} planning & psychology lessons · 5 mood check-in options`,
- `1 AI trading module · ${aiLessonCount} lessons on research, testing & verification`,
+ `${aiModuleCount} AI trading & investing modules · ${aiLessonCount} lessons on research, testing & verification`,
  'Unlimited quiz retries · 5 questions per quiz',
  '3 practice modes · standard, high-volatility & replay',
  '16 interactive chart-tour steps · 8 advanced Pro steps',

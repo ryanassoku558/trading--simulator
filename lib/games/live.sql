@@ -114,7 +114,7 @@ begin
   from sprout_live.players lp left join sprout_live.answers la on la.player_id=lp.id and la.room_id=r.id and la.question_index=r.question_index where lp.room_id=r.id
  ) x;
  select * into a from sprout_live.answers where room_id=r.id and player_id=p.id and question_index=r.question_index;
- return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,
+ return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'players',board,'presentation',r.questions->0->'presentation',
   'answerDistribution',case when phase_now='reveal' then (select coalesce(jsonb_object_agg(choice,n),'{}'::jsonb) from (select choice,count(*) n from sprout_live.answers where room_id=r.id and question_index=r.question_index group by choice) c) else null end,
   'answeredCount',(select count(*) from sprout_live.answers where room_id=r.id and question_index=r.question_index),
   'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,

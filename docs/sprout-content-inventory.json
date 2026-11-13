@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-12T21:09:39.968Z",
-  "sourceCommit": "99a4764bd808534ffe5dd1375f7e2726a64a1689",
+  "generatedAt": "2026-11-13T02:12:08.585Z",
+  "sourceCommit": "e0449c96f0aa0c92eb88d40c82daf4a16046823c",
   "includesWorkingTreeChanges": true,
   "scope": "Current Sprout learning content. Definitions power Flashcards and Sprouty; there is no standalone glossary page.",
   "modules": [
@@ -574,6 +574,42 @@
       ],
       "starter": false,
       "url": "/learn?view=Modules&q=A%20Long-Term%20Investor%E2%80%99s%20Routine"
+    },
+    {
+      "number": 49,
+      "title": "AI Research Foundations",
+      "lessonIds": [
+        228,
+        229,
+        230,
+        231
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=AI%20Research%20Foundations"
+    },
+    {
+      "number": 50,
+      "title": "AI-Assisted Trading Practice",
+      "lessonIds": [
+        232,
+        233,
+        234,
+        235
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=AI-Assisted%20Trading%20Practice"
+    },
+    {
+      "number": 51,
+      "title": "AI for Long-Term Investing",
+      "lessonIds": [
+        236,
+        237,
+        238,
+        239
+      ],
+      "starter": false,
+      "url": "/learn?view=Modules&q=AI%20for%20Long-Term%20Investing"
     }
   ],
   "lessons": [
@@ -2442,6 +2478,126 @@
       "title": "Annual reviews without reacting to every tick",
       "level": 52,
       "url": "/learn?lesson=227",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 228,
+      "title": "What AI can and cannot tell you about markets",
+      "level": 53,
+      "url": "/learn?lesson=228",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 229,
+      "title": "Write a source-first research prompt",
+      "level": 53,
+      "url": "/learn?lesson=229",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 230,
+      "title": "Audit an AI earnings summary",
+      "level": 53,
+      "url": "/learn?lesson=230",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 231,
+      "title": "Protect account data in AI workflows",
+      "level": 53,
+      "url": "/learn?lesson=231",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 232,
+      "title": "Turn a trading idea into testable rules",
+      "level": 54,
+      "url": "/learn?lesson=232",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 233,
+      "title": "Review AI-generated backtest code",
+      "level": 54,
+      "url": "/learn?lesson=233",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 234,
+      "title": "Spot overfitting and misleading backtest results",
+      "level": 54,
+      "url": "/learn?lesson=234",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 235,
+      "title": "Use AI with a human-reviewed paper-trading plan",
+      "level": 54,
+      "url": "/learn?lesson=235",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 236,
+      "title": "Build an evidence-based business brief",
+      "level": 55,
+      "url": "/learn?lesson=236",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 237,
+      "title": "Check financial metrics with AI assistance",
+      "level": 55,
+      "url": "/learn?lesson=237",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 238,
+      "title": "Explore valuation scenarios without treating them as forecasts",
+      "level": 55,
+      "url": "/learn?lesson=238",
+      "hasExplanation": true,
+      "hasExample": true,
+      "hasLearningRationale": true,
+      "quizOptionCount": 3
+    },
+    {
+      "id": 239,
+      "title": "Review a portfolio thesis with an AI checklist",
+      "level": 55,
+      "url": "/learn?lesson=239",
       "hasExplanation": true,
       "hasExample": true,
       "hasLearningRationale": true,

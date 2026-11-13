@@ -25,7 +25,7 @@ test("compact home and learning keep core actions in view", async ({
     page.locator(".compact-module-lessons").first().getByRole("button"),
   ).toHaveCount(4);
   await page.getByRole("button", { name: "Next", exact: true }).click();
-  await expect(page.getByText("Page 2 of 8")).toBeVisible();
+  await expect(page.getByText("Page 2 of 9")).toBeVisible();
   await page.locator(".compact-module-grid summary").first().click();
   await page
     .getByRole("button", { name: "Unlock with Pro", exact: true })

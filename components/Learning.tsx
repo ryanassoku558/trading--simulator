@@ -69,6 +69,7 @@ export default function Learning({
     [search, setSearch] = useState(params.get("q")||"");
   const matches = (lesson: Lesson) =>
     (topic === "All topics" ||
+      (topic === "AI-assisted trading & investing" && lesson.level===40) ||
       (topic === "Long-term investing" &&
         expandedModules.some(m=>m.track==="Long-term investing"&&m.level===lesson.level)) ||
       (topic === "Trading" && lesson.level <= 12) ||
@@ -273,6 +274,7 @@ export default function Learning({
                 "Economics",
                 "Business",
                 "Career development",
+                "AI-assisted trading & investing",
               ].map((t) => (
                 <option key={t}>{t}</option>
               ))}

@@ -19,7 +19,7 @@ test('a host and two independent guests complete one synchronized custom three-q
   for(const context of contexts){await context.route('**/api/live**',async route=>{
    try{
     const req=route.request(),body=req.method()==='POST'?req.postDataJSON():null,isHost=context===hostContext,code=body?.code||new URL(req.url()).searchParams.get('code');let result;
-    if(body?.action==='create'){await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[hostId,'TEST22','Market Basics',JSON.stringify(body.questions??gameQuestions('0')),45]);result={code:'TEST22'};}
+    if(body?.action==='create'){await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[hostId,'TEST22','Market Basics',JSON.stringify((body.questions??gameQuestions('0')).map((q:object,i:number)=>i===0?{...q,presentation:{backgroundUrl:'https://example.test/shared-forest.jpg'}}:q)),45]);result={code:'TEST22'};}
     else if(body){const answer=await db.query<{value:object}>('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7) as value',[code,hashes.get(context),isHost?hostId:null,body.action,body.index??0,body.choice??null,body.nickname??null]);result={...answer.rows[0].value,code};}
     else result=(await db.query<{value:object}>('select public.sprout_live_snapshot($1,$2,$3) as value',[code,hashes.get(context),isHost?hostId:null])).rows[0].value;
     await route.fulfill({contentType:'application/json',body:JSON.stringify(result)});
@@ -32,12 +32,12 @@ test('a host and two independent guests complete one synchronized custom three-q
   await host.getByRole('button',{name:'Full screen',exact:true}).click();await expect.poll(()=>host.evaluate(()=>!!document.fullscreenElement)).toBe(true);await host.evaluate(()=>document.exitFullscreen());await host.getByRole('button',{name:'Start 3-question game',exact:true}).click();
   const questions=gameQuestions('0').slice(0,3);questions[0].answer=1;
   for(let i=0;i<3;i++){
-   for(const page of [a,b]){await expect(page.getByText(`Question ${i+1} of 3`,{exact:true})).toBeVisible();await page.locator('.live-answer').nth(questions[i].answer).click();await expect(page.getByText(/Answer saved. Wait for the reveal./)).toBeVisible();}
+   for(const page of [a,b]){await expect(page.locator('.live-game')).toHaveCSS('background-image',/shared-forest/);await expect(page.getByText(`Question ${i+1} of 3`,{exact:true})).toBeVisible();await page.locator('.live-answer').nth(questions[i].answer).click();await expect(page.getByText(/Answer saved. Wait for the reveal./)).toBeVisible();}
    await expect(host.getByText(/2\/2 answered/)).toBeVisible();await host.getByRole('button',{name:'Reveal answer',exact:true}).click();
    for(const page of [a,b])await expect(page.getByRole('heading',{name:'Correct—nice work!',exact:true})).toBeVisible();
    await expect(host.getByLabel('Answer results', {exact:true})).toBeVisible();await host.getByRole('button',{name:i===2?'Show final results':'Next question',exact:true}).click();
   }
-  for(const page of [host,a,b]){await expect(page.getByRole('heading',{name:'Game complete! Everyone learned something.',exact:true})).toBeVisible();await expect(page.getByRole('heading',{name:'Final leaderboard',exact:true})).toBeVisible();await expect(page.locator('.live-scoreboard li')).toHaveCount(2);}
+  for(const page of [host,a,b]){await expect(page.getByRole('heading',{name:'Knowledge grows here.',exact:true})).toBeVisible();await expect(page.getByRole('heading',{name:'Final leaderboard',exact:true})).toBeVisible();await expect(page.locator('.live-scoreboard li')).toHaveCount(2);}
   await a.setViewportSize({width:390,height:844});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  }finally{await Promise.all(contexts.map(c=>c.close()));await db.close();}
 });
@@ -78,7 +78,7 @@ test('host drafts survive refresh, keep topic edits, reorder and preview without
 test('quiz topics cover the full curriculum and support module, lesson and mixed-topic games',async({page})=>{
  await page.goto('/play');await page.getByRole('button',{name:'Live quiz',exact:true}).click();
  const picker=page.locator('.live-quiz-builder .quiz-topic-picker'),select=picker.getByRole('combobox',{name:'Quiz topic',exact:true});
- await expect(picker).toContainText('48 modules · 187 lessons');await expect(select.locator('optgroup[label="Modules"] option')).toHaveCount(48);await expect(select.locator('optgroup[label="Lessons"] option')).toHaveCount(187);
+ await expect(picker).toContainText('51 modules · 199 lessons');await expect(select.locator('optgroup[label="Modules"] option')).toHaveCount(51);await expect(select.locator('optgroup[label="Lessons"] option')).toHaveCount(199);
  await select.selectOption('40');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();
  const moduleQuestions=await page.locator('.live-editor details').count();expect(moduleQuestions).toBeGreaterThan(0);
  await picker.getByRole('searchbox',{name:'Find a module or lesson',exact:true}).fill('What is a stock?');await select.selectOption('lesson:1');await page.getByRole('button',{name:'Use topic questions',exact:true}).click();await expect(page.getByRole('spinbutton',{name:'Number of questions',exact:true})).toHaveValue('1');await expect(page.locator('.live-editor summary')).toContainText('What does a share represent?');

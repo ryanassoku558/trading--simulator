@@ -6,9 +6,9 @@ import {presentationQuestions} from '../lib/education/presentation';
 test('restores all original modules, lessons and learning resources',async({page})=>{
  await page.goto('/dashboard');
  await expect(page.getByRole('heading',{name:/Build knowledge/})).toBeVisible();
- await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','187');
+ await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','199');
  await page.goto('/learn?view=Modules');
- await expect(page.getByText('187 lessons · 48 modules',{exact:true})).toBeVisible();
+ await expect(page.getByText('199 lessons · 51 modules',{exact:true})).toBeVisible();
  const moduleTitles:string[]=[];
  for(let i=0;i<Math.ceil(learningModules.length/6);i++){
   moduleTitles.push(...await page.locator('.compact-module-grid h3').allTextContents());

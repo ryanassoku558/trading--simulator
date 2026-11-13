@@ -10,7 +10,7 @@ test('existing homepage shows module steps and earned milestone feedback',async(
  await expect(steps.getByRole('link')).toHaveCount(4);
  await expect(steps.getByRole('link').first()).toHaveAttribute('aria-current','step');
  await expect(page.locator('.home-milestone-note')).toContainText('Next: First Lesson');
- await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','187');
+ await expect(page.getByRole('progressbar',{name:'Course lessons completed'})).toHaveAttribute('max','199');
 });
 
 test('five-question feedback finishes once and retakes preserve XP',async({page})=>{

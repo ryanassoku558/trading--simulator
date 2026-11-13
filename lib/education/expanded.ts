@@ -1,3 +1,4 @@
+import {aiInvestingModules} from "./ai-investing";
 import {financialLiteracyModules} from "./financial-literacy";
 import { strategyModules } from "./strategy-setups";
 import type { Lesson } from "@/types";
@@ -989,6 +990,7 @@ export const expandedModules = [
     startId: 188,
   },
  ...financialLiteracyModules,
+ ...aiInvestingModules,
 ];
 export const expandedLessons: Lesson[] = expandedModules.flatMap((module) =>
   module.content.map((c, i) => ({

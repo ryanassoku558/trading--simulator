@@ -3,8 +3,8 @@ import { lessons, levels, answerLesson } from "../lib/education";
 import { initialState } from "../lib/trading";
 import { isAccountState } from "../lib/storage/schema";
 it("keeps the original lesson IDs and adds five candle lessons", () => {
-  expect(lessons).toHaveLength(187);
-  expect(levels).toHaveLength(52);
+  expect(lessons).toHaveLength(199);
+  expect(levels).toHaveLength(55);
   expect(lessons.find((l) => l.id === 18)?.title).toBe("Candlesticks");
   expect(lessons.find((l) => l.id === 25)?.title).toBe("Reviewing performance");
   expect(lessons.filter((l) => l.level === 6)).toHaveLength(5);

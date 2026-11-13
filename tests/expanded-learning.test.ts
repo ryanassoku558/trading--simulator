@@ -4,10 +4,10 @@ import {lessons,levels,answerLesson,achievements,earned} from '../lib/education'
 import {initialState} from '../lib/trading';
 import {isAccountState} from '../lib/storage/schema';
 it('adds trading and investing modules without changing the original lesson identities',()=>{
- expect(expandedModules).toHaveLength(32);expect(expandedLessons).toHaveLength(128);expect(lessons).toHaveLength(187);expect(levels).toHaveLength(52);
+ expect(expandedModules).toHaveLength(35);expect(expandedLessons).toHaveLength(140);expect(lessons).toHaveLength(199);expect(levels).toHaveLength(55);
  expect(expandedModules.filter(m=>m.track==='Long-term investing')).toHaveLength(5);
  expect(lessons.find(l=>l.id===1)?.title).toBe('What is a stock?');expect(lessons.find(l=>l.id===55)?.title).toContain('Moving averages');
- expect(new Set(lessons.map(l=>l.id)).size).toBe(187);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(128);
+ expect(new Set(lessons.map(l=>l.id)).size).toBe(199);expect(new Set(expandedLessons.map(l=>l.title)).size).toBe(140);
  for(const l of expandedLessons){expect(l.explanation.length).toBeGreaterThan(200);expect(l.example.length).toBeGreaterThan(90);expect(l.why.length).toBeGreaterThan(30);expect(new Set(l.quiz.options).size).toBe(3);}
  expect(lessons.some(l=>l.id===60)).toBe(false);
 });
@@ -26,3 +26,5 @@ it('unlocks broad learning milestones from completed lessons rather than repeate
 });
 
 it('preserves the original curriculum badge and earned XP when new lessons are introduced',()=>{let s=initialState();for(const l of lessons.filter(l=>l.id<200))s=answerLesson(s,l.id,l.quiz.answer);const xp=s.learning.xp;expect(earned(s,'curriculum')).toBe(true);expect(earned(s,'curriculum-expanded')).toBe(false);expect(isAccountState(s)).toBe(true);for(const l of lessons.filter(l=>l.id>=200))s=answerLesson(s,l.id,l.quiz.answer);expect(earned(s,'curriculum')).toBe(true);expect(earned(s,'curriculum-expanded')).toBe(true);expect(s.learning.xp).toBeGreaterThan(xp);});
+
+it('keeps an earned expanded-curriculum badge when AI courses are appended',()=>{let s=initialState();for(const l of lessons.filter(l=>l.id<228))s=answerLesson(s,l.id,l.quiz.answer);const xp=s.learning.xp;expect(earned(s,'curriculum-expanded')).toBe(true);expect(s.learning.completed).toHaveLength(187);expect(isAccountState(s)).toBe(true);s=answerLesson(s,228,lessons.find(l=>l.id===228)!.quiz.answer);expect(s.learning.xp).toBe(xp+35);expect(earned(s,'curriculum-expanded')).toBe(true);});

@@ -1,8 +1,9 @@
 import {NextRequest,NextResponse} from 'next/server';
-import {createHash,randomBytes,randomInt} from 'node:crypto';
+import {createHash,randomBytes,randomInt,randomUUID} from 'node:crypto';
 import {admin,identify} from '@/lib/billing/server';
 import {gamePacks,topicQuestions} from '@/lib/games/content';
 import {validateQuestions} from '@/lib/games/authoring';
+import {liveBackgroundBucket,decodeBackground,ownedBackground} from '@/lib/games/background';
 const cookieName='sprout-live-player';
 const noStore={'Cache-Control':'no-store'};
 function tokenHash(secret:string){return createHash('sha256').update(secret).digest('hex');}
@@ -36,12 +37,38 @@ export async function POST(request:NextRequest){try{
  const db=admin();let secret=request.cookies.get(cookieName)?.value;
  if(!secret||!/^[a-f0-9]{64}$/.test(secret))secret=randomBytes(32).toString('hex');
  let result:unknown;
- if(body.action==='create'){
+ if(body.action==='upload-background'){
+  if(!request.headers.has('authorization'))throw Object.assign(Error('Sign in to add a game background.'),{code:'42501'});
+  const {user}=await identify(request),bytes=decodeBackground(body.image);
+  const {data:bucket,error:bucketError}=await db.storage.getBucket(liveBackgroundBucket);
+  if(!bucket){
+   if(bucketError&&![404,400].includes(Number(bucketError.status)))throw Error('Background storage is temporarily unavailable.');
+   const {error}=await db.storage.createBucket(liveBackgroundBucket,{public:false,fileSizeLimit:800000,allowedMimeTypes:['image/jpeg']});
+   if(error&&!/already exists/i.test(error.message))throw Error('Background storage is temporarily unavailable.');
+  }
+  const storage=db.storage.from(liveBackgroundBucket);
+  const {data:files,error:listError}=await storage.list(user.id,{limit:100,sortBy:{column:'created_at',order:'desc'}});
+  if(listError)throw Error('Unable to check your background uploads. Please try again.');
+  const recent=(files??[]).filter(f=>Date.parse(f.created_at??'')>Date.now()-86400000);
+  if(recent.length>=20)throw Error('You can upload 20 backgrounds per day. Reuse your saved background or try tomorrow.');
+  const stale=(files??[]).filter(f=>Date.parse(f.created_at??'')<=Date.now()-86400000).map(f=>user.id+'/'+f.name);
+  if(stale.length)await storage.remove(stale);
+  const path=user.id+'/'+randomUUID()+'.jpg';
+  const {error}=await storage.upload(path,bytes,{contentType:'image/jpeg',cacheControl:'10800',upsert:false});
+  if(error)throw Error('The background could not be uploaded. Please try again.');
+  return NextResponse.json({backgroundPath:path},{headers:noStore});
+ }else if(body.action==='create'){
   if(!request.headers.has('authorization'))throw Object.assign(Error('Sign in to host a game. Anyone with a Sprout account can host.'),{code:'42501'});
   const {user}=await identify(request);
   const pack=gamePacks.find(p=>p.id===body.pack);if(!pack)throw Error('Choose a quiz topic.');
   const title=typeof body.title==='string'&&body.title.trim()?body.title.trim():pack.title;if(title.length>80)throw Error('Keep the quiz title under 80 characters.');
   const questions=validateQuestions(body.questions??topicQuestions(pack.id));
+  if(body.backgroundPath){
+   if(!ownedBackground(body.backgroundPath,user.id))throw Error('Choose a background uploaded by your account.');
+   const {data,error}=await db.storage.from(liveBackgroundBucket).createSignedUrl(body.backgroundPath,10800);
+   if(error||!data)throw Error('Upload your background again before creating the room.');
+   Object.assign(questions[0],{presentation:{backgroundUrl:data.signedUrl}});
+  }
   const seconds=[5,10,15,20,30,45,60,90,120,240].includes(body.seconds)?body.seconds:45;
   let code='';for(let attempt=0;attempt<3;attempt++){
    const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';code=Array.from({length:6},()=>alphabet[randomInt(alphabet.length)]).join('');

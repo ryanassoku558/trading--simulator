@@ -1,7 +1,7 @@
 import {afterEach,beforeEach,it,expect,vi} from 'vitest';
 import {NextRequest} from 'next/server';
-const mock=vi.hoisted(()=>({rpc:vi.fn(),identify:vi.fn()}));
-vi.mock('@/lib/billing/server',()=>({admin:()=>({rpc:mock.rpc}),identify:mock.identify}));
+const mock=vi.hoisted(()=>({rpc:vi.fn(),identify:vi.fn(),getBucket:vi.fn(),createBucket:vi.fn(),list:vi.fn(),remove:vi.fn(),upload:vi.fn(),sign:vi.fn()}));
+vi.mock('@/lib/billing/server',()=>({admin:()=>({rpc:mock.rpc,storage:{getBucket:mock.getBucket,createBucket:mock.createBucket,from:()=>({list:mock.list,remove:mock.remove,upload:mock.upload,createSignedUrl:mock.sign})}}),identify:mock.identify}));
 import {POST,GET} from '@/app/api/live/route';
 const host='00000000-0000-4000-8000-000000000001';
 function request(body:object,headers:Record<string,string>={}){return new NextRequest('https://sprout-trading.vercel.app/api/live',{method:'POST',headers:{'content-type':'application/json',origin:'https://sprout-trading.vercel.app',...headers},body:JSON.stringify(body)});}
@@ -36,4 +36,21 @@ it('accepts the host’s custom answer key and rejects invalid quizzes before ro
 
 it('creates games from a non-Starter module or an individual lesson',async()=>{
  for(const pack of ['40','lesson:1']){mock.rpc.mockClear();const response=await POST(request({action:'create',pack},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);const questions=mock.rpc.mock.calls[0][1].p_questions;expect(questions.length).toBeGreaterThan(0);if(pack==='lesson:1'){expect(questions).toHaveLength(1);expect(questions[0].question).toBe('What does a share represent?');}}
+});
+
+it('uploads compressed JPEGs only for authenticated hosts and keeps storage private',async()=>{
+ const image='data:image/jpeg;base64,'+Buffer.from([255,216,255,224,0,0,255,217]).toString('base64');
+ expect((await POST(request({action:'upload-background',image}))).status).toBe(403);
+ mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:[],error:null});mock.upload.mockResolvedValue({error:null});
+ const response=await POST(request({action:'upload-background',image},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);
+ const {backgroundPath}=await response.json();expect(backgroundPath).toMatch(new RegExp('^'+host+'/[a-f0-9-]+\\.jpg$'));expect(mock.upload.mock.calls[0][2]).toEqual({contentType:'image/jpeg',cacheControl:'10800',upsert:false});expect(mock.rpc).not.toHaveBeenCalled();
+ expect((await POST(request({action:'upload-background',image:'data:image/svg+xml;base64,PHN2Zz4='},{authorization:'Bearer verified-session'}))).status).toBe(400);
+});
+it('limits uploads and signs only owned background paths when creating a room',async()=>{
+ const path=host+'/00000000-0000-4000-8000-000000000002.jpg';
+ mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/signed-photo'},error:null});
+ const response=await POST(request({action:'create',pack:'0',backgroundPath:path},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.sign).toHaveBeenCalledWith(path,10800);expect(mock.rpc.mock.calls[0][1].p_questions[0].presentation).toEqual({backgroundUrl:'https://storage.example/signed-photo'});
+ mock.rpc.mockClear();expect((await POST(request({action:'create',pack:'0',backgroundPath:path.replace(host,'00000000-0000-4000-8000-000000000099')},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
+ mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:Array(20).fill({created_at:new Date().toISOString()}),error:null});mock.upload.mockClear();
+ const image='data:image/jpeg;base64,'+Buffer.from([255,216,255,224,0,0,255,217]).toString('base64');expect((await POST(request({action:'upload-background',image},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.upload).not.toHaveBeenCalled();
 });
