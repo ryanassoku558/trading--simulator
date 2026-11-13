@@ -15,6 +15,7 @@ it('ends custom games at the selected count, including one and more than twenty 
   await db.exec(await readFile('lib/games/live.sql','utf8'));
   for(const [count,code] of [[1,'ABC222'],[3,'THREE2'],[25,'TWENTY']] as const){
    await db.query('select public.sprout_live_create($1,$2,$3,$4,45)',[host,code,'Custom quiz',JSON.stringify(validateQuestions(Array(count).fill(question)))]);
+   await db.query('select public.sprout_live_dispatch($1,$2,$3,$4,0,null,null,0)',[code,'',host,'activate']);
    const action=(name:string,index=0,choice:number|null=null)=>db.query('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7)',[code,token,host,name,index,choice,'Player']);
    const snapshot=async()=>(await db.query<{v:any}>('select public.sprout_live_snapshot($1,$2,$3) v',[code,token,host])).rows[0].v;
    await action('join');await action('start');expect((await snapshot()).total).toBe(count);

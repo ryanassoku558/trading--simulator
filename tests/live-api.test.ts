@@ -9,7 +9,7 @@ afterEach(()=>{vi.unstubAllEnvs();vi.unstubAllGlobals();});
 beforeEach(()=>{vi.clearAllMocks();mock.rpc.mockResolvedValue({data:{ok:true},error:null});mock.identify.mockResolvedValue({user:{id:host}});});
 it('requires an account to host and ignores a forged host id in the body',async()=>{
  expect((await POST(request({action:'create',pack:'0',host_id:host}))).status).toBe(403);expect(mock.rpc).not.toHaveBeenCalled();
- const response=await POST(request({action:'create',pack:'0',host_id:'fake'},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.identify).toHaveBeenCalledOnce();expect(mock.rpc.mock.calls[0][1].p_host).toBe(host);expect(mock.rpc.mock.calls[0][1].p_questions).toHaveLength(4);
+ const response=await POST(request({action:'create',pack:'0',host_id:'fake'},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.identify).toHaveBeenCalledOnce();expect(mock.rpc.mock.calls[0][0]).toBe('sprout_live_save');expect(mock.rpc.mock.calls[0][1].p_host).toBe(host);expect(mock.rpc.mock.calls[0][1].p_questions).toHaveLength(4);
 });
 it('joins without an account and keeps the random player secret in an HttpOnly cookie',async()=>{
  const response=await POST(request({action:'join',code:'TEST22',nickname:'Guest'}));expect(response.status).toBe(200);expect(mock.identify).not.toHaveBeenCalled();expect(mock.rpc.mock.calls[0][1].p_token).toHaveLength(64);expect(mock.rpc.mock.calls[0][1].p_host).toBeNull();expect(response.headers.get('set-cookie')).toContain('HttpOnly');expect(response.headers.get('set-cookie')).toContain('Secure');expect(await response.json()).toEqual({ok:true,code:'TEST22'});
@@ -49,8 +49,18 @@ it('uploads compressed JPEGs only for authenticated hosts and keeps storage priv
 it('limits uploads and signs only owned background paths when creating a room',async()=>{
  const path=host+'/00000000-0000-4000-8000-000000000002.jpg';
  mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/signed-photo'},error:null});
- const response=await POST(request({action:'create',pack:'0',backgroundPath:path},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.sign).toHaveBeenCalledWith(path,10800);expect(mock.rpc.mock.calls[0][1].p_questions[0].presentation).toEqual({backgroundUrl:'https://storage.example/signed-photo'});
+ const response=await POST(request({action:'create',pack:'0',backgroundPath:path},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.sign).toHaveBeenCalledWith(path,10800);expect(mock.rpc.mock.calls[0][1].p_questions[0].presentation).toEqual({backgroundPath:path,backgroundUrl:'https://storage.example/signed-photo'});
  mock.rpc.mockClear();expect((await POST(request({action:'create',pack:'0',backgroundPath:path.replace(host,'00000000-0000-4000-8000-000000000099')},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
  mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:Array(20).fill({created_at:new Date().toISOString()}),error:null});mock.upload.mockClear();
  const image='data:image/jpeg;base64,'+Buffer.from([255,216,255,224,0,0,255,217]).toString('base64');expect((await POST(request({action:'upload-background',image},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.upload).not.toHaveBeenCalled();
+});
+
+it('loads only the authenticated host’s saved quizzes and requires a host for activation or reset',async()=>{
+ const guest=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?saved=1'));expect(guest.status).toBe(403);expect(mock.rpc).not.toHaveBeenCalled();
+ mock.rpc.mockResolvedValue({data:[{code:'TEST22',title:'Saved quiz'}],error:null});const hostResult=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?saved=1&host_id=forged',{headers:{authorization:'Bearer verified-session'}}));expect(hostResult.status).toBe(200);expect(mock.rpc).toHaveBeenCalledWith('sprout_live_saved',{p_host:host});
+ for(const action of ['reset','activate'])expect((await POST(request({action,code:'TEST22'}))).status).toBe(403);
+ mock.rpc.mockClear();await POST(request({action:'reset',code:'TEST22',generation:3},{authorization:'Bearer verified-session'}));expect(mock.rpc).toHaveBeenCalledWith('sprout_live_dispatch',expect.objectContaining({p_host:host,p_generation:3,p_action:'reset'}));
+});
+it('refreshes a saved room photo without deleting older saved images',async()=>{
+ const path=host+'/00000000-0000-4000-8000-000000000005.jpg';mock.rpc.mockResolvedValue({data:{phase:'waiting',presentation:{backgroundPath:path,backgroundUrl:'expired'}},error:null});mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/renewed'},error:null});const result=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?code=TEST22'));expect((await result.json()).presentation.backgroundUrl).toBe('https://storage.example/renewed');expect(mock.remove).not.toHaveBeenCalled();
 });

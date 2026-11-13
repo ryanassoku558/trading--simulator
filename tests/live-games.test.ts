@@ -16,6 +16,7 @@ describe('server-authoritative live game database',()=>{
    await db.exec('set role service_role');
    const questions=gameQuestions('0');Object.assign(questions[0],{presentation:{backgroundUrl:'https://example.test/signed-photo.jpg'}});
    await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[host,'TEST22','Market Basics',JSON.stringify(questions),45]);
+   await db.query('select public.sprout_live_dispatch($1,$2,$3,$4,0,null,null,0)',['TEST22','',host,'activate']);
    const action=async(name:string,token='a'.repeat(64),owner:string|null=null,index=0,choice:number|null=null,nickname:string|null=null)=>db.query('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7)', ['TEST22',token,owner,name,index,choice,nickname]);
    const snapshot=async(token='a'.repeat(64),owner:string|null=null)=>(await db.query<{value:any}>('select public.sprout_live_snapshot($1,$2,$3) as value',['TEST22',token,owner])).rows[0].value;
    await expect(snapshot()).rejects.toThrow(/nickname/);
@@ -34,6 +35,7 @@ describe('server-authoritative live game database',()=>{
    view=await snapshot();expect(view.phase).toBe('finished');expect(view.index).toBe(4);expect(view.question).toBeNull();expect(view.players[0].score).toBeGreaterThanOrEqual(5000);await expect(action('next','',host,4)).rejects.toThrow(/moved on/);
    await db.exec('set role anon');await expect(db.query('select public.sprout_live_snapshot($1,$2,$3)',['TEST22','a'.repeat(64),host])).rejects.toThrow(/permission denied/);await expect(db.query('select * from sprout_live.rooms')).rejects.toThrow(/permission denied/);await db.exec('reset role');
    await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[host,'LATE22','Clock test',JSON.stringify(questions),30]);
+   await db.query('select public.sprout_live_dispatch($1,$2,$3,$4,0,null,null,0)',['LATE22','',host,'activate']);
    await db.query('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7)',['LATE22','c'.repeat(64),null,'join',0,null,'Clock']);
    await db.query('select public.sprout_live_action($1,$2,$3,$4)',['LATE22','',host,'start']);
    await db.exec("update sprout_live.rooms set ends_at=now()-interval '1 second' where code='LATE22'");
