@@ -51,7 +51,7 @@ it('limits uploads and signs only owned background paths when creating a room',a
  mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/signed-photo'},error:null});
  const response=await POST(request({action:'create',pack:'0',backgroundPath:path},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.sign).toHaveBeenCalledWith(path,10800);expect(mock.rpc.mock.calls[0][1].p_questions[0].presentation).toEqual({backgroundPath:path,backgroundUrl:'https://storage.example/signed-photo'});
  mock.rpc.mockClear();expect((await POST(request({action:'create',pack:'0',backgroundPath:path.replace(host,'00000000-0000-4000-8000-000000000099')},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
- mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:Array(200).fill({created_at:new Date().toISOString()}),error:null});mock.upload.mockClear();
+ mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockImplementation((_prefix:string,options:{limit:number})=>Promise.resolve({data:Array(200).fill({created_at:new Date().toISOString()}).slice(0,options.limit),error:null}));mock.upload.mockClear();
  const image='data:image/jpeg;base64,'+Buffer.from([255,216,255,224,0,0,255,217]).toString('base64');expect((await POST(request({action:'upload-background',image},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.upload).not.toHaveBeenCalled();
 });
 

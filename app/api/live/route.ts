@@ -82,7 +82,7 @@ export async function POST(request:NextRequest){try{
    if(error&&!/already exists/i.test(error.message))throw Error('Background storage is temporarily unavailable.');
   }
   const storage=db.storage.from(liveBackgroundBucket);
-  const {data:files,error:listError}=await storage.list(user.id,{limit:100,sortBy:{column:'created_at',order:'desc'}});
+  const {data:files,error:listError}=await storage.list(user.id,{limit:201,sortBy:{column:'created_at',order:'desc'}});
   if(listError)throw Error('Unable to check your background uploads. Please try again.');
   const recent=(files??[]).filter(f=>Date.parse(f.created_at??'')>Date.now()-86400000);
   if(recent.length>=200)throw Error('You can upload 200 photos per day. Reuse saved photos or try tomorrow.');
