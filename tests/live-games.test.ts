@@ -14,7 +14,7 @@ describe('server-authoritative live game database',()=>{
    await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key);insert into auth.users values('${host}'),('${other}');`);
    await db.exec(await readFile(new URL('../lib/games/live.sql',import.meta.url),'utf8'));
    await db.exec('set role service_role');
-   const questions=gameQuestions('0');Object.assign(questions[0],{presentation:{backgroundUrl:'https://example.test/signed-photo.jpg'}});
+   const questions=gameQuestions('0');Object.assign(questions[0],{presentation:{backgroundUrl:'https://example.test/signed-photo.jpg'},imagePath:host+'/00000000-0000-4000-8000-000000000003.jpg',imageAlt:'A chart example'});
    await db.query('select public.sprout_live_create($1,$2,$3,$4,$5)',[host,'TEST22','Market Basics',JSON.stringify(questions),45]);
    await db.query('select public.sprout_live_dispatch($1,$2,$3,$4,0,null,null,0)',['TEST22','',host,'activate']);
    const action=async(name:string,token='a'.repeat(64),owner:string|null=null,index=0,choice:number|null=null,nickname:string|null=null)=>db.query('select public.sprout_live_action($1,$2,$3,$4,$5,$6,$7)', ['TEST22',token,owner,name,index,choice,nickname]);
@@ -24,7 +24,7 @@ describe('server-authoritative live game database',()=>{
    await expect(action('join','c'.repeat(64),null,0,null,'alpha')).rejects.toThrow();
    await expect(action('start','a'.repeat(64),other)).rejects.toThrow(/host/);
    await action('start','',host);await expect(action('join','c'.repeat(64),null,0,null,'Late')).rejects.toThrow(/started/);
-   let view=await snapshot();expect(view.presentation.backgroundUrl).toBe('https://example.test/signed-photo.jpg');expect(view.phase).toBe('question');expect(view.question.answer).toBeUndefined();expect(JSON.stringify(view)).not.toContain('explanation');
+   let view=await snapshot();expect(view.presentation.backgroundUrl).toBe('https://example.test/signed-photo.jpg');expect(view.phase).toBe('question');expect(view.question.imageAlt).toBe('A chart example');expect(view.question.imagePath).toContain('.jpg');expect(view.question.answer).toBeUndefined();expect(JSON.stringify(view)).not.toContain('explanation');
    await action('answer','a'.repeat(64),null,0,questions[0].answer);await action('answer','a'.repeat(64),null,0,(questions[0].answer+1)%3);
    view=await snapshot();expect(view.self.submitted).toBe(true);expect(view.self.correct).toBeUndefined();expect(view.self.points).toBeUndefined();expect(view.players.every((p:any)=>p.score===0)).toBe(true);
    expect((await db.query<{n:number}>('select count(*)::integer as n from sprout_live.answers')).rows[0].n).toBe(1);

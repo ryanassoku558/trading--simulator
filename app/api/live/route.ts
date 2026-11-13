@@ -21,11 +21,14 @@ async function legacyProxy(request:NextRequest,body?:string){
  const response=new NextResponse(upstream.body,{status:upstream.status,headers:{...noStore,'Content-Type':'application/json'}});
  const cookie=upstream.headers.get('set-cookie');if(cookie)response.headers.set('set-cookie',cookie);return response;
 }
-async function refreshBackground(presentation:{backgroundPath?:string;backgroundUrl?:string}|null,db:ReturnType<typeof admin>){
- if(!presentation)return null;
+function storedBackgroundPath(presentation:{backgroundPath?:string;backgroundUrl?:string}|null){
+ if(!presentation)return undefined;
  let path=presentation.backgroundPath;
  if(!path&&presentation.backgroundUrl){try{const url=new URL(presentation.backgroundUrl),base=new URL(process.env.NEXT_PUBLIC_SUPABASE_URL||'https://invalid.local');const prefix='/storage/v1/object/sign/'+liveBackgroundBucket+'/';if(url.origin===base.origin&&url.pathname.startsWith(prefix))path=decodeURIComponent(url.pathname.slice(prefix.length));}catch{/* An old room without a valid stored photo uses the default background. */}}
- if(!path||!/^[a-f0-9-]{36}\/[a-f0-9-]{36}\.jpg$/.test(path))return presentation;
+ return path&&/^[a-f0-9-]{36}\/[a-f0-9-]{36}\.jpg$/.test(path)?path:undefined;
+}
+async function refreshBackground(presentation:{backgroundPath?:string;backgroundUrl?:string}|null,db:ReturnType<typeof admin>){
+ const path=storedBackgroundPath(presentation);if(!path)return presentation;
  const cached=backgroundCache.get(path);if(cached&&cached.until>Date.now())return {backgroundUrl:cached.url};
  const {data,error}=await db.storage.from(liveBackgroundBucket).createSignedUrl(path,10800);
  if(error||!data)return null;
@@ -42,10 +45,23 @@ export async function GET(request:NextRequest){try{
   const {data,error}=await db.rpc('sprout_live_saved',{p_host:owner});if(error)throw error;
   return NextResponse.json({quizzes:data??[]},{headers:noStore});
  }
+ if(request.nextUrl.searchParams.has('photo')){
+  const owner=await hostId(request),path=request.nextUrl.searchParams.get('photo');
+  if(!owner||!ownedBackground(path,owner))throw Object.assign(Error('Sign in to preview your own uploaded photo.'),{code:'42501'});
+  const presentation=await refreshBackground({backgroundPath:path},db);if(!presentation?.backgroundUrl)throw Error('This photo is unavailable. Upload it again.');
+  return NextResponse.json({imageUrl:presentation.backgroundUrl},{headers:noStore});
+ }
  const code=codeValue(request.nextUrl.searchParams.get('code'));
+ if(request.nextUrl.searchParams.get('edit')==='1'){
+  const owner=await hostId(request);if(!owner)throw Object.assign(Error('Sign in to edit your saved quiz.'),{code:'42501'});
+  const {data,error}=await db.rpc('sprout_live_editor',{p_code:code,p_host:owner});if(error)throw error;
+  const backgroundPath=storedBackgroundPath(data.questions?.[0]?.presentation);
+  return NextResponse.json({code,generation:data.generation,phase:data.phase,draft:{version:1,title:data.title,pack:'0',seconds:data.seconds,questions:validateQuestions(data.questions),...(backgroundPath?{backgroundPath}:{})}},{headers:noStore});
+ }
+
  const secret=request.cookies.get(cookieName)?.value||'';
  const {data,error}=await db.rpc('sprout_live_snapshot',{p_code:code,p_token:tokenHash(secret),p_host:await hostId(request)});
- if(error)throw error;if(data?.presentation)data.presentation=await refreshBackground(data.presentation,db);return NextResponse.json(data,{headers:noStore});
+ if(error)throw error;if(data?.question?.imagePath){const photo=await refreshBackground({backgroundPath:data.question.imagePath},db);data.question.imageUrl=photo?.backgroundUrl??null;delete data.question.imagePath;}if(data?.presentation)data.presentation=await refreshBackground(data.presentation,db);return NextResponse.json(data,{headers:noStore});
 }catch(error){return errorResponse(error);}}
 export async function POST(request:NextRequest){try{
  const origin=request.headers.get('origin');if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:'Open the game on this website to continue.'},{status:403,headers:noStore});
@@ -69,14 +85,15 @@ export async function POST(request:NextRequest){try{
   const {data:files,error:listError}=await storage.list(user.id,{limit:100,sortBy:{column:'created_at',order:'desc'}});
   if(listError)throw Error('Unable to check your background uploads. Please try again.');
   const recent=(files??[]).filter(f=>Date.parse(f.created_at??'')>Date.now()-86400000);
-  if(recent.length>=20)throw Error('You can upload 20 backgrounds per day. Reuse your saved background or try tomorrow.');
+  if(recent.length>=200)throw Error('You can upload 200 photos per day. Reuse saved photos or try tomorrow.');
   const path=user.id+'/'+randomUUID()+'.jpg';
   const {error}=await storage.upload(path,bytes,{contentType:'image/jpeg',cacheControl:'10800',upsert:false});
   if(error)throw Error('The background could not be uploaded. Please try again.');
   return NextResponse.json({backgroundPath:path},{headers:noStore});
- }else if(body.action==='create'){
+ }else if(body.action==='create'||body.action==='update'){
   if(!request.headers.has('authorization'))throw Object.assign(Error('Sign in to host a game. Anyone with a Sprout account can host.'),{code:'42501'});
   const {user}=await identify(request);
+  if(body.action==='update'&&(typeof body.title!=='string'||!body.title.trim()))throw Error('Give your quiz a name.');
   const pack=gamePacks.find(p=>p.id===body.pack);if(!pack)throw Error('Choose a quiz topic.');
   const title=typeof body.title==='string'&&body.title.trim()?body.title.trim():pack.title;if(title.length>80)throw Error('Keep the quiz title under 80 characters.');
   const questions=validateQuestions(body.questions??topicQuestions(pack.id));
@@ -86,13 +103,20 @@ export async function POST(request:NextRequest){try{
    if(error||!data)throw Error('Upload your background again before creating the room.');
    Object.assign(questions[0],{presentation:{backgroundPath:body.backgroundPath,backgroundUrl:data.signedUrl}});
   }
+  if(questions.some(q=>q.imagePath&&!ownedBackground(q.imagePath,user.id)))throw Error('Slide images must be uploaded by your account.');
   const seconds=[5,10,15,20,30,45,60,90,120,240].includes(body.seconds)?body.seconds:45;
+  if(body.action==='update'){
+   const code=codeValue(body.code);if(!Number.isInteger(body.generation))throw Error('Reopen the editor before saving changes.');
+   const {error}=await db.rpc('sprout_live_update',{p_code:code,p_host:user.id,p_title:title,p_questions:questions,p_seconds:seconds,p_generation:body.generation});if(error)throw error;
+   result={code};
+  }else{
   let code='';for(let attempt=0;attempt<3;attempt++){
    const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';code=Array.from({length:6},()=>alphabet[randomInt(alphabet.length)]).join('');
    const {error}=await db.rpc('sprout_live_save',{p_host:user.id,p_code:code,p_title:title,p_questions:questions,p_seconds:seconds});
    if(!error)break;if(error.code!=='23505'||attempt===2)throw error;
   }
   result={code};
+  }
  }else{
   const code=codeValue(body.code),action=body.action;
   if(!['join','answer','start','reveal','next','end','reset','activate'].includes(action))throw Error('Unknown game action.');

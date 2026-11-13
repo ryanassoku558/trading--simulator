@@ -24,3 +24,8 @@ it('ends custom games at the selected count, including one and more than twenty 
   }
  }finally{await db.close();}
 },30000);
+it('preserves slide images and descriptions while rejecting external URLs as image paths',()=>{
+ const imagePath='00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-000000000002.jpg';
+ expect(validateQuestions([{...question,imagePath,imageAlt:' Chart example '}])[0]).toMatchObject({imagePath,imageAlt:'Chart example'});
+ expect(()=>validateQuestions([{...question,imagePath:'https://external.example/photo.jpg'}])).toThrow(/photo/);
+});

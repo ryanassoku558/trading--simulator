@@ -11,3 +11,6 @@ it('restores more than twenty questions and retains their answer keys and order'
  const questions=Array.from({length:40},(_,i)=>({question:`Question ${i}`,options:['No','Yes'],answer:i%2,explanation:'Review.'}));
  expect(parseQuizDraft(JSON.stringify({...draft,questions})).questions).toEqual(questions);
 });
+it('restores different photos on different question slides',()=>{
+ const path='00000000-0000-4000-8000-000000000001/00000000-0000-4000-8000-000000000002.jpg';const questions=[{...emptyQuestion(),imagePath:path,imageAlt:'First photo'},{...emptyQuestion(),imagePath:path.replace('000000000002','000000000003'),imageAlt:'Second photo'}];expect(parseQuizDraft(JSON.stringify({...draft,questions})).questions).toEqual(questions);
+});

@@ -126,7 +126,7 @@ begin
  return jsonb_build_object('code',r.code,'title',r.title,'phase',phase_now,'isHost',is_host,'index',r.question_index,'total',jsonb_array_length(r.questions),'seconds',r.seconds,'endsAt',r.ends_at,'serverNow',now(),'generation',r.generation,'isOpen',r.is_open,'players',board,'presentation',r.questions->0->'presentation',
   'answerDistribution',case when phase_now='reveal' then (select coalesce(jsonb_object_agg(choice,n),'{}'::jsonb) from (select choice,count(*) n from sprout_live.answers where room_id=r.id and question_index=r.question_index group by choice) c) else null end,
   'answeredCount',(select count(*) from sprout_live.answers where room_id=r.id and question_index=r.question_index),
-  'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,
+  'question',case when phase_now in ('question','reveal') then jsonb_build_object('text',q->>'question','options',q->'options','imagePath',q->>'imagePath','imageAlt',q->>'imageAlt') || case when phase_now='reveal' then jsonb_build_object('answer',q->'answer','explanation',q->>'explanation') else '{}'::jsonb end else null end,
   'self',case when p.id is null then null else jsonb_build_object('nickname',p.nickname,'submitted',a.player_id is not null,'choice',a.choice) || case when phase_now in ('reveal','finished') then jsonb_build_object('correct',a.correct,'points',a.points) else '{}'::jsonb end end);
 end $$;
 create or replace function public.sprout_live_saved(p_host uuid)
@@ -166,4 +166,35 @@ revoke all on function public.sprout_live_snapshot(text,text,uuid) from public,a
 grant execute on function public.sprout_live_create(uuid,text,text,jsonb,integer) to service_role;
 grant execute on function public.sprout_live_action(text,text,uuid,text,integer,integer,text) to service_role;
 grant execute on function public.sprout_live_snapshot(text,text,uuid) to service_role;
+notify pgrst,'reload schema';
+
+-- Saved quiz editing: answers are returned only to the verified host.
+create or replace function public.sprout_live_editor(p_code text,p_host uuid)
+returns jsonb language plpgsql security invoker stable set search_path='' as $$
+declare r sprout_live.rooms;
+begin
+ select * into r from sprout_live.rooms where code=p_code;
+ if not found then raise exception 'Quiz not found.' using errcode='P0002'; end if;
+ if p_host is null or p_host<>r.host_id then raise exception 'Only this quiz’s host can edit it.' using errcode='42501'; end if;
+ if r.is_open or r.phase not in ('waiting','finished') then raise exception 'Finish the active session before editing this quiz.'; end if;
+ return jsonb_build_object('code',r.code,'title',r.title,'questions',r.questions,'seconds',r.seconds,'generation',r.generation,'phase',r.phase);
+end $$;
+create or replace function public.sprout_live_update(p_code text,p_host uuid,p_title text,p_questions jsonb,p_seconds integer,p_generation integer)
+returns jsonb language plpgsql security invoker set search_path='' as $$
+declare r sprout_live.rooms;
+begin
+ select * into r from sprout_live.rooms where code=p_code for update;
+ if not found then raise exception 'Quiz not found.' using errcode='P0002'; end if;
+ if p_host is null or p_host<>r.host_id then raise exception 'Only this quiz’s host can edit it.' using errcode='42501'; end if;
+ if r.is_open or r.phase not in ('waiting','finished') then raise exception 'Finish the active session before editing this quiz.'; end if;
+ if p_generation is null or p_generation<>r.generation then raise exception 'This quiz changed in another tab. Reopen the editor to load the latest version.'; end if;
+ if p_title is null or length(trim(p_title)) not between 1 and 80 or jsonb_typeof(p_questions) is distinct from 'array' or jsonb_array_length(p_questions)<1 then raise exception 'Add a quiz title and at least one question.'; end if;
+ delete from sprout_live.players where room_id=r.id;
+ update sprout_live.rooms set title=trim(p_title),questions=p_questions,seconds=p_seconds,phase='waiting',is_open=false,question_index=0,ends_at=null,generation=generation+1 where id=r.id;
+ return jsonb_build_object('code',r.code,'ok',true);
+end $$;
+revoke all on function public.sprout_live_editor(text,uuid) from public,anon,authenticated;
+revoke all on function public.sprout_live_update(text,uuid,text,jsonb,integer,integer) from public,anon,authenticated;
+grant execute on function public.sprout_live_editor(text,uuid) to service_role;
+grant execute on function public.sprout_live_update(text,uuid,text,jsonb,integer,integer) to service_role;
 notify pgrst,'reload schema';

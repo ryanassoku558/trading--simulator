@@ -51,7 +51,7 @@ it('limits uploads and signs only owned background paths when creating a room',a
  mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/signed-photo'},error:null});
  const response=await POST(request({action:'create',pack:'0',backgroundPath:path},{authorization:'Bearer verified-session'}));expect(response.status).toBe(200);expect(mock.sign).toHaveBeenCalledWith(path,10800);expect(mock.rpc.mock.calls[0][1].p_questions[0].presentation).toEqual({backgroundPath:path,backgroundUrl:'https://storage.example/signed-photo'});
  mock.rpc.mockClear();expect((await POST(request({action:'create',pack:'0',backgroundPath:path.replace(host,'00000000-0000-4000-8000-000000000099')},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
- mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:Array(20).fill({created_at:new Date().toISOString()}),error:null});mock.upload.mockClear();
+ mock.getBucket.mockResolvedValue({data:{public:false},error:null});mock.list.mockResolvedValue({data:Array(200).fill({created_at:new Date().toISOString()}),error:null});mock.upload.mockClear();
  const image='data:image/jpeg;base64,'+Buffer.from([255,216,255,224,0,0,255,217]).toString('base64');expect((await POST(request({action:'upload-background',image},{authorization:'Bearer verified-session'}))).status).toBe(400);expect(mock.upload).not.toHaveBeenCalled();
 });
 
@@ -63,4 +63,18 @@ it('loads only the authenticated host’s saved quizzes and requires a host for 
 });
 it('refreshes a saved room photo without deleting older saved images',async()=>{
  const path=host+'/00000000-0000-4000-8000-000000000005.jpg';mock.rpc.mockResolvedValue({data:{phase:'waiting',presentation:{backgroundPath:path,backgroundUrl:'expired'}},error:null});mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/renewed'},error:null});const result=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?code=TEST22'));expect((await result.json()).presentation.backgroundUrl).toBe('https://storage.example/renewed');expect(mock.remove).not.toHaveBeenCalled();
+});
+it('returns an answer-key editor only for the verified host and saves validated edits to the same room',async()=>{
+ const url='https://sprout-trading.vercel.app/api/live?edit=1&code=EDTR22';expect((await GET(new NextRequest(url))).status).toBe(403);expect(mock.rpc).not.toHaveBeenCalled();
+ const questions=[{question:'Editable question?',options:['First','Second'],answer:1,explanation:'Second is correct.'}];mock.rpc.mockResolvedValueOnce({data:{title:'My saved quiz',seconds:45,questions,generation:2,phase:'waiting'},error:null});
+ const loaded=await GET(new NextRequest(url+'&host_id=forged',{headers:{authorization:'Bearer fixture'}}));expect(loaded.status).toBe(200);expect(mock.rpc).toHaveBeenCalledWith('sprout_live_editor',{p_code:'EDTR22',p_host:host});expect((await loaded.json()).draft.questions[0].answer).toBe(1);
+ mock.rpc.mockClear();const result=await POST(request({action:'update',code:'EDTR22',title:'Edited title',pack:'0',questions,seconds:90,generation:2},{authorization:'Bearer fixture'}));expect(result.status).toBe(200);expect(await result.json()).toEqual({code:'EDTR22'});expect(mock.rpc).toHaveBeenCalledWith('sprout_live_update',{p_code:'EDTR22',p_host:host,p_title:'Edited title',p_questions:questions,p_seconds:90,p_generation:2});
+ mock.rpc.mockClear();expect((await POST(request({action:'update',code:'EDTR22',title:'Edited',pack:'0',questions:[{...questions[0],answer:9}],generation:2},{authorization:'Bearer fixture'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
+});
+it('protects slide photo ownership and signs only the current question image for joined players',async()=>{
+ const path=host+'/00000000-0000-4000-8000-000000000009.jpg';mock.sign.mockResolvedValue({data:{signedUrl:'https://storage.example/slide-photo'},error:null});
+ expect((await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?photo='+path))).status).toBe(403);
+ const preview=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?photo='+path,{headers:{authorization:'Bearer fixture'}}));expect(preview.status).toBe(200);expect((await preview.json()).imageUrl).toBe('https://storage.example/slide-photo');
+ mock.rpc.mockResolvedValue({data:{question:{text:'Picture question',options:['A','B'],imagePath:path,imageAlt:'Example chart'}},error:null});const snapshot=await GET(new NextRequest('https://sprout-trading.vercel.app/api/live?code=TEST22'));const view=await snapshot.json();expect(view.question.imageUrl).toBe('https://storage.example/slide-photo');expect(view.question.imagePath).toBeUndefined();expect(view.question.answer).toBeUndefined();
+ mock.rpc.mockClear();const questions=[{question:'Which image?',options:['One','Two'],answer:1,explanation:'Second.',imagePath:path.replace(host,'00000000-0000-4000-8000-000000000099')}];expect((await POST(request({action:'update',code:'TEST22',title:'Photo quiz',pack:'0',questions,generation:0},{authorization:'Bearer fixture'}))).status).toBe(400);expect(mock.rpc).not.toHaveBeenCalled();
 });
